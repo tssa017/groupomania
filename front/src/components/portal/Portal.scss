@@ -1,0 +1,8 @@
+.portal {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    border: 0.2rem solid $colorFont;
+    border-radius: 0.5rem;
+    background-color: $colorBox;
+}

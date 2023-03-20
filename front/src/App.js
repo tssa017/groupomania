@@ -4,9 +4,11 @@ import Portal from './components/portal/Portal';
 
 function App() {
     return (
-        <div>
+        <div className="app">
             <Header />
-            <Portal />
+            <div className="app__portal">
+                <Portal />
+            </div>
         </div>
     );
 }

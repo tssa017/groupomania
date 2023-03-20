@@ -3,14 +3,21 @@ body {
   color: #3d3c3c;
 }
 
+.app__portal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .header {
-  padding: 1rem;
+  padding: 1rem 3rem 1rem 3rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: #fd2d01;
   border-bottom: 0.2rem solid #3d3c3c;
+  width: 100%;
 }
 .header__img {
   padding: 1rem;
@@ -19,14 +26,90 @@ body {
 }
 
 .portal {
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
+  margin: 3rem;
   border: 0.2rem solid #3d3c3c;
-  border-radius: 0.5rem;
+  border-radius: 1.2rem;
   background-color: #d9d9d9;
 }
+.portal__toggle {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.portal__toggle--login {
+  padding: 3rem;
+  width: 100%;
+  background-color: #dfb2fe;
+  border-top: none;
+  border-right: none;
+  border-bottom: 0.2rem solid #3d3c3c;
+  border-left: none;
+  border-top-right-radius: 1rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.portal__toggle--signup {
+  padding: 3rem;
+  width: 100%;
+  background-color: #dfb2fe;
+  border-top: none;
+  border-right: 0.2rem solid #3d3c3c;
+  border-bottom: 0.2rem solid #3d3c3c;
+  border-left: none;
+  border-top-left-radius: 1rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.portal__toggle .purple ~ .portal__toggle--signup.purple {
+  background-color: #ca7ffe;
+}
+.portal__toggle .clicked {
+  background-color: #ca7ffe;
+  text-decoration: underline;
+}
+.portal__form {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem 1rem 2rem;
+}
+.portal__form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.portal__form-group label {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.portal__form input {
+  border: 0.15rem solid #3d3c3c;
+  border-radius: 0.3rem;
+  width: 100%;
+  height: 2rem;
+}
+.portal__account-signup, .portal__account-login {
+  padding: 0 2rem 2rem 2rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #ca7ffe;
+  cursor: pointer;
+}
 
+@media screen and (min-width: 768px) {
+  .portal {
+    width: 30rem;
+  }
+}
 * {
   margin: 0;
   padding: 0;

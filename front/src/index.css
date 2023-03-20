@@ -8,6 +8,11 @@ body {
   flex-direction: column;
   align-items: center;
 }
+.app__profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .header {
   padding: 1rem 3rem 1rem 3rem;
@@ -101,13 +106,82 @@ body {
   padding: 0 2rem 2rem 2rem;
   font-weight: 700;
   font-size: 1.2rem;
-  color: #ca7ffe;
+  color: #3d3c3c;
   cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {
   .portal {
     width: 30rem;
+  }
+}
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin: 3rem;
+  padding: 3rem;
+  background-color: #d9d9d9;
+  border: 0.2rem solid #3d3c3c;
+  border-radius: 1rem;
+}
+.profile__img {
+  width: 250px;
+  height: auto;
+  border: 0.3rem solid #3d3c3c;
+  border-radius: 100%;
+}
+.profile__update-btn, .profile__deactivate-btn {
+  padding: 0.5rem 1rem;
+  border: 0.2rem solid #3d3c3c;
+  border-radius: 0.5rem;
+  font-family: "Nunito", sans-serif;
+  font-size: 1rem;
+}
+.profile__update-btn {
+  background-color: #4d55f5;
+}
+.profile__form-group {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0 1rem 0;
+}
+.profile__form-group label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+}
+.profile__form-group input {
+  border: 0.15rem solid #3d3c3c;
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  height: 2rem;
+  font-size: 1.2rem;
+}
+.profile__deactivate-btn {
+  background-color: #ff876d;
+}
+
+@media screen and (min-width: 768px) {
+  .profile {
+    width: 60%;
+  }
+  .profile form {
+    width: 80%;
+  }
+  .profile__form-group {
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .profile__form-group label {
+    flex-basis: 40%;
+  }
+  .profile__form-group input {
+    flex-basis: 60%;
   }
 }
 * {

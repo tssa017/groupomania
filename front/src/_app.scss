@@ -1,0 +1,14 @@
+// This page contains Sass app styles
+.app {
+    &__portal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

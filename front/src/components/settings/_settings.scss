@@ -2,6 +2,30 @@
 
 .settings {
     &__nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
         background-color: $colorQuaternary;
+        font-weight: 700;
+
+        &--icon {
+            padding: 0.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        &--list {
+            list-style-type: none;
+
+            &-item {
+                margin: 0.5rem 0 0.5rem 0;
+                padding: 0.5rem;
+                width: fit-content;
+                background-color: $colorSecondary;
+                @include borderStyle;
+                @include btnTxtStyle;
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import Header from './components/header/Header.js';
 // import Profile from './components/profile/Profile.js';
 import Status from './components/status/Status.js';
 import Settings from './components/settings/Settings.js';
+import Publication from './components/publication/Publication';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
             <Header />
             <Settings />
             <Status />
+            <Publication />
         </div>
     );
 }

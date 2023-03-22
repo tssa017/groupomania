@@ -1,0 +1,20 @@
+// This page contains Sass publication styles
+
+.publication {
+    &__cont {
+        background-color: $colorBox;
+
+        &--status {
+            &-txt {
+                margin: 2rem;
+                padding: 3rem;
+                @include borderStyle;
+                background-color: #fff;
+                font-weight: 700;
+
+                // &-img {
+                // }
+            }
+        }
+    }
+}

@@ -2,18 +2,113 @@
 
 .publication {
     &__cont {
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
         background-color: $colorBox;
 
         &--status {
             &-txt {
-                margin: 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
                 padding: 3rem;
-                @include borderStyle;
+                border-top: 3px solid $colorFont;
+                border-right: 3px solid $colorFont;
+                border-left: 3px solid $colorFont;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
                 background-color: #fff;
                 font-weight: 700;
 
-                // &-img {
-                // }
+                &-img {
+                    margin: 2rem 1rem 0 1rem;
+                    width: 220px;
+                    height: auto;
+                    @include borderStyle;
+                }
+            }
+        }
+
+        &--reactions {
+            display: flex;
+            flex-direction: row;
+            padding: 1rem;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            background-color: $colorSecondary;
+            border-top: 3px solid $colorFont;
+            border-right: 3px solid $colorFont;
+            border-left: 3px solid $colorFont;
+
+            &-likes {
+                scale: 1;
+
+                &:hover {
+                    scale: 1.1;
+                    transition: scale 200ms ease-in;
+                }
+            }
+
+            &-comments {
+                scale: 1;
+
+                &:hover {
+                    scale: 1.1;
+                    transition: scale 200ms ease-in;
+                }
+            }
+
+            &-like {
+                scale: 1;
+
+                &:hover {
+                    scale: 1.1;
+                    transition: scale 200ms ease-in;
+                }
+            }
+        }
+
+        &--comment-cont {
+            display: flex;
+            flex-direction: row;
+            padding: 1rem;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            background-color: $colorQuaternary;
+            border: 3px solid $colorFont;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+
+            &-img {
+                width: auto;
+                margin-right: 0.5rem;
+                height: 50px;
+                border: 0.2rem solid $colorFont;
+                border-radius: 100%;
+            }
+
+            &-post {
+                padding: 1rem;
+                font-size: 1rem;
+                width: 65%;
+                background-color: #fff;
+                @include borderStyle;
+
+                &-like {
+                    scale: 1;
+
+                    &:hover {
+                        scale: 1.1;
+                        transition: scale 200ms ease-in;
+                    }
+                }
             }
         }
     }

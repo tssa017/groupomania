@@ -23,6 +23,12 @@
         padding: 0.5rem 1rem;
         @include borderStyle;
         @include btnTxtStyle;
+        scale: 1;
+
+        &:hover {
+            scale: 1.1;
+            transition: scale 200ms ease-in;
+        }
     }
 
     &__update-btn {

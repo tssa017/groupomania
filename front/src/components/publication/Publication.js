@@ -11,18 +11,30 @@ function Publication() {
                         Developer path with OpenClassrooms!
                         <img
                             className="publication__cont--status-txt-img"
-                            src="#"
-                            alt="Post image"
+                            src="/images/other_chagall.jpeg"
+                            alt="Image included in post"
                         />
                     </p>
                 </section>
                 <section className="publication__cont--reactions">
-                    <div className="publication__cont--reactions-likes"></div>
-                    <div className="publication__cont--reactions-comments"></div>
-                    <i className="fa-solid fa-heart"></i>
+                    <div className="publication__cont--reactions-likes">
+                        Likes
+                    </div>
+                    <div className="publication__cont--reactions-comments">
+                        Comments
+                    </div>
+                    <i className="publication__cont--reactions-like fa-solid fa-heart"></i>
                 </section>
                 <section className="publication__cont--comment-cont">
-                    <p className="publication__cont--comment"></p>
+                    <img
+                        className="publication__cont--comment-cont-img"
+                        src="/images/me.jpg"
+                        alt="Image included in post"
+                    />
+                    <p className="publication__cont--comment-cont-post">
+                        Congrats!
+                    </p>
+                    <i className="publication__cont--comment-cont-post-like fa-solid fa-heart"></i>
                 </section>
             </article>
         </div>

@@ -13,18 +13,16 @@
 
         &--img {
             position: relative;
-            width: 100px;
+            width: 120px;
             height: auto;
             bottom: 1rem;
-            left: 5rem;
-            border: 0.3rem solid $colorFont;
+            left: 6rem;
+            border: 0.25rem solid $colorFont;
             border-radius: 100%;
             z-index: 1;
         }
 
         &--btns {
-            display: flex;
-            flex-direction: column;
             gap: 1rem;
 
             input[type='file']::file-selector-button {
@@ -37,13 +35,14 @@
                 @include btnTxtStyle;
 
                 &:hover {
-                    color: $colorSecondary;
+                    background-color: $colorSecondary;
                 }
             }
 
             &-postBtn {
                 position: relative;
                 padding: 1rem;
+                margin: 1.5rem 0 0 1.5rem;
                 background-color: $colorSecondary;
                 width: 5rem;
                 @include borderStyle;
@@ -61,12 +60,54 @@
             position: absolute;
             left: 0;
             right: 0;
-            padding: 6rem 3rem 5rem 3rem;
+            padding: 8rem 3rem 5rem 3rem;
             border-top: 3px solid $colorFont;
             border-bottom: 3px solid $colorFont;
             font-family: 'Nunito', sans-serif;
             font-size: 1.2rem;
             line-height: 2.2rem;
+        }
+    }
+}
+
+// Tablet and PC styling
+@media screen and (min-width: 768px) {
+    .status {
+        &__cont {
+            display: flex;
+            background-color: $colorBackgroundLight;
+            border-right: 0.2rem solid $colorFont;
+            border-bottom: 0.2rem solid $colorFont;
+            border-left: 0.2rem solid $colorFont;
+            width: 800px;
+
+            &--img {
+                width: 130px;
+                top: 5rem;
+                left: 20.5rem;
+            }
+
+            &--btns {
+                text-align: center;
+
+                input[type='file']::file-selector-button {
+                    background-color: $colorBackground;
+                    margin-top: 3rem;
+                }
+
+                &-postBtn {
+                    background-color: $colorSecondary;
+                    width: 5rem;
+                }
+            }
+
+            &--post {
+                position: relative;
+                padding: 4rem 3rem 5rem 3rem;
+                border-right: 0.2rem solid $colorFont;
+                border-left: 0.2rem solid $colorFont;
+                width: 800px;
+            }
         }
     }
 }

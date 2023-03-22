@@ -1,0 +1,62 @@
+// This page contains Sass status styles
+
+.status {
+    &__cont {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        padding: 3rem;
+        background-color: $colorSecondary;
+        border-top: 0.2rem solid $colorFont;
+        border-bottom: 0.2rem solid $colorFont;
+
+        &--img {
+            position: relative;
+            width: 100px;
+            height: auto;
+            bottom: 1rem;
+            left: 5rem;
+            border: 0.3rem solid $colorFont;
+            border-radius: 100%;
+            z-index: 1;
+        }
+
+        &--btns {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            input[type='file']::file-selector-button {
+                position: relative;
+                align-self: center;
+                margin-top: 9rem;
+                padding: 1rem;
+                background-color: $colorBackground;
+                @include borderStyle;
+                @include btnTxtStyle;
+            }
+
+            &-postBtn {
+                position: relative;
+                padding: 1rem;
+                background-color: $colorBox;
+                @include borderStyle;
+                @include btnTxtStyle;
+            }
+        }
+
+        &--post {
+            position: absolute;
+            left: 0;
+            right: 0;
+            padding: 6rem 3rem 3rem 3rem;
+            border-top: 3px solid $colorFont;
+            border-bottom: 3px solid $colorFont;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            line-height: 2.2rem;
+        }
+    }
+}

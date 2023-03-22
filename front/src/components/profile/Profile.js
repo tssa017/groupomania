@@ -6,7 +6,7 @@ function Profile() {
             <img
                 src="/images/malina.jpeg"
                 className="profile__img"
-                alt="Groupomania logo"
+                alt="User profile picture"
             />
             <button className="profile__update-btn">
                 Update profile picture
@@ -22,12 +22,12 @@ function Profile() {
                 </div>
                 <div className="profile__form-group">
                     <input
-                        id="emailAddress"
-                        name="emailAddress"
+                        id="email"
+                        name="email"
                         type="text"
                         placeholder="user@example.com"
                     />
-                    <label htmlFor="emailAddress">Email address</label>
+                    <label htmlFor="email">Email</label>
                 </div>
             </form>
             <button className="profile__deactivate-btn">

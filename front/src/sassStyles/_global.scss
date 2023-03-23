@@ -11,10 +11,6 @@ body {
 
 // PC and Tablet styling
 @media screen and (min-width: 768px) {
-    // body {
-    //     background-color: $colorBox;
-    // }
-
     .wrapper {
         display: flex;
         flex-direction: column;

@@ -1,6 +1,7 @@
 import '../../index.scss';
 import { useState } from 'react';
 
+// Function formats Publication component in JSX
 function Publication() {
     return (
         <div className="wrapper">

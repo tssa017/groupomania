@@ -1,6 +1,7 @@
 import '../../index.scss';
 import { useState } from 'react';
 
+// Function formats Status component in JSX
 function Status() {
     return (
         <div className="wrapper">

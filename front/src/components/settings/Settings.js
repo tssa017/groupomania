@@ -1,6 +1,7 @@
 import '../../index.scss';
 import { useState } from 'react';
 
+// Function formats Setting component in JSX
 function Settings() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isIconUp, setIsIconUp] = useState(false);

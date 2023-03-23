@@ -1,14 +1,12 @@
 import '../../index.scss';
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
 
+// Function formats Portal component in JSX
 function Portal() {
     // Store and manages state of non-senistive user input
     let [firstName, setFirstName] = useState('');
     let [lastName, setLastName] = useState('');
     let [emailAddress, setEmailAddress] = useState('');
-
-    const navigate = useNavigate();
 
     // Hook stores the state of a button so to apply styles
     const [buttonState, setButtonState] = useState({
@@ -16,6 +14,7 @@ function Portal() {
         signupClicked: false,
     });
 
+    // Function allows users to switch between login and signup mode
     const handleButtonClick = (buttonName) => {
         setButtonState((prevState) => ({
             loginClicked: buttonName === 'login',

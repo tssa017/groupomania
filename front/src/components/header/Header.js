@@ -1,5 +1,6 @@
 import '../../index.scss';
 
+// // Function formats Header component in JSX
 function Header() {
     return (
         <div>

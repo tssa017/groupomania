@@ -1,5 +1,6 @@
 import '../../index.scss';
 
+// Function formats Profile component in JSX
 function Profile() {
     return (
         <div className="portal-profile__wrapper">

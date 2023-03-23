@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './index.scss'; // Imports main stylesheet
-import Header from './components/header/Header.js';
-import Portal from './components/portal/Portal.js';
-import Profile from './components/profile/Profile.js';
-import Status from './components/status/Status.js';
-import Settings from './components/settings/Settings.js';
+import './index.scss';
+import Header from './components/header/Header';
+import Portal from './components/portal/Portal';
+import Profile from './components/profile/Profile';
+import Status from './components/status/Status';
+import Settings from './components/settings/Settings';
 import Publication from './components/publication/Publication';
 
 function App() {
@@ -13,13 +13,21 @@ function App() {
         <Router>
             <Header />
             <Routes>
-                <Route path="/" element={<Portal />} />
+                <Route path="/portal" element={<Portal />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/status" element={<Status />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/publication" element={<Publication />} />
+                <Route path="/feed" element={<Feed />} />
             </Routes>
         </Router>
+    );
+}
+
+function Feed() {
+    return (
+        <div>
+            <Settings />
+            <Status />
+            <Publication />
+        </div>
     );
 }
 

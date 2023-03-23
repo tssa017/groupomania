@@ -7,19 +7,21 @@
         align-items: center;
         justify-content: center;
         gap: 2rem;
-        padding: 1rem 3rem 3rem 3rem;
+        padding: 0 3rem 3rem 3rem;
+        // margin: 0;
         background-color: $colorBackground;
         border-bottom: 0.2rem solid $colorFont;
 
         &--img {
+            top: 3rem;
             position: relative;
             width: 120px;
             height: auto;
-            bottom: 1rem;
-            left: 6rem;
             border: 0.25rem solid $colorFont;
             border-radius: 100%;
             z-index: 1;
+            margin: 0 auto;
+            display: block;
         }
 
         &--btns {
@@ -28,7 +30,7 @@
             input[type='file']::file-selector-button {
                 position: relative;
                 align-self: center;
-                margin-top: 12rem;
+                margin-top: 20rem;
                 padding: 1rem;
                 background-color: $colorBox;
                 @include borderStyle;
@@ -83,8 +85,8 @@
 
             &--img {
                 width: 130px;
-                top: 5rem;
-                left: 20.5rem;
+                // top: 5rem;
+                // left: 20.5rem;
             }
 
             &--btns {

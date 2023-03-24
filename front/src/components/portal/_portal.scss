@@ -1,6 +1,7 @@
 // This page contains Sass Portal styles
 .portal {
     margin: 3rem;
+    padding-bottom: 2rem;
     border: 0.2rem solid $colorFont;
     border-radius: 1.2rem;
     background-color: $colorBox;
@@ -68,7 +69,7 @@
             display: flex;
             flex-direction: row;
             align-self: flex-start;
-            margin-top: 0.2rem;
+            margin-bottom: 0.2rem;
             font-size: 1.2rem;
             font-weight: 600;
         }
@@ -88,6 +89,21 @@
         font-size: 1.2rem;
         color: $colorFont;
         cursor: pointer;
+        scale: 1;
+
+        &:hover {
+            scale: 1.05;
+            transition: scale 200ms ease-in;
+        }
+    }
+
+    &__enter-btn {
+        display: block;
+        margin: 0 auto;
+        padding: 0.5rem 1rem;
+        @include borderStyle;
+        @include btnTxtStyle;
+        background-color: $colorSecondary;
         scale: 1;
 
         &:hover {

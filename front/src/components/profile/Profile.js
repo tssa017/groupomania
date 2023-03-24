@@ -15,23 +15,24 @@ function Profile() {
                 </button>
                 <form>
                     <div className="profile__form-group">
-                        <input id="firstName" name="firstName" type="text" />
                         <label htmlFor="firstName">First name</label>
+                        <input id="firstName" name="firstName" type="text" />
                     </div>
                     <div className="profile__form-group">
-                        <input id="lastName" name="lastName" type="text" />
                         <label htmlFor="lastName">Last name</label>
+                        <input id="lastName" name="lastName" type="text" />
                     </div>
                     <div className="profile__form-group">
+                        <label htmlFor="email">Email</label>
                         <input
                             id="email"
                             name="email"
                             type="text"
                             placeholder="user@example.com"
                         />
-                        <label htmlFor="email">Email</label>
                     </div>
                 </form>
+                <button className="profile__update-btn">Update account</button>
                 <button className="profile__deactivate-btn">
                     Deactivate account
                 </button>

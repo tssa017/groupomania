@@ -1,12 +1,13 @@
 import '../../index.scss';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // Function formats Portal component in JSX
 function Portal() {
     // Store and manages state of non-senistive user input
-    let [firstName, setFirstName] = useState('');
-    let [lastName, setLastName] = useState('');
-    let [emailAddress, setEmailAddress] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [emailAddress, setEmailAddress] = useState('');
 
     // Hook stores the state of a button so to apply styles
     const [buttonState, setButtonState] = useState({
@@ -54,6 +55,7 @@ function Portal() {
                         // React fragment used to group multiple elements together without creating an extra DOM node
                         <>
                             <div className="portal__form-group">
+                                <label htmlFor="firstName">First name</label>
                                 <input
                                     id="firstName"
                                     name="firstName"
@@ -62,9 +64,9 @@ function Portal() {
                                         setFirstName(target.value)
                                     }
                                 />
-                                <label htmlFor="firstName">First name</label>
                             </div>
                             <div className="portal__form-group">
+                                <label htmlFor="lastName">Last name</label>
                                 <input
                                     id="lastName"
                                     name="lastName"
@@ -73,9 +75,11 @@ function Portal() {
                                         setLastName(target.value)
                                     }
                                 />
-                                <label htmlFor="lastName">Last name</label>
                             </div>
                             <div className="portal__form-group">
+                                <label htmlFor="emailAddress">
+                                    Email address
+                                </label>
                                 <input
                                     id="emailAddress"
                                     name="emailAddress"
@@ -84,27 +88,24 @@ function Portal() {
                                         setEmailAddress(target.value)
                                     }
                                 />
-                                <label htmlFor="emailAddress">
-                                    Email address
-                                </label>
                             </div>
                             <div className="portal__form-group">
+                                <label htmlFor="password">Password</label>
                                 <input
                                     id="password"
                                     name="password"
                                     type="password"
                                 />
-                                <label htmlFor="password">Password</label>
                             </div>
                             <div className="portal__form-group">
+                                <label htmlFor="confirmPassword">
+                                    Confirm password
+                                </label>
                                 <input
                                     id="confirmPassword"
                                     name="confirmPassword"
                                     type="password"
                                 />
-                                <label htmlFor="confirmPassword">
-                                    Confirm password
-                                </label>
                             </div>
                         </>
                     )}
@@ -156,6 +157,9 @@ function Portal() {
                         <em>Don't have an account yet?</em>
                     </p>
                 )}
+                <Link to="/feed">
+                    <button className="portal__enter-btn">You're in!</button>
+                </Link>
             </div>
         </div>
     );

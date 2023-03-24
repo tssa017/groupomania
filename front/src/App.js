@@ -7,9 +7,10 @@ import './index.scss'; // Main stylesheet
 import Header from './components/header/Header';
 import Portal from './components/portal/Portal';
 import Profile from './components/profile/Profile';
-import Status from './components/status/Status';
-import Settings from './components/settings/Settings';
-import Publication from './components/publication/Publication';
+// import Status from './components/status/Status';
+// import Settings from './components/settings/Settings';
+// import Publication from './components/publication/Publication';
+import Feed from './components/feed/Feed';
 
 // Function dynamically displays each page in the browser
 function App() {
@@ -22,17 +23,6 @@ function App() {
                 <Route path="/feed" element={<Feed />} />
             </Routes>
         </Router>
-    );
-}
-
-// Function creates a 'Feed' page by combining three components
-function Feed() {
-    return (
-        <div>
-            <Settings />
-            <Status />
-            <Publication />
-        </div>
     );
 }
 

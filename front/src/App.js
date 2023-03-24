@@ -1,15 +1,11 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import './index.scss'; // Main stylesheet
+import './index.scss';
 
 // Components
 import Header from './components/header/Header';
 import Portal from './components/portal/Portal';
 import Profile from './components/profile/Profile';
-// import Status from './components/status/Status';
-// import Settings from './components/settings/Settings';
-// import Publication from './components/publication/Publication';
 import Feed from './components/feed/Feed';
 
 // Function dynamically displays each page in the browser

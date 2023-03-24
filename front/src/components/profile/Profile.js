@@ -31,11 +31,13 @@ function Profile() {
                     </div>
                     <div className="profile__form-group">
                         <label htmlFor="email">Email</label>
+                        {/* Only admin will be able to modify email address */}
                         <input
                             id="email"
                             name="email"
                             type="text"
                             placeholder="user@example.com"
+                            disabled
                         />
                     </div>
                 </form>

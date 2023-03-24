@@ -32,7 +32,7 @@ function Settings() {
                         style={{ display: isNavOpen ? 'block' : 'none' }} // create class hidden
                     >
                         <li className="settings__nav--list-item">
-                            Update profile
+                            <a href="/profile">Update profile</a>
                         </li>
                         <li className="settings__nav--list-item">
                             <a href="/portal">Log out</a>

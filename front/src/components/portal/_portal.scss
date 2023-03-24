@@ -42,12 +42,7 @@
             cursor: pointer;
         }
 
-        // Combinator ensures default colour of 'Sign up' button is purple until 'Login' is clicked
-        .purple ~ .portal__toggle--signup.purple {
-            background-color: $colorSecondary;
-        }
-
-        .clicked {
+        .purple {
             background-color: $colorSecondary;
             text-decoration: underline;
         }
@@ -92,7 +87,7 @@
         scale: 1;
 
         &:hover {
-            scale: 1.05;
+            scale: 1.01;
             transition: scale 200ms ease-in;
         }
     }

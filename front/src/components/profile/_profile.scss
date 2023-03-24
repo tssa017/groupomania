@@ -17,7 +17,27 @@
         border-radius: 100%;
     }
 
-    &__update-btn,
+    &__update-pic-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        padding-bottom: 1rem;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 2.2rem;
+
+        input[type='file']::file-selector-button {
+            padding: 1rem;
+            background-color: $colorSecondary;
+            @include borderStyle;
+            @include btnTxtStyle;
+
+            &:hover {
+                background-color: $colorSecondary;
+            }
+        }
+    }
+
     &__deactivate-btn {
         padding: 0.5rem 1rem;
         @include borderStyle;

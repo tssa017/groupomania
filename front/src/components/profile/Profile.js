@@ -1,4 +1,5 @@
 import '../../index.scss';
+import { Link } from 'react-router-dom';
 
 // Function formats Profile component in JSX
 function Profile() {
@@ -10,9 +11,15 @@ function Profile() {
                     className="profile__img"
                     alt="User profile picture"
                 />
-                <button className="profile__update-btn">
+                <label htmlFor="image" className="profile__update-pic-btn">
                     Update profile picture
-                </button>
+                    <input
+                        type="file"
+                        id="image-input"
+                        name="image"
+                        accept="image/*"
+                    />
+                </label>
                 <form>
                     <div className="profile__form-group">
                         <label htmlFor="firstName">First name</label>
@@ -32,10 +39,16 @@ function Profile() {
                         />
                     </div>
                 </form>
-                <button className="profile__update-btn">Update account</button>
-                <button className="profile__deactivate-btn">
-                    Deactivate account
-                </button>
+                <Link to="/feed">
+                    <button className="profile__update-btn">
+                        Update account
+                    </button>
+                </Link>
+                <Link to="/portal">
+                    <button className="profile__deactivate-btn">
+                        Deactivate account
+                    </button>
+                </Link>
             </div>
         </div>
     );

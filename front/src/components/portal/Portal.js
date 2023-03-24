@@ -15,12 +15,13 @@ function Portal() {
         signupClicked: false,
     });
 
-    // Function allows users to switch between login and signup mode
-    const handleButtonClick = (buttonName) => {
-        setButtonState((prevState) => ({
-            loginClicked: buttonName === 'login',
-            signupClicked: buttonName === 'signup',
-        }));
+    // Function allows users to toggle between login and signup mode
+    const handleButtonClick = (isLoginClicked) => {
+        // isLoginClicked variable stores whether or not a user has clicked on the login button, and styles accordingly
+        setButtonState({
+            loginClicked: isLoginClicked,
+            signupClicked: !isLoginClicked, // If isLoginClicked returns false, we deduce that the user has instead either clicked on nothing yet (default) or clicked on signup
+        });
     };
 
     return (
@@ -29,27 +30,25 @@ function Portal() {
                 <div className="portal__toggle">
                     <button
                         className={`portal__toggle--signup ${
-                            buttonState.signupClicked ||
-                            (!buttonState.signupClicked &&
-                                !buttonState.loginClicked)
-                                ? 'clicked'
-                                : 'purple'
+                            !buttonState.loginClicked ? 'purple' : ''
                         }`}
-                        onClick={() => handleButtonClick('signup')}
+                        onClick={() => handleButtonClick(false)} // If this signup button is clicked, isLoginTrue will return false. Both the button's state and classname are updated accordingly
                     >
                         Sign up
                     </button>
                     <button
                         className={`portal__toggle--login ${
-                            buttonState.loginClicked ? 'clicked' : ''
+                            buttonState.loginClicked ? 'purple' : ''
                         }`}
-                        onClick={() => handleButtonClick('login')}
+                        onClick={() => handleButtonClick(true)}
                     >
                         Login
                     </button>
                 </div>
+
+                {/* Conditional Signup and Login form rendering */}
                 <form className="portal__form">
-                    {(buttonState.signupClicked ||
+                    {(buttonState.signupClicked || // If signup has been clicked or if neither button has been clicked (default setting), the Signup form will render
                         (!buttonState.signupClicked &&
                             !buttonState.loginClicked)) && (
                         // React fragment used to group multiple elements together without creating an extra DOM node
@@ -109,9 +108,12 @@ function Portal() {
                             </div>
                         </>
                     )}
-                    {buttonState.loginClicked && (
+                    {buttonState.loginClicked && ( // Otherwise, if login has been clicked, Login form will render
                         <>
                             <div className="portal__form-group">
+                                <label htmlFor="emailAddress">
+                                    Email address
+                                </label>
                                 <input
                                     id="emailAddress"
                                     name="emailAddress"
@@ -120,43 +122,44 @@ function Portal() {
                                         setEmailAddress(target.value)
                                     }
                                 />
-                                <label htmlFor="emailAddress">
-                                    Email address
-                                </label>
                             </div>
                             <div className="portal__form-group">
+                                <label htmlFor="password">Password</label>
                                 <input
                                     id="password"
                                     name="password"
                                     type="password"
                                 />
-                                <label htmlFor="password">Password</label>
                             </div>
                         </>
                     )}
                 </form>
+
+                {/* Conditional redirect button rendering */}
                 {(buttonState.signupClicked ||
                     (!buttonState.signupClicked &&
-                        !buttonState.loginClicked)) && (
+                        !buttonState.loginClicked)) && ( // If signup button has been clicked or if neither signup nor login buttons have been clicked (default mode), render the 'Already have an account' button which redirects to the login page
                     <p
                         className={`portal__account-login ${
-                            buttonState.loginClicked ? 'clicked' : ''
+                            buttonState.loginClicked ? 'purple' : ''
                         }`}
-                        onClick={() => handleButtonClick('login')}
+                        onClick={() => handleButtonClick(true)} // Triggered by click even that contains the `true` parameter corresponding to above logic
                     >
                         <em>Already have an account?</em>
                     </p>
                 )}
-                {buttonState.loginClicked && (
+                {buttonState.loginClicked && ( // If signup button has been clicked, render the 'Don't have an account yet' button which redirects to the signup pag
                     <p
                         className={`portal__account-signup ${
-                            buttonState.signupClicked ? 'clicked' : ''
+                            buttonState.signupClicked ? 'purple' : ''
                         }`}
-                        onClick={() => handleButtonClick('signup')}
+                        onClick={() => handleButtonClick(false)}
                     >
                         <em>Don't have an account yet?</em>
                     </p>
                 )}
+
+                {/* Use react <link> component to navigate to the 'feed' route */}
                 <Link to="/feed">
                     <button className="portal__enter-btn">You're in!</button>
                 </Link>

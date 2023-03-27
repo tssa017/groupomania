@@ -7,9 +7,9 @@ function Profile() {
         <div className="portal-profile__wrapper">
             <div className="profile">
                 <img
-                    src="/images/malina.jpeg"
-                    className="profile__img"
-                    alt="User profile picture"
+                // src="/images/malina.jpeg"
+                // className="profile__img"
+                // alt="User profile picture"
                 />
                 <label htmlFor="image" className="profile__update-pic-btn">
                     Update profile picture

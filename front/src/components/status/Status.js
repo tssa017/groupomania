@@ -9,9 +9,9 @@ function Status() {
                 <article className="status__cont">
                     <form>
                         <img
-                            src="/images/malina.jpeg"
-                            className="status__cont--img"
-                            alt="User profile"
+                        // src="/images/malina.jpeg"
+                        // className="status__cont--img"
+                        // alt="User profile"
                         />
                         <textarea
                             type="text"

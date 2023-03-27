@@ -161,7 +161,7 @@ function Portal() {
 
                 {/* Use react <link> component to navigate to the 'feed' route */}
                 <Link to="/feed">
-                    <button className="portal__enter-btn">You're in!</button>
+                    <button className="portal__enter-btn">Let's go!</button>
                 </Link>
             </div>
         </div>

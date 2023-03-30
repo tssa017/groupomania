@@ -1,6 +1,5 @@
 'use strict';
 const { Model } = require('sequelize');
-// TODO: Bcrypt?
 
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
@@ -11,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     User.init(
+        // TODO: add userId data?
         {
             firstName: DataTypes.STRING,
             lastName: DataTypes.STRING,

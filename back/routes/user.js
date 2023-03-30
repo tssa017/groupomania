@@ -16,7 +16,7 @@ router.put('/:id', userCtrl.modifyUser); // TODO: check endpoint
 router.delete('/:id', userCtrl.deleteUser); // TODO: check endpoint
 
 // Define profile pic upload enpoint
-router.post('/', multer, userCtrl.uploadProfilePic); // TODO: fix this
+router.post('/', auth, multer, userCtrl.uploadProfilePic); // TODO: fix this
 
 // Export
 module.exports = router;

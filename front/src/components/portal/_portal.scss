@@ -69,17 +69,33 @@
             font-weight: 600;
         }
 
-        input {
+        .input {
             border: 0.15rem solid $colorFont;
             border-radius: 0.3rem;
             width: 100%;
             height: 2rem;
         }
+
+        input.portal__enter-btn {
+            align-self: center;
+            padding: 0.5rem 1rem 2rem 1rem;
+            width: 12rem;
+            margin: 1.5rem 0 1rem 0;
+            @include btnTxtStyle;
+            border-radius: 3rem;
+            background-color: $colorSecondary;
+            scale: 1;
+
+            &:hover {
+                scale: 1.05;
+                transition: scale 200ms ease-in;
+            }
+        }
     }
 
     &__account-signup,
     &__account-login {
-        padding: 0 2rem 2rem 2rem;
+        padding: 0 2rem 1rem 2rem;
         font-weight: 700;
         font-size: 1.2rem;
         color: $colorFont;
@@ -88,21 +104,6 @@
 
         &:hover {
             scale: 1.01;
-            transition: scale 200ms ease-in;
-        }
-    }
-
-    &__enter-btn {
-        display: block;
-        margin: 0 auto;
-        padding: 0.5rem 1rem;
-        @include borderStyle;
-        @include btnTxtStyle;
-        background-color: $colorSecondary;
-        scale: 1;
-
-        &:hover {
-            scale: 1.05;
             transition: scale 200ms ease-in;
         }
     }

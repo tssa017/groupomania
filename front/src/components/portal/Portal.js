@@ -1,13 +1,27 @@
 import '../../index.scss';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // Function formats Portal component in JSX
 function Portal() {
-    // Store and manages state of non-senistive user input
+    // Store and manages state of user input
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [emailAddress, setEmailAddress] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    // Funtion posts user input to API, granting conditional access to the website
+    // function handleLogin() {
+    //     axios({
+    //         method: 'post',
+    //         url: 'http://localhost:3001/api/feed',
+    //         data: {
+    //             email,
+    //             password,
+    //         },
+    //     });
+    // }
+    // TODO: write a handleSignup() function - will I need to change 'onSubmit'?
 
     // Hook stores the state of a button so to apply styles
     const [buttonState, setButtonState] = useState({
@@ -47,7 +61,7 @@ function Portal() {
                 </div>
 
                 {/* Conditional Signup and Login form rendering */}
-                <form className="portal__form">
+                <form className="portal__form" onSubmit={handleLogin}>
                     {(buttonState.signupClicked || // If signup has been clicked or if neither button has been clicked (default setting), the Signup form will render
                         (!buttonState.signupClicked &&
                             !buttonState.loginClicked)) && (
@@ -56,6 +70,7 @@ function Portal() {
                             <div className="portal__form-group">
                                 <label htmlFor="firstName">First name</label>
                                 <input
+                                    className="input"
                                     id="firstName"
                                     name="firstName"
                                     type="text"
@@ -67,6 +82,7 @@ function Portal() {
                             <div className="portal__form-group">
                                 <label htmlFor="lastName">Last name</label>
                                 <input
+                                    className="input"
                                     id="lastName"
                                     name="lastName"
                                     type="text"
@@ -80,20 +96,27 @@ function Portal() {
                                     Email address
                                 </label>
                                 <input
+                                    className="input"
                                     id="emailAddress"
                                     name="emailAddress"
                                     type="text"
                                     onChange={({ target }) =>
-                                        setEmailAddress(target.value)
+                                        setEmail(target.value)
                                     }
+                                    value={email}
                                 />
                             </div>
                             <div className="portal__form-group">
                                 <label htmlFor="password">Password</label>
                                 <input
+                                    className="input"
                                     id="password"
                                     name="password"
                                     type="password"
+                                    onChange={({ target }) =>
+                                        setPassword(target.value)
+                                    }
+                                    value={password}
                                 />
                             </div>
                             <div className="portal__form-group">
@@ -101,11 +124,17 @@ function Portal() {
                                     Confirm password
                                 </label>
                                 <input
+                                    className="input"
                                     id="confirmPassword"
                                     name="confirmPassword"
                                     type="password"
                                 />
                             </div>
+                            <input
+                                className="portal__enter-btn"
+                                type="submit"
+                                value="Create account" // Runs handleLogin() on submit (click event)
+                            />
                         </>
                     )}
                     {buttonState.loginClicked && ( // Otherwise, if login has been clicked, Login form will render
@@ -115,22 +144,31 @@ function Portal() {
                                     Email address
                                 </label>
                                 <input
+                                    className="input"
                                     id="emailAddress"
                                     name="emailAddress"
                                     type="text"
                                     onChange={({ target }) =>
-                                        setEmailAddress(target.value)
+                                        setEmail(target.value)
                                     }
                                 />
+                                <div className="email error"></div>
                             </div>
                             <div className="portal__form-group">
                                 <label htmlFor="password">Password</label>
                                 <input
+                                    className="input"
                                     id="password"
                                     name="password"
                                     type="password"
                                 />
+                                <div className="password error"></div>
                             </div>
+                            <input
+                                className="portal__enter-btn"
+                                type="submit"
+                                value="Login"
+                            />
                         </>
                     )}
                 </form>
@@ -158,11 +196,6 @@ function Portal() {
                         <em>Don't have an account yet?</em>
                     </p>
                 )}
-
-                {/* Use react <link> component to navigate to the 'feed' route */}
-                <Link to="/feed">
-                    <button className="portal__enter-btn">Let's go!</button>
-                </Link>
             </div>
         </div>
     );

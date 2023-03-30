@@ -98,7 +98,7 @@ exports.getAllUsers = (req, res) => {
 exports.getSingleUser = (req, res) => {
     User.findOne({
         // Method retrieves a single user from the User model based on the id parameter in the request URL
-        where: { id: req.params.id },
+        where: { id: req.params.userId },
         attributes: { exclude: ['password', 'email'] },
     })
         .then((user) => {
@@ -148,7 +148,7 @@ const fs = require('fs');
 
 exports.deleteUser = (req, res) => {
     User.findOne({
-        where: { id: req.params.id },
+        where: { id: req.params.userId },
         attributes: ['profilePic'],
     })
         .then((user) => {
@@ -158,7 +158,7 @@ exports.deleteUser = (req, res) => {
             const filename = user.profilePic.split('/images/')[1];
             fs.unlink('images/' + filename, () => {
                 // Deletes profile pic file from file system
-                User.destroy({ where: { id: req.params.id } })
+                User.destroy({ where: { id: req.params.userId } })
                     .then(() => {
                         res.status(200).json({
                             message: 'Deleted!',
@@ -180,6 +180,7 @@ exports.deleteUser = (req, res) => {
 
 // Upload route
 // POST route allows user to upload a profile picture
+// TODO: Set new image url for profile pic
 exports.uploadProfilePic = (req, res) => {
     req.body.user = JSON.parse(req.body.user);
     const userId = req.auth.userId;

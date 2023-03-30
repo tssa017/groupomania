@@ -11,6 +11,7 @@ router.get('/:id', auth, publicationCtrl.getSinglePost);
 router.post('/', auth, multer, publicationCtrl.createPost); // TODO: check endpoint
 router.put('/:id', auth, multer, publicationCtrl.modifyPost);
 router.delete('/:id', auth, publicationCtrl.deletePost);
+router.post('/:id/like', auth, publicationCtrl.likePost); // TODO: check endpoint
 
 // Export
 module.exports = router;

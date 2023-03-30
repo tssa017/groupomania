@@ -1,4 +1,6 @@
 'use strict';
+// TODO: Check migration
+
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Publication extends Model {
@@ -14,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
             userId: DataTypes.INTEGER,
             userProfilePicUrl: DataTypes.STRING,
             postPicUrl: DataTypes.STRING,
+            likes: DataTypes.INTEGER,
+            usersLiked: DataTypes.STRING,
         },
         {
             sequelize,

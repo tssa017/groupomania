@@ -1,12 +1,10 @@
-// TODO: Convert to Sequelize?
 const jwt = require('jsonwebtoken'); // Imports jsonwebtoken library into file
-// const { User } = require('../models/user'); // TODO: Can I simplify by linking to the User model
 
 // Checks if a user is authorised to login to Groupomania
 module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1]; // Retrieves token from the Auhtorization header in request
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET'); // TODO: Store this secret
+        const decodedToken = jwt.verify(token, process.env.RANDOM_TOKEN_SECRET);
         // Compare user ID from token with user ID from request body
         const userId = decodedToken.userId;
         req.auth = { userId }; // Assigns an object with single userId property to the auth property of the request object

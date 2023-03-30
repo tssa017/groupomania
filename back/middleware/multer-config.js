@@ -1,5 +1,4 @@
 const multer = require('multer'); // Imports multer package for handling file uploads
-// TODO: Convert to Sequelize?
 
 // Map MIME types to file extensions used in the filename function
 const MIME_TYPES = {

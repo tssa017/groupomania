@@ -27,3 +27,9 @@ npm run dev
 ```bash
 npm start
 ```
+
+2. **For developers** Compile Sass with the following command:
+
+```bash
+sass --watch index.scss index.css
+```

@@ -14,7 +14,7 @@ function Portal() {
     // function handleLogin() {
     //     axios({
     //         method: 'post',
-    //         url: 'http://127.0.0.1:3001/api/feed',
+    //         url: 'http://localhost:3001/api/feed',
     //         data: {
     //             email,
     //             password,
@@ -22,7 +22,6 @@ function Portal() {
     //     });
     // }
     // TODO: write a handleSignup() function - will I need to change 'onSubmit'?
-
     // Hook stores the state of a button so to apply styles
     const [buttonState, setButtonState] = useState({
         loginClicked: false,
@@ -61,7 +60,8 @@ function Portal() {
                 </div>
 
                 {/* Conditional Signup and Login form rendering */}
-                <form className="portal__form" onSubmit={handleLogin}>
+                {/* // TODO: Add onSubmit={handleLogin} to form */}
+                <form className="portal__form">
                     {(buttonState.signupClicked || // If signup has been clicked or if neither button has been clicked (default setting), the Signup form will render
                         (!buttonState.signupClicked &&
                             !buttonState.loginClicked)) && (

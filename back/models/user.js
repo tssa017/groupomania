@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     User.init(
-        // TODO: add userId data?
         {
             firstName: DataTypes.STRING,
             lastName: DataTypes.STRING,

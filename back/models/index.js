@@ -12,7 +12,12 @@ const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
-    sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER);
+    sequelize = new Sequelize(
+        process.env.DB_NAME,
+        process.env.DB_USER,
+        process.env.DB_PASS,
+        config
+    );
 } else {
     sequelize = new Sequelize(
         config.database,

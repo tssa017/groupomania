@@ -1,12 +1,12 @@
 'use strict';
-// TODO: Check migration
 
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Comment extends Model {
         static associate(models) {
             Comment.belongsTo(models.User, {
-                foreignKey: 'fk_comment_userId',
+                foreignKey: 'fk_comment_userId', // TODO: Query comment
+                onDelete: 'CASCADE', // Responses deleted with post
             });
             Comment.belongsTo(models.Post, {
                 foreignKey: 'fk_comment_postId',
@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
             comment: DataTypes.STRING,
             postId: DataTypes.INTEGER,
             userId: DataTypes.INTEGER,
-            userProfilePicUrl: DataTypes.STRING,
             likes: DataTypes.INTEGER,
             usersLiked: DataTypes.STRING,
         },

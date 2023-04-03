@@ -1,28 +1,27 @@
 'use strict';
-// TODO: Check migration
 
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Publication extends Model {
+    class Post extends Model {
         static associate(models) {
             Post.belongsTo(models.User, {
-                foreignKey: 'fk_publication_userId',
+                foreignKey: 'fk_post_userId',
+                onDelete: 'CASCADE', // Responses deleted with post
             });
         }
     }
-    Publication.init(
+    Post.init(
         {
             post: DataTypes.STRING,
             userId: DataTypes.INTEGER,
-            userProfilePicUrl: DataTypes.STRING,
             postPicUrl: DataTypes.STRING,
             likes: DataTypes.INTEGER,
             usersLiked: DataTypes.STRING,
         },
         {
             sequelize,
-            modelName: 'Publication',
+            modelName: 'Post',
         }
     );
-    return Publication;
+    return Post;
 };

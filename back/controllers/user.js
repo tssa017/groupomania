@@ -143,9 +143,6 @@ exports.modifyUser = (req, res) => {
 };
 
 // DELETE route deletes an exisiting User object based on its ID
-const { User } = require('../models');
-const fs = require('fs');
-
 exports.deleteUser = (req, res) => {
     User.findOne({
         where: { id: req.params.userId },

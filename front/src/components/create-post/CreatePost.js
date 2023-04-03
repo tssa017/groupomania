@@ -1,28 +1,28 @@
 import '../../index.scss';
 import { useState } from 'react';
 
-// Function formats Status component in JSX
-function Status() {
+// Function formats CreatePost component in JSX
+function CreatePost() {
     return (
         <div className="wrapper">
-            <div className="status">
-                <article className="status__cont">
+            <div className="create-post">
+                <article className="create-post__cont">
                     <form>
                         <img
-                        // src="/images/malina.jpeg"
-                        // className="status__cont--img"
+                        // src="#"
+                        // className="create-post__cont--img"
                         // alt="User profile"
                         />
                         <textarea
                             type="text"
                             name="content"
                             id="content"
-                            className="status__cont--post"
+                            className="create-post__cont--post"
                             placeholder="What's happening, User?"
                             maxLength={500}
                         ></textarea>
-                        <div className="status__cont--post-error"></div>
-                        <section className="status__cont--btns">
+                        <div className="create-post__cont--post-error"></div>
+                        <section className="create-post__cont--btns">
                             <label htmlFor="image">
                                 <input
                                     type="file"
@@ -33,7 +33,7 @@ function Status() {
                             </label>
                             <input
                                 type="submit"
-                                className="status__cont--btns-postBtn"
+                                className="create-post__cont--btns-postBtn"
                                 id="button"
                                 value="POST"
                             />
@@ -45,4 +45,4 @@ function Status() {
     );
 }
 
-export default Status;
+export default CreatePost;

@@ -1,6 +1,6 @@
-// This page contains Sass publication styles
+// This page contains Sass `post` styles
 
-.publication {
+.post {
     &__cont {
         padding: 3rem;
         display: flex;
@@ -90,7 +90,7 @@
 
 // Tablet and PC styling
 @media screen and (min-width: 768px) {
-    .publication {
+    .post {
         &__cont {
             width: 800px;
             width: 800px;

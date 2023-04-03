@@ -1,6 +1,6 @@
-// This page contains Sass status styles
+// This page contains Sass create-post styles
 
-.status {
+.create-post {
     &__cont {
         display: flex;
         flex-direction: column;
@@ -73,7 +73,7 @@
 
 // Tablet and PC styling
 @media screen and (min-width: 768px) {
-    .status {
+    .create-post {
         &__cont {
             display: flex;
             background-color: $colorBackgroundLight;

@@ -402,10 +402,41 @@ a {
   border: 3px solid #3d3c3c;
   border-radius: 10px;
 }
+.post__cont--status-edit-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 1rem;
+  gap: 0.5rem;
+  background-color: #dfb2fe;
+  border-top: 3px solid #3d3c3c;
+  border-right: 3px solid #3d3c3c;
+  border-left: 3px solid #3d3c3c;
+}
+.post__cont--status-edit-cont--edit {
+  border: 3px solid #3d3c3c;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #e3e4fd;
+  padding: 0.5rem;
+}
+.post__cont--status-edit-cont--delete {
+  border: 3px solid #3d3c3c;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #ff876d;
+  padding: 0.5rem;
+}
 .post__cont--reactions {
   display: flex;
   flex-direction: row;
-  padding: 1rem;
+  padding: 0.8rem;
   width: 100%;
   justify-content: space-between;
   align-items: center;
@@ -414,10 +445,14 @@ a {
   border-right: 3px solid #3d3c3c;
   border-left: 3px solid #3d3c3c;
 }
-.post__cont--reactions-like {
+.post__cont--reactions--likes, .post__cont--reactions--comments {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.post__cont--reactions--like {
   scale: 1;
 }
-.post__cont--reactions-like:hover {
+.post__cont--reactions--like:hover {
   scale: 1.1;
   transition: scale 200ms ease-in;
 }
@@ -443,13 +478,39 @@ a {
   border-radius: 100%;
 }
 .post__cont--comment-cont-post {
-  padding: 1rem;
+  padding: 2rem;
   font-size: 1rem;
   width: 95%;
   margin-left: 1rem;
   background-color: #fff;
   border: 3px solid #3d3c3c;
   border-radius: 10px;
+}
+.post__cont--comment-cont-edit-cont {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+.post__cont--comment-cont-edit-cont--edit {
+  border: 3px solid #3d3c3c;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #e3e4fd;
+  padding: 0.5rem;
+}
+.post__cont--comment-cont-edit-cont--delete {
+  border: 3px solid #3d3c3c;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #ff876d;
+  padding: 0.5rem;
 }
 
 @media screen and (min-width: 768px) {

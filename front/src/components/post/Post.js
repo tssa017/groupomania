@@ -18,25 +18,41 @@ function Post() {
                                 alt="Image included in post"
                             />
                         </p> */}
+                        <article className="post__cont--status-edit-cont">
+                            <button className="post__cont--status-edit-cont--edit">
+                                Edit
+                            </button>
+                            <button className="post__cont--status-edit-cont--delete">
+                                Delete
+                            </button>
+                        </article>
                     </section>
                     <section className="post__cont--reactions">
-                        <div className="post__cont--reactions-likes">
-                            {/* XX Likes */}
+                        {/* <div className="post__cont--reactions--likes">
+                            101 likes
                         </div>
-                        <div className="post__cont--reactions-comments">
-                            {/* XX Comments */}
-                        </div>
-                        <i className="post__cont--reactions-like fa-solid fa-heart"></i>
+                        <div className="post__cont--reactions--comments">
+                            1 Comment
+                        </div> */}
+                        <i className="post__cont--reactions--like fa-solid fa-heart"></i>
                     </section>
                     <section className="post__cont--comment-cont">
-                        <img
-                        // className="post__cont--comment-cont-img"
-                        // src="/images/me.jpg"
-                        // alt="Image included in post"
+                        {/* <img
+                            className="post__cont--comment-cont-img"
+                            src="/images/me.jpg"
+                            alt="User profile picture"
                         />
                         <p className="post__cont--comment-cont-post">
-                            {/* Congrats! */}
-                        </p>
+                            Congrats!
+                        </p> */}
+                        <article className="post__cont--comment-cont-edit-cont">
+                            <button className="post__cont--comment-cont-edit-cont--edit">
+                                Edit
+                            </button>
+                            <button className="post__cont--comment-cont-edit-cont--delete">
+                                Delete
+                            </button>
+                        </article>
                     </section>
                 </article>
             </div>

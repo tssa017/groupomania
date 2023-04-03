@@ -1,12 +1,12 @@
-// This file contains all publication related business logic
+// This file contains all post related business logic
 const fs = require('fs'); // Allow file system modification
-const { Publication } = require('../models/publication');
+const { Post } = require('../models/post');
 const { User } = require('../models/user');
 
 // GET route that gets an array of all posts from database
 exports.getAllPosts = async (req, res) => {
     try {
-        const posts = await Publication.findAll();
+        const posts = await Post.findAll();
         res.status(200).json(posts);
     } catch (error) {
         res.status(400).json({
@@ -21,15 +21,14 @@ exports.createPost = async (req, res) => {
     const postPicUrl = req.file ? url + '/images/' + req.file.filename : ''; // Checks if image file was uploaded with the request. If yes, the imageUrl set to url + location + filename. If no, imageUrl set to an empty string
 
     try {
-        const post = await Publication.create({
-            // TODO: does the variable need to be 'publication'
-            id: req.body.publication.id,
-            post: req.body.publication.post,
-            userId: req.body.publication.userId,
-            userProfilePic: req.body.publication.userProfilePic,
+        const post = await Post.create({
+            id: req.body.post.id,
+            post: req.body.post.post,
+            userId: req.body.post.userId,
+            userProfilePic: req.body.post.userProfilePic,
             postPicUrl: postPicUrl,
-            likes: req.body.publication.likes,
-            usersLiked: req.body.publication.usersLiked,
+            likes: req.body.post.likes,
+            usersLiked: req.body.post.usersLiked,
         });
         res.status(201).json({
             message: 'Post saved successfully!',
@@ -44,7 +43,7 @@ exports.createPost = async (req, res) => {
 // GET route for single post based on its id
 exports.getSinglePost = async (req, res) => {
     try {
-        const post = await Publication.findOne({
+        const post = await Post.findOne({
             where: { id: req.params.id },
         });
         if (!post) {
@@ -64,7 +63,7 @@ exports.modifyPost = async (req, res) => {
     const userId = req.auth.userId;
 
     try {
-        const post = await Publication.findOne({
+        const post = await Post.findOne({
             where: {
                 id: postId,
                 userId: userId,
@@ -84,7 +83,7 @@ exports.modifyPost = async (req, res) => {
             update = { ...JSON.parse(req.body.post), postPicUrl };
         }
 
-        const [rowsUpdated, [updatedPost]] = await Publication.update(update, {
+        const [rowsUpdated, [updatedPost]] = await Post.update(update, {
             // Array of objects that represents the updated instances
             where: {
                 id: postId,
@@ -108,10 +107,10 @@ exports.modifyPost = async (req, res) => {
     }
 };
 
-// DELETE route deletes an exisiting Publication object based on its ID
+// DELETE route deletes an exisiting Post object based on its ID
 exports.deletePost = async (req, res) => {
     try {
-        const post = await Publication.findOne({
+        const post = await Post.findOne({
             where: { id: req.params.id },
         });
         if (!post) {
@@ -135,7 +134,7 @@ exports.deletePost = async (req, res) => {
 // POST route allows user to like a comment
 exports.likePost = (req, res) => {
     if (req.body.like === 1) {
-        Publication.findByPk(req.params.id)
+        Post.findByPk(req.params.id)
             .then((post) => {
                 if (!post) {
                     return res.status(404).json({ error: 'Post not found!' });

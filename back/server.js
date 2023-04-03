@@ -1,8 +1,19 @@
 const http = require('http'); // Imports the built-in Node.js http module, which provides functionality to create HTTP servers and make HTTP requests
 const app = require('./app'); // Imports express app module
+const { Sequelize } = require('sequelize');
+require('dotenv').config();
 
+const sequelize = new Sequelize(
+    (database = process.env.DB_NAME),
+    (username = process.env.DB_USER),
+    (password = process.env.DB_PASS),
+    (options = {
+        dialect: 'mysql',
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+    })
+);
 const normalizePort = (val) => {
-    // Function normalises port number to use for server
     const port = parseInt(val, 10);
 
     if (isNaN(port)) {
@@ -13,11 +24,11 @@ const normalizePort = (val) => {
     }
     return false;
 };
-const port = normalizePort(process.env.PORT);
+
+const port = normalizePort(process.env.DB_PORT);
 app.set('port', port);
 
 const errorHandler = (error) => {
-    // Function handles errors that may occur while starting the server
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -38,14 +49,22 @@ const errorHandler = (error) => {
     }
 };
 
-const server = http.createServer(app); // Creates the server
-
-server.on('error', errorHandler);
-server.on('listening', () => {
-    const address = server.address();
-    const bind =
-        typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-    console.log('Listening on ' + bind);
-});
-
-server.listen(port);
+sequelize
+    .authenticate()
+    .then(() => {
+        const server = http.createServer(app);
+        server.on('error', errorHandler);
+        server.on('listening', () => {
+            const address = server.address();
+            const bind =
+                typeof address === 'string'
+                    ? 'pipe ' + address
+                    : 'port ' + port;
+            console.log('Listening on ' + bind);
+        });
+        server.listen(port);
+        console.log('Connection has been established successfully.');
+    })
+    .catch((error) => {
+        console.error('Unable to connect to the database:', error);
+    });

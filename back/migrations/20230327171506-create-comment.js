@@ -18,9 +18,6 @@ module.exports = {
             userId: {
                 type: Sequelize.INTEGER,
             },
-            userProfilePicUrl: {
-                type: Sequelize.STRING,
-            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -28,6 +25,12 @@ module.exports = {
             updatedAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
+            },
+            likes: {
+                type: Sequelize.INTEGER,
+            },
+            usersLiked: {
+                type: Sequelize.STRING,
             },
         });
     },

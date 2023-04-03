@@ -1,7 +1,7 @@
 // This file contains all comment related business logic
 const fs = require('fs'); // Allow file system modification
 const { Comment } = require('../models/comment');
-const { User } = require('../models/publication');
+const { User } = require('../models/user');
 
 // GET route that gets an array of all comments from database
 exports.getAllComments = async (req, res) => {
@@ -49,7 +49,7 @@ exports.modifyComment = async (req, res) => {
             },
         });
 
-        if (!post) {
+        if (!comment) {
             return res.status(404).json({ error: 'Comment not found.' });
         }
 
@@ -70,7 +70,7 @@ exports.modifyComment = async (req, res) => {
 
         res.status(200).json({
             message: 'Comment updated successfully!',
-            post: updatedComment,
+            comment: updatedComment,
         });
     } catch (error) {
         res.status(400).json({

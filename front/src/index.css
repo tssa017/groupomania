@@ -140,9 +140,12 @@ a {
   transition: scale 200ms ease-in;
 }
 
-.alert-danger {
+.alert {
+  align-self: flex-start;
+  margin-top: 0.3rem;
   color: rgb(250, 98, 98);
-  font-size: 1.2rem;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 @media screen and (min-width: 768px) {

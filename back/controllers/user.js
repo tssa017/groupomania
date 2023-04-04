@@ -7,17 +7,12 @@ const validator = require('validator');
 // Define auth routes
 // Sign up
 module.exports.signup = async (req, res) => {
-    console.log(res.body);
-    console.log(req.body);
     if (!validator.isEmail(req.body.email)) {
         return res.status(400).json({ error: 'Invalid email address' }); // If email address is invalid, return error message, otherwise proceed
     }
 
     try {
-        console.log('hashing');
-
         const hash = await bcrypt.hash(req.body.password, 10); // Call hash function and set salt value to 10
-        console.log('hashed');
 
         // Create new user
         const user = new User({
@@ -26,21 +21,16 @@ module.exports.signup = async (req, res) => {
             email: req.body.email,
             password: hash,
         });
-        console.log('created instance');
 
         // Save new user to database
-        console.log('saving');
         await user.save();
         res.status(201).json({
             message: 'User added successfully!',
         });
-        console.log('saved');
     } catch (error) {
-        console.log(error); // Log the error object
         res.status(500).json({
             error: error,
         });
-        console.log('error');
     }
 };
 

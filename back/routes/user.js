@@ -5,9 +5,9 @@ const multer = require('../middleware/multer-config'); // Middleware defines nam
 const userCtrl = require('../controllers/user');
 
 // Define auth endpoints
-router.post('/signup', userCtrl.signup); // TODO: check endpoint
-router.post('/login', userCtrl.login); // TODO: check endpoint
-router.get('/portal', userCtrl.logout); // TODO: check endpoint
+router.post('/signup', userCtrl.signup);
+router.post('/login', userCtrl.login);
+router.get('/logout', userCtrl.logout); // TODO: check endpoint
 
 // Define general user endpoints
 // router.get('/:id', userCtrl.getAllUsers); // TODO: check endpoint
@@ -15,7 +15,7 @@ router.get('/portal', userCtrl.logout); // TODO: check endpoint
 // router.put('/:id', userCtrl.modifyUser); // TODO: check endpoint
 // router.delete('/:id', userCtrl.deleteUser); // TODO: check endpoint
 
-// // Define profile pic upload enpoint
+// // Define profile pic upload endpoint
 // router.post('/', multer, userCtrl.uploadProfilePic); // TODO: fix this
 
 // Export

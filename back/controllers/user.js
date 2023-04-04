@@ -1,38 +1,51 @@
 // This file contains all user related business logic
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { User } = require('../models/user');
+const { User } = require('../models');
 const validator = require('validator');
-const { body, validationResult } = require('express-validator'); // Used in `login` function
 
 // Define auth routes
 // Sign up
-exports.signup = async (req, res) => {
+module.exports.signup = async (req, res) => {
+    console.log(res.body);
+    console.log(req.body);
     if (!validator.isEmail(req.body.email)) {
         return res.status(400).json({ error: 'Invalid email address' }); // If email address is invalid, return error message, otherwise proceed
     }
 
     try {
+        console.log('hashing');
+
         const hash = await bcrypt.hash(req.body.password, 10); // Call hash function and set salt value to 10
+        console.log('hashed');
+
         // Create new user
         const user = new User({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             email: req.body.email,
             password: hash,
         });
+        console.log('created instance');
+
         // Save new user to database
+        console.log('saving');
         await user.save();
         res.status(201).json({
             message: 'User added successfully!',
         });
+        console.log('saved');
     } catch (error) {
+        console.log(error); // Log the error object
         res.status(500).json({
             error: error,
         });
+        console.log('error');
     }
 };
 
 // Login
-exports.login = async (req, res) => {
+module.exports.login = async (req, res) => {
     // Validate user input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

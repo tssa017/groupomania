@@ -111,13 +111,14 @@ a {
 }
 .portal__form input.portal__enter-btn {
   align-self: center;
-  padding: 0.5rem 1rem 2rem 1rem;
+  padding: 1.2rem;
   width: 12rem;
   margin: 1.5rem 0 1rem 0;
   font-family: "Nunito", sans-serif;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
+  border: 3px solid #3d3c3c;
   border-radius: 3rem;
   background-color: #ca7ffe;
   scale: 1;
@@ -127,7 +128,7 @@ a {
   transition: scale 200ms ease-in;
 }
 .portal__account-signup, .portal__account-login {
-  padding: 0 2rem 1rem 2rem;
+  padding: 0 3rem 1rem 2rem;
   font-weight: 700;
   font-size: 1.2rem;
   color: #3d3c3c;
@@ -137,6 +138,11 @@ a {
 .portal__account-signup:hover, .portal__account-login:hover {
   scale: 1.01;
   transition: scale 200ms ease-in;
+}
+
+.alert-danger {
+  color: rgb(250, 98, 98);
+  font-size: 1.2rem;
 }
 
 @media screen and (min-width: 768px) {

@@ -13,6 +13,18 @@ const sequelize = new Sequelize(
         port: process.env.DB_PORT,
     })
 );
+
+// Syncing to MySQL Database
+const db = require('./models');
+db.sequelize
+    .sync()
+    .then(() => {
+        console.log('Synced db.');
+    })
+    .catch((err) => {
+        console.log('Failed to sync db: ' + err.message);
+    });
+
 const normalizePort = (val) => {
     const port = parseInt(val, 10);
 
@@ -25,7 +37,7 @@ const normalizePort = (val) => {
     return false;
 };
 
-const port = normalizePort(process.env.DB_PORT);
+const port = normalizePort(process.env.BACKEND_PORT) || 3001;
 app.set('port', port);
 
 const errorHandler = (error) => {

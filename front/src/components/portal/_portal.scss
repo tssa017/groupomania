@@ -78,10 +78,11 @@
 
         input.portal__enter-btn {
             align-self: center;
-            padding: 0.5rem 1rem 2rem 1rem;
+            padding: 1.2rem;
             width: 12rem;
             margin: 1.5rem 0 1rem 0;
             @include btnTxtStyle;
+            border: 3px solid $colorFont;
             border-radius: 3rem;
             background-color: $colorSecondary;
             scale: 1;
@@ -95,7 +96,7 @@
 
     &__account-signup,
     &__account-login {
-        padding: 0 2rem 1rem 2rem;
+        padding: 0 3rem 1rem 2rem;
         font-weight: 700;
         font-size: 1.2rem;
         color: $colorFont;
@@ -107,6 +108,11 @@
             transition: scale 200ms ease-in;
         }
     }
+}
+
+.alert-danger {
+    color: rgb(250, 98, 98);
+    font-size: 1.2rem;
 }
 
 // Tablet and PC styling

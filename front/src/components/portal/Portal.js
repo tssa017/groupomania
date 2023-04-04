@@ -9,19 +9,71 @@ function Portal() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
-    // Funtion posts user input to API, granting conditional access to the website
-    // function handleLogin() {
-    //     axios({
-    //         method: 'post',
-    //         url: 'http://localhost:3001/api/feed',
-    //         data: {
-    //             email,
-    //             password,
-    //         },
-    //     });
-    // }
-    // TODO: write a handleSignup() function - will I need to change 'onSubmit'?
+    // Function to reset input fields to an empty string
+    const resetFields = () => {
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+        setErrorMessage('');
+    };
+
+    // Function posts user input `Signup` info to API, granting conditional access to the website
+    const handleSignup = async (event) => {
+        event.preventDefault();
+
+        // Validate input fields
+        if (!firstName || !lastName || !email || !password) {
+            setErrorMessage('Please fill all fields');
+            return;
+        }
+
+        try {
+            const res = await axios.post('http://localhost:3001/api/signup', {
+                firstName,
+                lastName,
+                email,
+                password,
+            });
+
+            if (res.status >= 200 && res.status < 300) {
+                window.location.href = '/feed';
+            } else {
+                setErrorMessage('Invalid email or password');
+            }
+        } catch (err) {
+            setErrorMessage('Error signing up');
+        }
+    };
+
+    // Function posts user `Login` input to API, granting conditional access to the website
+    const handleLogin = async (event) => {
+        event.preventDefault();
+
+        // Validate input fields
+        if (!email || !password) {
+            setErrorMessage('Please enter your email and password');
+            return;
+        }
+
+        try {
+            const res = await axios.post('http://localhost:3001/api/login', {
+                email,
+                password,
+            });
+
+            if (res.status >= 200 && res.status < 300) {
+                window.location.href = '/feed';
+            } else {
+                setErrorMessage('Invalid email or password');
+            }
+        } catch (err) {
+            setErrorMessage('Error logging in');
+        }
+    };
+
     // Hook stores the state of a button so to apply styles
     const [buttonState, setButtonState] = useState({
         loginClicked: false,
@@ -35,6 +87,9 @@ function Portal() {
             loginClicked: isLoginClicked,
             signupClicked: !isLoginClicked, // If isLoginClicked returns false, we deduce that the user has instead either clicked on nothing yet (default) or clicked on signup
         });
+
+        // Reset input fields before toggling
+        resetFields();
     };
 
     return (
@@ -60,118 +115,113 @@ function Portal() {
                 </div>
 
                 {/* Conditional Signup and Login form rendering */}
-                {/* // TODO: Add onSubmit={handleLogin} to form */}
-                <form className="portal__form">
-                    {(buttonState.signupClicked || // If signup has been clicked or if neither button has been clicked (default setting), the Signup form will render
-                        (!buttonState.signupClicked &&
-                            !buttonState.loginClicked)) && (
-                        // React fragment used to group multiple elements together without creating an extra DOM node
-                        <>
-                            <div className="portal__form-group">
-                                <label htmlFor="firstName">First name</label>
-                                <input
-                                    className="input"
-                                    id="firstName"
-                                    name="firstName"
-                                    type="text"
-                                    onChange={({ target }) =>
-                                        setFirstName(target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="portal__form-group">
-                                <label htmlFor="lastName">Last name</label>
-                                <input
-                                    className="input"
-                                    id="lastName"
-                                    name="lastName"
-                                    type="text"
-                                    onChange={({ target }) =>
-                                        setLastName(target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="portal__form-group">
-                                <label htmlFor="emailAddress">
-                                    Email address
-                                </label>
-                                <input
-                                    className="input"
-                                    id="emailAddress"
-                                    name="emailAddress"
-                                    type="text"
-                                    onChange={({ target }) =>
-                                        setEmail(target.value)
-                                    }
-                                    value={email}
-                                />
-                            </div>
-                            <div className="portal__form-group">
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    className="input"
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    onChange={({ target }) =>
-                                        setPassword(target.value)
-                                    }
-                                    value={password}
-                                />
-                            </div>
-                            <div className="portal__form-group">
-                                <label htmlFor="confirmPassword">
-                                    Confirm password
-                                </label>
-                                <input
-                                    className="input"
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    type="password"
-                                />
-                            </div>
+                {(buttonState.signupClicked || // If signup has been clicked or if neither button has been clicked (default setting), the Signup form will render
+                    (!buttonState.signupClicked &&
+                        !buttonState.loginClicked)) && (
+                    <form className="portal__form" onSubmit={handleSignup}>
+                        <div className="portal__form-group">
+                            <label htmlFor="firstName">First name</label>
                             <input
-                                className="portal__enter-btn"
-                                type="submit"
-                                value="Create account" // Runs handleLogin() on submit (click event)
+                                className="input"
+                                id="firstName"
+                                name="firstName"
+                                type="text"
+                                onChange={({ target }) =>
+                                    setFirstName(target.value)
+                                }
                             />
-                        </>
-                    )}
-                    {buttonState.loginClicked && ( // Otherwise, if login has been clicked, Login form will render
-                        <>
-                            <div className="portal__form-group">
-                                <label htmlFor="emailAddress">
-                                    Email address
-                                </label>
-                                <input
-                                    className="input"
-                                    id="emailAddress"
-                                    name="emailAddress"
-                                    type="text"
-                                    onChange={({ target }) =>
-                                        setEmail(target.value)
-                                    }
-                                />
-                                <div className="email error"></div>
-                            </div>
-                            <div className="portal__form-group">
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    className="input"
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                />
-                                <div className="password error"></div>
-                            </div>
+                        </div>
+                        <div className="portal__form-group">
+                            <label htmlFor="lastName">Last name</label>
                             <input
-                                className="portal__enter-btn"
-                                type="submit"
-                                value="Login"
+                                className="input"
+                                id="lastName"
+                                name="lastName"
+                                type="text"
+                                onChange={({ target }) =>
+                                    setLastName(target.value)
+                                }
                             />
-                        </>
-                    )}
-                </form>
+                        </div>
+                        <div className="portal__form-group">
+                            <label htmlFor="emailAddress">Email address</label>
+                            <input
+                                className="input"
+                                id="emailAddress"
+                                name="emailAddress"
+                                type="text"
+                                onChange={({ target }) =>
+                                    setEmail(target.value)
+                                }
+                                value={email}
+                            />
+                        </div>
+                        <div className="portal__form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                className="input"
+                                id="password"
+                                name="password"
+                                type="password"
+                                onChange={({ target }) =>
+                                    setPassword(target.value)
+                                }
+                                value={password}
+                            />
+                        </div>
+                        {errorMessage && (
+                            <div className="alert alert-danger">
+                                {errorMessage}
+                            </div>
+                        )}
+                        <input
+                            className="portal__enter-btn"
+                            type="submit"
+                            value="Create account" // Runs handleLogin() on submit (click event)
+                        />
+                    </form>
+                )}
+
+                {buttonState.loginClicked && (
+                    <form className="portal__form" onSubmit={handleLogin}>
+                        <div className="portal__form-group">
+                            <label htmlFor="emailAddress">Email address</label>
+                            <input
+                                className="input"
+                                id="emailAddress"
+                                name="emailAddress"
+                                type="text"
+                                onChange={({ target }) =>
+                                    setEmail(target.value)
+                                }
+                                value={email}
+                            />
+                        </div>
+                        <div className="portal__form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                className="input"
+                                id="password"
+                                name="password"
+                                type="password"
+                                onChange={({ target }) =>
+                                    setPassword(target.value)
+                                }
+                                value={password}
+                            />
+                        </div>
+                        {errorMessage && (
+                            <div className="alert alert-danger">
+                                {errorMessage}
+                            </div>
+                        )}
+                        <input
+                            className="portal__enter-btn"
+                            type="submit"
+                            value="Log in"
+                        />
+                    </form>
+                )}
 
                 {/* Conditional redirect button rendering */}
                 {(buttonState.signupClicked ||

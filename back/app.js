@@ -8,12 +8,24 @@ require('dotenv').config();
 
 // Configure Express app
 const app = express();
-
+app.use(express.json());
 // Parse the request body of incoming HTTP requests
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // TODO: Check
+
+// Parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
 // Sets access control headers to allow cross-origin sharing
-app.use(cors());
+app.use(
+    cors({
+        origin: ['http://localhost:3001', 'http://127.0.0.1:3000'],
+        credentials: true,
+    })
+);
+
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 
 // Configure routes
@@ -22,9 +34,9 @@ const postRoutes = require('./routes/post'); // Imports post routes
 const commentRoutes = require('./routes/comment'); // Imports comment route
 
 // Register routes
-app.use('/api/user', userRoutes);
-app.use('/api/feed', postRoutes);
-app.use('/api/comment', commentRoutes);
+app.use('/api', userRoutes);
+app.use('/api', postRoutes);
+app.use('/api', commentRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Sets images folder where the file will be uploaded as static
 
 module.exports = app;

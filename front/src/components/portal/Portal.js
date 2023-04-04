@@ -20,13 +20,60 @@ function Portal() {
         setErrorMessage('');
     };
 
+    // Define regex patterns
+    const namePattern = /^[a-zA-Z]+$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+    // Function to validate user input
+    const validateInput = () => {
+        let isValid = true;
+
+        // Validate first name
+        if (!namePattern.test(firstName)) {
+            isValid = false;
+            document.getElementById('firstNameErrorMsg').textContent =
+                'Please enter a valid first name.';
+        } else {
+            document.getElementById('firstNameErrorMsg').textContent = '';
+        }
+
+        // Validate last name
+        if (!namePattern.test(lastName)) {
+            isValid = false;
+            document.getElementById('lastNameErrorMsg').textContent =
+                'Please enter a valid last name.';
+        } else {
+            document.getElementById('lastNameErrorMsg').textContent = '';
+        }
+
+        // Validate email
+        if (!emailPattern.test(email)) {
+            isValid = false;
+            document.getElementById('emailErrorMsg').textContent =
+                'Please enter a valid email address.';
+        } else {
+            document.getElementById('emailErrorMsg').textContent = '';
+        }
+
+        // Validate password
+        if (!passwordPattern.test(password)) {
+            isValid = false;
+            document.getElementById('passwordErrorMsg').textContent =
+                'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number.';
+        } else {
+            document.getElementById('passwordErrorMsg').textContent = '';
+        }
+
+        return isValid;
+    };
+
     // Function posts user input `Signup` info to API, granting conditional access to the website
     const handleSignup = async (event) => {
         event.preventDefault();
 
-        // Validate input fields
-        if (!firstName || !lastName || !email || !password) {
-            setErrorMessage('Please fill all fields');
+        // Validate input before submitting
+        if (!validateInput()) {
             return;
         }
 
@@ -40,23 +87,15 @@ function Portal() {
 
             if (res.status >= 200 && res.status < 300) {
                 window.location.href = '/feed';
-            } else {
-                setErrorMessage('Invalid email or password');
             }
         } catch (err) {
-            setErrorMessage('Error signing up');
+            console.log(err);
         }
     };
 
     // Function posts user `Login` input to API, granting conditional access to the website
     const handleLogin = async (event) => {
-        event.preventDefault();
-
-        // Validate input fields
-        if (!email || !password) {
-            setErrorMessage('Please enter your email and password');
-            return;
-        }
+        event.preventDefault(); // Allow the axios post request to be sent asynchronously without the page refreshing
 
         try {
             const res = await axios.post('http://localhost:3001/api/login', {
@@ -66,11 +105,9 @@ function Portal() {
 
             if (res.status >= 200 && res.status < 300) {
                 window.location.href = '/feed';
-            } else {
-                setErrorMessage('Invalid email or password');
             }
         } catch (err) {
-            setErrorMessage('Error logging in');
+            console.log(err);
         }
     };
 
@@ -130,6 +167,7 @@ function Portal() {
                                     setFirstName(target.value)
                                 }
                             />
+                            <p id="firstNameErrorMsg" className="alert"></p>
                         </div>
                         <div className="portal__form-group">
                             <label htmlFor="lastName">Last name</label>
@@ -142,6 +180,7 @@ function Portal() {
                                     setLastName(target.value)
                                 }
                             />
+                            <p id="lastNameErrorMsg" className="alert"></p>
                         </div>
                         <div className="portal__form-group">
                             <label htmlFor="emailAddress">Email address</label>
@@ -155,6 +194,7 @@ function Portal() {
                                 }
                                 value={email}
                             />
+                            <p id="emailErrorMsg" className="alert"></p>
                         </div>
                         <div className="portal__form-group">
                             <label htmlFor="password">Password</label>
@@ -168,12 +208,8 @@ function Portal() {
                                 }
                                 value={password}
                             />
+                            <p id="passwordErrorMsg" className="alert"></p>
                         </div>
-                        {errorMessage && (
-                            <div className="alert alert-danger">
-                                {errorMessage}
-                            </div>
-                        )}
                         <input
                             className="portal__enter-btn"
                             type="submit"
@@ -196,6 +232,7 @@ function Portal() {
                                 }
                                 value={email}
                             />
+                            <p id="emailErrorMsg" className="alert"></p>
                         </div>
                         <div className="portal__form-group">
                             <label htmlFor="password">Password</label>
@@ -209,12 +246,8 @@ function Portal() {
                                 }
                                 value={password}
                             />
+                            <p id="passwordErrorMsg" className="alert"></p>
                         </div>
-                        {errorMessage && (
-                            <div className="alert alert-danger">
-                                {errorMessage}
-                            </div>
-                        )}
                         <input
                             className="portal__enter-btn"
                             type="submit"

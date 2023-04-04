@@ -44,6 +44,8 @@ module.exports.signup = async (req, res) => {
     }
 };
 
+const { validationResult } = require('express-validator');
+
 // Login
 module.exports.login = async (req, res) => {
     // Validate user input

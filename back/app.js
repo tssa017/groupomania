@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // Sets access control headers to allow cross-origin sharing
 app.use(
     cors({
+        // TODO: rewrite?
         origin: ['http://localhost:3001', 'http://127.0.0.1:3000'],
         credentials: true,
     })

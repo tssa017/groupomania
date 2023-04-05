@@ -1,5 +1,6 @@
 import '../../index.scss';
 import { useState } from 'react';
+import axios from 'axios';
 
 // Function formats Setting component in JSX
 function Settings() {
@@ -15,6 +16,12 @@ function Settings() {
         setIsIconUp(!isIconUp);
         setIsNavOpen(false);
     }
+
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.href = '/portal';
+        alert('You have been logged out');
+    };
 
     return (
         <div className="wrapper">
@@ -34,8 +41,11 @@ function Settings() {
                         <li className="settings__nav--list-item">
                             <a href="/profile">Update profile</a>
                         </li>
-                        <li className="settings__nav--list-item">
-                            <a href="/portal">Log out</a>
+                        <li
+                            className="settings__nav--list-item"
+                            onClick={handleLogout}
+                        >
+                            Log out
                         </li>
                     </ul>
                 </nav>

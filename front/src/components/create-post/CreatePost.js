@@ -8,11 +8,11 @@ function CreatePost() {
             <div className="create-post">
                 <article className="create-post__cont">
                     <form>
-                        <img
-                        // src="#"
-                        // className="create-post__cont--img"
-                        // alt="User profile"
-                        />
+                        {/* <img
+                            src="#"
+                            className="create-post__cont--img"
+                            alt="User profile"
+                        /> */}
                         <textarea
                             type="text"
                             name="content"

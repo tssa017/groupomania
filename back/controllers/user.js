@@ -77,12 +77,6 @@ module.exports.login = async (req, res) => {
     }
 };
 
-// Logout route
-module.exports.logout = (req, res) => {
-    res.clearCookie('jwt'); // Destroy cookie where JWT was stored
-    res.redirect('/portal'); // Redirect to login portal
-};
-
 // User routes
 // GET route that gets an array of all users from database
 exports.getAllUsers = (req, res) => {

@@ -9,7 +9,6 @@ function Portal() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
 
     // Function to reset input fields to an empty string
     const resetFields = () => {
@@ -17,7 +16,6 @@ function Portal() {
         setLastName('');
         setEmail('');
         setPassword('');
-        setErrorMessage('');
     };
 
     // Define regex patterns

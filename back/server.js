@@ -1,5 +1,5 @@
-const http = require('http'); // Imports the built-in Node.js http module, which provides functionality to create HTTP servers and make HTTP requests
-const app = require('./app'); // Imports express app module
+const http = require('http');
+const app = require('./app');
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 

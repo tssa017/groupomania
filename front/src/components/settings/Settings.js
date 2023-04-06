@@ -36,7 +36,7 @@ function Settings() {
                     ></i>
                     <ul
                         className="settings__nav--list"
-                        style={{ display: isNavOpen ? 'block' : 'none' }} // create class hidden
+                        style={{ display: isNavOpen ? 'block' : 'none' }}
                     >
                         <li className="settings__nav--list-item">
                             <a href="/profile">Update profile</a>

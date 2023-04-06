@@ -1,7 +1,6 @@
 import '../../index.scss';
 import { useState } from 'react';
 
-// Function formats Post component in JSX
 function Post() {
     return (
         <div className="wrapper">

@@ -10,7 +10,7 @@ function Portal() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // Function to reset input fields to an empty string
+    // JS function to reset input fields to an empty string
     const resetFields = () => {
         setFirstName('');
         setLastName('');

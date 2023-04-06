@@ -9,20 +9,16 @@ function CreatePost() {
         const token = localStorage.getItem('token');
         if (token) {
             const decodedToken = jwtDecode(token);
-            const userId = decodedToken.sub;
+            const userId = decodedToken.userId;
 
             axios
-                .get('http://localhost:3001/api/:id', {
-                    // TODO: Fix this URL
+                .get(`http://localhost:3001/api/${userId}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {
-                    // Assuming the response.data is an array of user objects
-                    // and you want to retrieve the first user's firstName
-                    if (response.data && response.data.length > 0) {
-                        const firstName = response.data[0].firstName;
+                    if (response.data && response.data.firstName) {
+                        const firstName = response.data.firstName;
                         setFirstName(firstName);
-                        console.log(response.data);
                     }
                 })
                 .catch((error) => {

@@ -208,6 +208,18 @@ a {
 }
 .profile__update-btn {
   background-color: #ca7ffe;
+  padding: 0.5rem 1rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 3px solid #3d3c3c;
+  border-radius: 10px;
+  scale: 1;
+}
+.profile__update-btn:hover {
+  scale: 1.1;
+  transition: scale 200ms ease-in;
 }
 .profile__form-group {
   display: flex;

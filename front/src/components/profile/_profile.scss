@@ -52,6 +52,15 @@
 
     &__update-btn {
         background-color: $colorSecondary;
+        padding: 0.5rem 1rem;
+        @include btnTxtStyle;
+        @include borderStyle;
+        scale: 1;
+
+        &:hover {
+            scale: 1.1;
+            transition: scale 200ms ease-in;
+        }
     }
 
     &__form-group {

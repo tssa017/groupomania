@@ -95,7 +95,6 @@ module.exports.login = async (req, res) => {
 module.exports.getSingleUser = async (req, res) => {
     try {
         const userId = req.params.userId; // Retrieve the user ID from the URL parameter
-        console.log(userId);
 
         // Fetch data for the single user using the user ID
         const userData = await User.findOne({
@@ -117,10 +116,11 @@ module.exports.getSingleUser = async (req, res) => {
 
 // PUT route modifies a user object based on its ID
 // exports.modifyUser = (req, res) => {
-//     const userId = req.auth.userId; // Extracts ID of the authenticated user from the request object's auth property
+//     const userId = req.params.userId; // Extracts ID of the authenticated user from the request object's auth property
 //     // Extract first and last names from request body
 //     const firstName = req.body.firstName;
 //     const lastName = req.body.lastName;
+//     const profilePic = req.body.profilePic;
 //     // Update the firstName and lastName fields for a user with the given userId
 //     User.update({ firstName, lastName }, { where: { id: userId } })
 //         .then((result) => {
@@ -176,48 +176,46 @@ module.exports.getSingleUser = async (req, res) => {
 //         });
 // };
 
-// // Upload route
-// // POST route allows user to upload a profile picture
-// // TODO: Set new image url for profile pic
-// exports.uploadProfilePic = (req, res) => {
-//     req.body.user = JSON.parse(req.body.user);
-//     const userId = req.auth.userId;
-//     const url = req.protocol + '://' + req.get('host');
-//     const profilePic = req.file ? url + '/images/' + req.file.filename : '';
-//     const update = req.file
-//         ? {
-//               ...JSON.parse(req.body.user),
-//               profilePic: `${req.protocol}://${req.get('host')}/images/${
-//                   req.file.filename
-//               }`,
-//           }
-//         : { ...req.body };
+// POST route allows user to upload a profile picture
+exports.uploadProfilePic = (req, res) => {
+    const userId = req.params.userId; // Get userId from request parameters
+    console.log('hey' + userId);
+    const url = req.protocol + '://' + req.get('host');
+    const profilePic = req.file ? url + '/images/' + req.file.filename : ''; // Use filename or name property if available
 
-//     User.findOne({
-//         where: {
-//             id: userId,
-//         },
-//     })
-//         .then((user) => {
-//             if (!user) {
-//                 return res.status(404).json({ error: 'User not found.' });
-//             }
-//             user.update(update)
-//                 .then(() => {
-//                     res.status(200).json({
-//                         message: 'Profile successfully updated!',
-//                         user,
-//                     });
-//                 })
-//                 .catch((error) => {
-//                     res.status(400).json({
-//                         error: error.message || 'Failed to update profile.',
-//                     });
-//                 });
-//         })
-//         .catch((error) => {
-//             res.status(400).json({
-//                 error: error.message || 'Failed to update profile.',
-//             });
-//         });
-// };
+    console.log(req.file);
+    console.log(profilePic);
+    User.findOne({
+        where: {
+            userId: userId,
+        },
+    })
+        .then((user) => {
+            if (!user) {
+                return res.status(404).json({ error: 'User not found.' });
+            }
+            console.log('T poo');
+            console.log(profilePic);
+
+            user.update({ profilePic: profilePic })
+                .then(() => {
+                    res.status(200).json({
+                        message: 'Profile successfully updated!',
+                        user,
+                    });
+                    console.log('yoohooo');
+                })
+                .catch((error) => {
+                    res.status(400).json({
+                        error: error.message || 'Failed to update profile.',
+                    });
+                });
+            user.save();
+        })
+        .catch((error) => {
+            res.status(400).json({
+                error: error.message || 'Failed to update profile.',
+            });
+        });
+};
+console.log('hi');

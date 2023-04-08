@@ -2,9 +2,8 @@ import '../../index.scss';
 import { useState } from 'react';
 import axios from 'axios';
 
-// Function formats Portal component in JSX
 function Portal() {
-    // Store and manages state of user input
+    // Store and manages state of user input (use state hooks)
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -108,6 +107,7 @@ function Portal() {
                 window.location.href = '/feed';
             }
         } catch (err) {
+            alert('Login failed. Please use a valid email and password.');
             console.log(err);
         }
     };
@@ -233,7 +233,6 @@ function Portal() {
                                 }
                                 value={email}
                             />
-                            <p id="emailErrorMsg" className="alert"></p>
                         </div>
                         <div className="portal__form-group">
                             <label htmlFor="password">Password</label>
@@ -247,7 +246,6 @@ function Portal() {
                                 }
                                 value={password}
                             />
-                            <p id="passwordErrorMsg" className="alert"></p>
                         </div>
                         <input
                             className="portal__enter-btn"

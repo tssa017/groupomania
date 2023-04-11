@@ -11,11 +11,10 @@ router.post('/login', userCtrl.login);
 // Define general user endpoints
 // router.get('/:id', userCtrl.getAllUsers); // TODO: check endpoint, maybe I don't need this?
 router.get('/:userId', userCtrl.getSingleUser);
-// router.put('/:id', userCtrl.modifyUser); // TODO: check endpoint
 // router.delete('/:id', userCtrl.deleteUser); // TODO: check endpoint
 
 // // Define profile pic upload endpoint
-router.post('/:userId', multer, userCtrl.uploadProfilePic); // TODO: fix this
+router.post('/:userId', multer, userCtrl.modifyProfile); // TODO: fix this
 
 // Export
 module.exports = router;

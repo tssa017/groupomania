@@ -24,7 +24,6 @@ function Profile() {
                 })
                 .then((response) => {
                     setUserId(userId);
-                    console.log(response.data);
                     setProfilePicUrl(response.data.profilePic);
                     setFirstName(response.data.firstName);
                     setLastName(response.data.lastName);
@@ -42,8 +41,8 @@ function Profile() {
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('image', profilePicFile);
-            formData.append('firstName', firstName);
-            formData.append('lastName', lastName);
+            formData.append('firstName', firstName); // Add firstName value
+            formData.append('lastName', lastName); // Add lastName value
 
             axios
                 .post(`http://localhost:3001/api/${userId}`, formData, {

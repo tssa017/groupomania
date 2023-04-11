@@ -114,34 +114,55 @@ module.exports.getSingleUser = async (req, res) => {
     }
 };
 
-// PUT route modifies a user object based on its ID
-// exports.modifyUser = (req, res) => {
-//     const userId = req.params.userId; // Extracts ID of the authenticated user from the request object's auth property
-//     // Extract first and last names from request body
-//     const firstName = req.body.firstName;
-//     const lastName = req.body.lastName;
-//     const profilePic = req.body.profilePic;
-//     // Update the firstName and lastName fields for a user with the given userId
-//     User.update({ firstName, lastName }, { where: { id: userId } })
-//         .then((result) => {
-//             // Check whether the update() method affected database. If result is 0, user was not found
-//             if (result[0] === 0) {
-//                 return res.status(404).json({ error: 'User not found.' });
-//             }
-//             return User.findByPk(userId).then((user) => {
-//                 // Retrieve updated user object from database
-//                 res.status(200).json({
-//                     message: 'Profile successfully updated!',
-//                     user,
-//                 });
-//             });
-//         })
-//         .catch((error) => {
-//             res.status(400).json({
-//                 error: error.message || 'Failed to update profile.',
-//             });
-//         });
-// };
+// POST route allows user to upload a profile picture
+exports.modifyProfile = (req, res) => {
+    const userId = req.params.userId; // Get userId from request parameters
+    const url = req.protocol + '://' + req.get('host');
+    const profilePic = req.file ? url + '/images/' + req.file.filename : ''; // Use filename or name property if available
+    const firstName = req.body.firstName; // Get firstName from request body
+    const lastName = req.body.lastName; // Get lastName from request body
+
+    User.findOne({
+        where: {
+            userId: userId,
+        },
+    })
+        .then((user) => {
+            if (!user) {
+                return res.status(404).json({ error: 'User not found.' });
+            }
+
+            // Update user model with only the fields that are present in the request body
+            const updatedFields = {}; // Create an empty object to store the updated fields
+            if (profilePic) {
+                updatedFields.profilePic = profilePic;
+            }
+            if (firstName) {
+                updatedFields.firstName = firstName;
+            }
+            if (lastName) {
+                updatedFields.lastName = lastName;
+            }
+
+            user.update(updatedFields) // Pass the updatedFields object to the update method
+                .then(() => {
+                    res.status(200).json({
+                        message: 'Profile successfully updated!',
+                        user,
+                    });
+                })
+                .catch((error) => {
+                    res.status(400).json({
+                        error: error.message || 'Failed to update profile.',
+                    });
+                });
+        })
+        .catch((error) => {
+            res.status(400).json({
+                error: error.message || 'Failed to update profile.',
+            });
+        });
+};
 
 // DELETE route deletes an exisiting User object based on its ID
 // exports.deleteUser = (req, res) => {
@@ -175,40 +196,3 @@ module.exports.getSingleUser = async (req, res) => {
 //             });
 //         });
 // };
-
-// POST route allows user to upload a profile picture
-exports.uploadProfilePic = (req, res) => {
-    const userId = req.params.userId; // Get userId from request parameters
-    const url = req.protocol + '://' + req.get('host');
-    const profilePic = req.file ? url + '/images/' + req.file.filename : ''; // Use filename or name property if available
-
-    User.findOne({
-        where: {
-            userId: userId,
-        },
-    })
-        .then((user) => {
-            if (!user) {
-                return res.status(404).json({ error: 'User not found.' });
-            }
-
-            user.update({ profilePic: profilePic })
-                .then(() => {
-                    res.status(200).json({
-                        message: 'Profile successfully updated!',
-                        user,
-                    });
-                })
-                .catch((error) => {
-                    res.status(400).json({
-                        error: error.message || 'Failed to update profile.',
-                    });
-                });
-            user.save();
-        })
-        .catch((error) => {
-            res.status(400).json({
-                error: error.message || 'Failed to update profile.',
-            });
-        });
-};

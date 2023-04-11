@@ -27,8 +27,6 @@ function CreatePost() {
         }
     }, []);
 
-    // POST - use effect, define state
-
     return (
         <div className="wrapper">
             <div className="create-post">

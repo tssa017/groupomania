@@ -1,14 +1,16 @@
 import '../../index.scss';
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
 function Profile() {
-    const [profilePic, setProfilePic] = useState('');
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [profilePicUrl, setProfilePicUrl] = useState(null);
+    const [profilePicFile, setProfilePicFile] = useState(null);
+    const navigate = useNavigate(); // Get the history object from React Router
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -22,70 +24,80 @@ function Profile() {
                 })
                 .then((response) => {
                     setUserId(userId);
-                })
-                .then((response) => {
-                    if (response.data && response.data.firstName) {
-                        const firstName = response.data.firstName;
-                        setFirstName(firstName);
-                    }
+                    console.log(response.data);
+                    setProfilePicUrl(response.data.profilePic);
+                    setFirstName(response.data.firstName);
+                    setLastName(response.data.lastName);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
-    }, []);
+    }, [userId]);
 
-    const handleUserUpdate = (event) => {
-        // Image upload
-        const imageFile = event.target.files[0];
-        const formData = new FormData();
-        formData.append('userId', userId);
-        formData.append('image', imageFile);
-        console.log(formData);
+    const handleProfileChange = (event) => {
+        event.preventDefault();
+        const token = localStorage.getItem('token');
+        if (token) {
+            const formData = new FormData();
+            formData.append('userId', userId);
+            formData.append('image', profilePicFile);
+            formData.append('firstName', firstName);
+            formData.append('lastName', lastName);
 
-        // Convert FormData to JSON so I can read it
-        const formDataObject = {};
-        for (const [key, value] of formData.entries()) {
-            formDataObject[key] = value;
+            axios
+                .post(`http://localhost:3001/api/${userId}`, formData, {
+                    headers: { Authorization: `Bearer ${token}` },
+                })
+                .then((response) => {
+                    setProfilePicUrl(response.data.user.profilePic);
+                    navigate('/feed'); // Redirect to /feed upon successful update
+                    console.log('Profile updated successfully');
+                })
+                .catch((error) => {
+                    console.error('Failed to update profile:', error);
+                });
         }
-        console.log(formDataObject);
+    };
 
-        axios
-            .post(`http://localhost:3001/api/${userId}`, formData)
-            .then((response) => {
-                const profilePicUrl = `http://localhost:3001/images/${response.data.filename}`;
-                setProfilePic(profilePicUrl);
-            })
-            .catch((error) => {
-                console.error('Failed to upload profile picture:', error);
-            });
+    const setDisplayedImage = (value) => {
+        console.log(value);
+        setProfilePicUrl(URL.createObjectURL(value));
+        setProfilePicFile(value);
     };
 
     return (
         <div className="portal-profile__wrapper">
             <div className="profile">
                 <img
-                    src={profilePic}
+                    src={profilePicUrl}
                     className="profile__img"
                     alt="User profile picture"
                 />
-                <label htmlFor="image" className="profile__update-pic-btn">
-                    Update profile picture
-                    <input
-                        type="file"
-                        id="image-input"
-                        name="image"
-                        accept="image/*"
-                    />
-                </label>
-                <form>
+                <form onSubmit={handleProfileChange}>
+                    <label htmlFor="image" className="profile__update-pic-btn">
+                        Update profile picture
+                        <input
+                            type="file"
+                            id="image-input"
+                            name="image"
+                            accept="image/*"
+                            onChange={
+                                (event) =>
+                                    setDisplayedImage(event.target.files[0]) // Pass the uploaded image file to setDisplayedImage function
+                            }
+                        />
+                    </label>
                     <div className="profile__form-group">
                         <label htmlFor="firstName">First name</label>
                         <input
                             id="firstName"
                             name="firstName"
                             type="text"
-                            placeholder={`${firstName}`}
+                            value={firstName}
+                            onChange={(event) =>
+                                setFirstName(event.target.value)
+                            }
                         />
                     </div>
                     <div className="profile__form-group">
@@ -94,32 +106,19 @@ function Profile() {
                             id="lastName"
                             name="lastName"
                             type="text"
-                            placeholder={`${lastName}`}
+                            value={lastName}
+                            onChange={(event) =>
+                                setLastName(event.target.value)
+                            }
                         />
                     </div>
-                    <div className="profile__form-group">
-                        <label htmlFor="email">Email</label>
-                        {/* Only admin will be able to modify email address */}
-                        <input
-                            id="email"
-                            name="email"
-                            type="text"
-                            placeholder="user@example.com"
-                            disabled
-                        />
-                    </div>
-                </form>
-                <button
-                    className="profile__update-btn"
-                    onChange={handleUserUpdate}
-                >
-                    Update account
-                </button>
-                <Link to="/portal">
+                    <button className="profile__update-btn" type="submit">
+                        Update account
+                    </button>
                     <button className="profile__deactivate-btn">
                         Deactivate account
                     </button>
-                </Link>
+                </form>
             </div>
         </div>
     );

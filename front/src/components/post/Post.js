@@ -7,13 +7,12 @@ function Post() {
             <div className="post">
                 <article className="post__cont">
                     <section className="post__cont--status">
-                        {/* TODO: Paragraph must be required */}
                         <p className="post__cont--status-txt">
                             I'm pleased to announce that I have started the Web
                             Developer path with OpenClassrooms!
                             <img
                                 className="post__cont--status-txt-img"
-                                src="/images/other_chagall.jpeg"
+                                src=""
                                 alt="Image included in post"
                             />
                         </p>

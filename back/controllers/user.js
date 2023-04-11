@@ -179,12 +179,9 @@ module.exports.getSingleUser = async (req, res) => {
 // POST route allows user to upload a profile picture
 exports.uploadProfilePic = (req, res) => {
     const userId = req.params.userId; // Get userId from request parameters
-    console.log('hey' + userId);
     const url = req.protocol + '://' + req.get('host');
     const profilePic = req.file ? url + '/images/' + req.file.filename : ''; // Use filename or name property if available
 
-    console.log(req.file);
-    console.log(profilePic);
     User.findOne({
         where: {
             userId: userId,
@@ -194,8 +191,6 @@ exports.uploadProfilePic = (req, res) => {
             if (!user) {
                 return res.status(404).json({ error: 'User not found.' });
             }
-            console.log('T poo');
-            console.log(profilePic);
 
             user.update({ profilePic: profilePic })
                 .then(() => {
@@ -203,7 +198,6 @@ exports.uploadProfilePic = (req, res) => {
                         message: 'Profile successfully updated!',
                         user,
                     });
-                    console.log('yoohooo');
                 })
                 .catch((error) => {
                     res.status(400).json({
@@ -218,4 +212,3 @@ exports.uploadProfilePic = (req, res) => {
             });
         });
 };
-console.log('hi');

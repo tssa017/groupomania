@@ -60,7 +60,6 @@ function Profile() {
     };
 
     const setDisplayedImage = (value) => {
-        console.log(value);
         setProfilePicUrl(URL.createObjectURL(value));
         setProfilePicFile(value);
     };

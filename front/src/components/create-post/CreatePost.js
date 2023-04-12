@@ -3,7 +3,10 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 
 function CreatePost() {
+    const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
+    const [profilePicUrl, setProfilePicUrl] = useState('');
+    const [postPicUrl, setPostPicUrl] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -18,7 +21,10 @@ function CreatePost() {
                 .then((response) => {
                     if (response.data && response.data.firstName) {
                         const firstName = response.data.firstName;
+                        const profilePic = response.data.profilePic;
+                        setUserId(userId);
                         setFirstName(firstName);
+                        setProfilePicUrl(profilePic);
                     }
                 })
                 .catch((error) => {
@@ -27,11 +33,58 @@ function CreatePost() {
         }
     }, []);
 
+    const handleFileInputChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            setPostPicUrl(event.target.result);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handlePostSubmit = (event) => {
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('content', event.target.content.value);
+        formData.append('userId', userId);
+        console.log(event.target.content.value);
+
+        // Check if image file exists before appending to form data
+        if (event.target.image.files.length > 0) {
+            formData.append('postPicUrl', event.target.image.files[0].name);
+            console.log(event.target.image.files[0].name);
+        }
+
+        axios
+            .post(`http://localhost:3001/api/posts/${userId}`, formData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then((response) => {
+                console.log('Post created successfully:', response.data);
+            })
+            .catch((error) => {
+                console.error('Failed to create post:', error);
+            });
+
+        // Reset the form
+        event.target.reset();
+        setPostPicUrl('');
+    };
+
     return (
         <div className="wrapper">
             <div className="create-post">
                 <article className="create-post__cont">
-                    <form>
+                    <form onSubmit={handlePostSubmit}>
+                        <img
+                            src={profilePicUrl}
+                            className="create-post__cont--profile-img"
+                            alt="User profile"
+                        />
                         <textarea
                             type="text"
                             name="content"
@@ -40,6 +93,11 @@ function CreatePost() {
                             placeholder={`What's happening, ${firstName}?`}
                             maxLength={500}
                         ></textarea>
+                        <img
+                            src={postPicUrl}
+                            className="create-post__cont--post-img"
+                            alt="User post img"
+                        />
                         <div className="create-post__cont--post-error"></div>
                         <section className="create-post__cont--btns">
                             <label htmlFor="image">
@@ -48,6 +106,7 @@ function CreatePost() {
                                     id="image-input"
                                     name="image"
                                     accept="image/*"
+                                    onChange={handleFileInputChange}
                                 />
                             </label>
                             <input

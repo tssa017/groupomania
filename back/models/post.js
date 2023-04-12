@@ -5,18 +5,22 @@ module.exports = (sequelize, DataTypes) => {
     class Post extends Model {
         static associate(models) {
             Post.belongsTo(models.User, {
-                foreignKey: 'fk_post_userId',
-                onDelete: 'CASCADE', // Responses deleted with post
+                foreignKey: 'userId',
+                onDelete: 'CASCADE',
+                allowNull: false,
+            });
+            Post.hasMany(models.Comment, {
+                foreignKey: 'postId',
+                as: 'Comments',
             });
         }
     }
     Post.init(
         {
-            post: DataTypes.STRING,
-            userId: DataTypes.INTEGER,
-            postPicUrl: DataTypes.STRING,
-            likes: DataTypes.INTEGER,
-            usersLiked: DataTypes.STRING,
+            post: { type: DataTypes.STRING(4000) },
+            postPicUrl: { type: DataTypes.STRING(512) },
+            likes: { type: DataTypes.INTEGER, defaultValue: 0 },
+            usersLiked: { type: DataTypes.STRING, defaultValue: '' },
         },
         {
             sequelize,

@@ -11,9 +11,9 @@
         background-color: $colorBackground;
         border-bottom: 0.2rem solid $colorFont;
 
-        &--img {
-            top: 3rem;
+        &--profile-img {
             position: relative;
+            top: 3rem;
             width: 120px;
             height: auto;
             border: 0.25rem solid $colorFont;
@@ -21,6 +21,27 @@
             z-index: 1;
             margin: 0 auto;
             display: block;
+        }
+
+        &--post {
+            position: absolute;
+            left: 0;
+            right: 0;
+            padding: 8rem 3rem 5rem 3rem;
+            border-top: 3px solid $colorFont;
+            border-bottom: 3px solid $colorFont;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            line-height: 2.2rem;
+        }
+
+        &--post-img {
+            position: absolute;
+            margin-top: 1rem;
+            width: 90px;
+            height: auto;
+            border: 0.25rem solid $colorFont;
+            border-radius: 100%;
         }
 
         &--btns {
@@ -56,18 +77,6 @@
                 }
             }
         }
-
-        &--post {
-            position: absolute;
-            left: 0;
-            right: 0;
-            padding: 8rem 3rem 5rem 3rem;
-            border-top: 3px solid $colorFont;
-            border-bottom: 3px solid $colorFont;
-            font-family: 'Nunito', sans-serif;
-            font-size: 1.2rem;
-            line-height: 2.2rem;
-        }
     }
 }
 
@@ -82,10 +91,10 @@
             border-left: 0.2rem solid $colorFont;
             width: 800px;
 
-            &--img {
-                width: 130px;
-                // top: 5rem;
-                // left: 20.5rem;
+            &--post-img {
+                width: 120px;
+                margin-top: 3rem;
+                right: 5rem;
             }
 
             &--btns {

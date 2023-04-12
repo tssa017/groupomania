@@ -17,64 +17,14 @@ const Post = db.Post;
 // };
 
 // POST route that creates a new post and saves to database
-// exports.createPost = async (req, res) => {
-//     const url = req.protocol + '://' + req.get('host'); // Creates URL for image file path
-//     const postPicUrl = req.file ? url + '/images/' + req.file.filename : ''; // Checks if image file was uploaded with the request. If yes, the imageUrl set to url + location + filename. If no, imageUrl set to an empty string
-
-//     try {
-//         const post = await Post.create({
-//             id: req.body.post.id,
-//             post: req.body.post.post,
-//             userId: req.body.post.userId,
-//             userProfilePic: req.body.post.userProfilePic,
-//             postPicUrl: postPicUrl,
-//             likes: req.body.post.likes,
-//             usersLiked: req.body.post.usersLiked,
-//         });
-//         res.status(201).json({
-//             message: 'Post saved successfully!',
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             error: error.message,
-//         });
-//     }
-// };
-
-// module.exports.createPost = async (req, res) => {
-// try {
-//     const { content, userId } = req.body; // Get data from request body
-//     let postPicUrl = ''; // Initialize postPicUrl
-
-//     // Check if image file exists in form data
-//     if (req.file) {
-//         // Get the filename of the uploaded file
-//         postPicUrl = `${req.protocol}://${req.get('host')}/images${
-//             req.file.filename
-//         }`;
-//     }
-//     console.log(postPicUrl);
-
-//     // Create a new post in the posts table with associated userId
-//     const post = await Post.create({
-//         userId: userId, // Use userId from req.body
-//         post: content,
-//         postPicUrl: postPicUrl,
-//     });
-
-//     // Return the created post as response
-//     return res.status(201).json(post);
-// } catch (error) {
-//     console.error('Failed to create post:', error);
-//     return res.status(400).json({ message: 'Failed to create post' });
-// }
-
 exports.createPost = async (req, res) => {
-    const url = req.protocol + '://' + req.get('host'); // Creates URL for image file path
-    const postPicUrl = req.file ? url + '/images/' + req.file.filename : ''; // Checks if image file was uploaded with the request. If yes, the imageUrl set to url + location + filename. If no, imageUrl set to an empty string
-    console.log(postPicUrl);
+    const url = req.protocol + '://' + req.get('host');
+    const postPicUrl = req.body.postPicUrl
+        ? url + '/images/' + req.body.postPicUrl
+        : '';
     try {
         const newPost = await Post.create({
+            userId: req.body.userId,
             post: req.body.content,
             postPicUrl: postPicUrl,
         });

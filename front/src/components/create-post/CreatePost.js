@@ -7,6 +7,7 @@ function CreatePost() {
     const [firstName, setFirstName] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState('');
     const [postPicUrl, setPostPicUrl] = useState('');
+    const [isFileSelected, setIsFileSelected] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -40,6 +41,7 @@ function CreatePost() {
             setPostPicUrl(event.target.result);
         };
         reader.readAsDataURL(file);
+        setIsFileSelected(true);
     };
 
     const handlePostSubmit = (event) => {
@@ -48,12 +50,10 @@ function CreatePost() {
         const formData = new FormData();
         formData.append('content', event.target.content.value);
         formData.append('userId', userId);
-        console.log(event.target.content.value);
 
         // Check if image file exists before appending to form data
         if (event.target.image.files.length > 0) {
             formData.append('postPicUrl', event.target.image.files[0].name);
-            console.log(event.target.image.files[0].name);
         }
 
         axios
@@ -64,15 +64,15 @@ function CreatePost() {
                 },
             })
             .then((response) => {
-                console.log('Post created successfully:', response.data);
+                console.log('Post created successfully:');
+                console.log(response.data);
+                // Reset the form
+                event.target.reset();
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Failed to create post:', error);
             });
-
-        // Reset the form
-        event.target.reset();
-        setPostPicUrl('');
     };
 
     return (
@@ -93,11 +93,13 @@ function CreatePost() {
                             placeholder={`What's happening, ${firstName}?`}
                             maxLength={500}
                         ></textarea>
-                        <img
-                            src={postPicUrl}
-                            className="create-post__cont--post-img"
-                            alt="User post img"
-                        />
+                        {isFileSelected && (
+                            <img
+                                src={postPicUrl}
+                                className="create-post__cont--post-img"
+                                alt="User post img"
+                            />
+                        )}
                         <div className="create-post__cont--post-error"></div>
                         <section className="create-post__cont--btns">
                             <label htmlFor="image">

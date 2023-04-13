@@ -13,22 +13,24 @@ function Post() {
         if (token) {
             const decodedToken = jwtDecode(token);
             const userId = decodedToken.userId;
-            console.log('hi');
             axios
                 .get(`http://localhost:3001/api/posts/${userId}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {
-                    console.log('hi2');
-
                     setPosts(response.data); // Update the state with fetched posts data
-                    console.log(response.data);
+                    console.log('Successfully fetched posts!');
+                    const postIds = response.data.map((post) => post.id);
+                    console.log('Post IDs:', postIds);
                 })
                 .catch((error) => {
                     console.error('Error fetching posts:', error);
                 });
-            console.log('hi3');
         }
+        // Cleanup function to cancel ongoing axios request
+        return () => {
+            axios.CancelToken.source().cancel('Posts request canceled');
+        };
     }, []);
 
     const renderPosts = () => {

@@ -66,9 +66,10 @@ function CreatePost() {
             .then((response) => {
                 console.log('Post created successfully:');
                 console.log(response.data);
+
                 // Reset the form
-                // event.target.reset();
-                // window.location.reload();
+                event.target.reset();
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Failed to create post:', error);

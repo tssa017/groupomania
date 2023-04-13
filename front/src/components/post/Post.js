@@ -20,6 +20,7 @@ function Post() {
                 .then((response) => {
                     setPosts(response.data); // Update the state with fetched posts data
                     console.log('Successfully fetched posts!');
+                    console.log(response.data);
                     const postIds = response.data.map((post) => post.id);
                     console.log('Post IDs:', postIds);
                 })
@@ -34,16 +35,38 @@ function Post() {
     }, []);
 
     const renderPosts = () => {
-        return posts.map((post) => (
-            <div className="post" key={post.id}>
-                {/* Render post data */}
-            </div>
-        ));
+        {
+            return posts.map((post) => (
+                <div className="post" key={post.id}>
+                    <article className="post__cont">
+                        <section className="post__cont--status">
+                            <p className="post__cont--status-txt">
+                                {post.post}
+                                <img
+                                    className="post__cont--status-txt-img"
+                                    src={post.postPicUrl}
+                                    alt="Image included in post"
+                                />
+                            </p>
+                            <article className="post__cont--status-edit-cont">
+                                <button className="post__cont--status-edit-cont--edit">
+                                    Edit
+                                </button>
+                                <button className="post__cont--status-edit-cont--delete">
+                                    Delete
+                                </button>
+                            </article>
+                        </section>
+                    </article>
+                </div>
+            ));
+        }
     };
 
     return (
         <div className="wrapper">
-            <div className="post">
+            {renderPosts()}
+            {/* <div className="post">
                 <article className="post__cont">
                     <section className="post__cont--status">
                         <p className="post__cont--status-txt">
@@ -92,7 +115,7 @@ function Post() {
                         </article>
                     </section>
                 </article>
-            </div>
+            </div> */}
         </div>
     );
 }

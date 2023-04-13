@@ -1,7 +1,44 @@
 import '../../index.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 function Post() {
+    const [posts, setPosts] = useState([]); // Stores posts data
+    const [userId, setUserId] = useState('');
+
+    // Fetch posts data from database
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            const userId = decodedToken.userId;
+            console.log('hi');
+            axios
+                .get(`http://localhost:3001/api/posts/${userId}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                })
+                .then((response) => {
+                    console.log('hi2');
+
+                    setPosts(response.data); // Update the state with fetched posts data
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.error('Error fetching posts:', error);
+                });
+            console.log('hi3');
+        }
+    }, []);
+
+    const renderPosts = () => {
+        return posts.map((post) => (
+            <div className="post" key={post.id}>
+                {/* Render post data */}
+            </div>
+        ));
+    };
+
     return (
         <div className="wrapper">
             <div className="post">

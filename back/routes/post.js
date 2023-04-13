@@ -6,8 +6,8 @@ const multer = require('../middleware/multer-config'); // Defines name and desti
 const postCtrl = require('../controllers/post');
 
 // Define Post routes
-// router.get('/', auth, postCtrl.getAllPosts); // TODO: check endpoint
-// router.get('/:id', auth, postCtrl.getSinglePost); // TODO: check endpoint
+router.get('/posts/:userId', auth, postCtrl.getAllPosts); // TODO: check endpoint
+// router.get('/posts/:id', auth, postCtrl.getSinglePost); // TODO: check endpoint
 router.post('/posts/:userId', auth, multer, postCtrl.createPost);
 // router.put('/:id', auth, multer, postCtrl.modifyPost);
 // router.delete('/:id', auth, postCtrl.deletePost); // TODO: check endpoint

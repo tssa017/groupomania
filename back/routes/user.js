@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const auth = require('../middleware/auth.js');
+// const auth = require('../middleware/auth.js'); // TODO: Do I need?
 const multer = require('../middleware/multer-config');
 const userCtrl = require('../controllers/user');
 
@@ -9,12 +9,14 @@ router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
 
 // Define general user endpoints
-// router.get('/:id', userCtrl.getAllUsers); // TODO: check endpoint, maybe I don't need this?
+// router.get('/:userId', userCtrl.getAllUsers); // TODO: Check endpoint
 router.get('/:userId', userCtrl.getSingleUser);
-router.delete('/:userId', userCtrl.deleteUser); // TODO: check endpoint
+router.delete('/:userId', userCtrl.deleteUser);
 
-// // Define profile pic upload endpoint
-router.post('/:userId', multer, userCtrl.modifyProfile); // TODO: fix this
+// Define profile pic upload endpoint
+router.post('/:userId', multer, userCtrl.modifyProfile);
+
+// TODO: Define admin endpoint
 
 // Export
 module.exports = router;

@@ -2,19 +2,21 @@
 // const fs = require('fs'); // Allow file system modification
 let db = require('../models');
 const Post = db.Post;
-// const { User } = require('../models/user');
+const User = db.User;
 
 // GET route that gets an array of all posts from database
-// exports.getAllPosts = async (req, res) => {
-//     try {
-//         const posts = await Post.findAll();
-//         res.status(200).json(posts);
-//     } catch (error) {
-//         res.status(400).json({
-//             error: error.message,
-//         });
-//     }
-// };
+exports.getAllPosts = async (req, res) => {
+    console.log('r u even trying?');
+    try {
+        const posts = await Post.findAll(); // Fetch all posts from the Post model using Sequelize's findAll() method
+        console.log('hey there');
+        res.status(200).json(posts); // Send the fetched posts as JSON response
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(500).json({ error: 'Failed to fetch posts' }); // Send an error response if fetching posts fails
+    }
+    console.log('shit');
+};
 
 // POST route that creates a new post and saves to database
 exports.createPost = async (req, res) => {
@@ -41,8 +43,9 @@ exports.createPost = async (req, res) => {
 // GET route for single post based on its id
 // exports.getSinglePost = async (req, res) => {
 //     try {
+//         const postId = req.params.id;
 //         const post = await Post.findOne({
-//             where: { id: req.params.id },
+//             where: { id: postId },
 //         });
 //         if (!post) {
 //             throw new Error('Post not found');

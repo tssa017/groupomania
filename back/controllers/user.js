@@ -168,15 +168,11 @@ exports.modifyProfile = (req, res) => {
 exports.deleteUser = (req, res) => {
     User.findOne({
         where: { userId: req.params.userId },
-        // attributes: ['profilePic'],
     })
         .then((user) => {
             if (!user) {
                 return res.status(404).json({ error: 'User not found' });
             }
-            // const filename = user.profilePic.split('/images/')[1];
-            // fs.unlink('images/' + filename, () => {
-            // Deletes profile pic file from file system
             User.destroy({ where: { userId: req.params.userId } })
                 .then(() => {
                     res.status(200).json({
@@ -188,7 +184,6 @@ exports.deleteUser = (req, res) => {
                         error: error,
                     });
                 });
-            // });
         })
         .catch((error) => {
             res.status(500).json({

@@ -165,34 +165,34 @@ exports.modifyProfile = (req, res) => {
 };
 
 // DELETE route deletes an exisiting User object based on its ID
-// exports.deleteUser = (req, res) => {
-//     User.findOne({
-//         where: { id: req.params.userId },
-//         attributes: ['profilePic'],
-//     })
-//         .then((user) => {
-//             if (!user) {
-//                 return res.status(404).json({ error: 'User not found' });
-//             }
-//             const filename = user.profilePic.split('/images/')[1];
-//             fs.unlink('images/' + filename, () => {
-//                 // Deletes profile pic file from file system
-//                 User.destroy({ where: { id: req.params.userId } })
-//                     .then(() => {
-//                         res.status(200).json({
-//                             message: 'Deleted!',
-//                         });
-//                     })
-//                     .catch((error) => {
-//                         res.status(400).json({
-//                             error: error,
-//                         });
-//                     });
-//             });
-//         })
-//         .catch((error) => {
-//             res.status(500).json({
-//                 error: error,
-//             });
-//         });
-// };
+exports.deleteUser = (req, res) => {
+    User.findOne({
+        where: { userId: req.params.userId },
+        // attributes: ['profilePic'],
+    })
+        .then((user) => {
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            // const filename = user.profilePic.split('/images/')[1];
+            // fs.unlink('images/' + filename, () => {
+            // Deletes profile pic file from file system
+            User.destroy({ where: { userId: req.params.userId } })
+                .then(() => {
+                    res.status(200).json({
+                        message: 'Account deleted!',
+                    });
+                })
+                .catch((error) => {
+                    res.status(400).json({
+                        error: error,
+                    });
+                });
+            // });
+        })
+        .catch((error) => {
+            res.status(500).json({
+                error: error,
+            });
+        });
+};

@@ -10,7 +10,7 @@ function Profile() {
     const [lastName, setLastName] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState(null);
     const [profilePicFile, setProfilePicFile] = useState(null);
-    const navigate = useNavigate(); // Get the history object from React Router
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -55,6 +55,24 @@ function Profile() {
                 })
                 .catch((error) => {
                     console.error('Failed to update profile:', error);
+                });
+        }
+    };
+
+    const handleAccountDeactivation = () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios
+                .delete(`http://localhost:3001/api/${userId}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                })
+                .then(() => {
+                    localStorage.clear();
+                    navigate('/portal'); // Redirect to /feed upon successful account deletion
+                    console.log('Account successfully deactivated!');
+                })
+                .catch((error) => {
+                    console.error('Failed to deactivate account:', error);
                 });
         }
     };
@@ -113,7 +131,10 @@ function Profile() {
                     <button className="profile__update-btn" type="submit">
                         Update account
                     </button>
-                    <button className="profile__deactivate-btn">
+                    <button
+                        className="profile__deactivate-btn"
+                        onClick={handleAccountDeactivation}
+                    >
                         Deactivate account
                     </button>
                 </form>

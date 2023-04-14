@@ -8,9 +8,9 @@ function Profile() {
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [profilePicUrl, setProfilePicUrl] = useState(null);
-    const [profilePicFile, setProfilePicFile] = useState(null);
-    const navigate = useNavigate();
+    const [profilePicUrl, setProfilePicUrl] = useState(null); // Store the URL of the profile picture displayed in the UI
+    const [profilePicFile, setProfilePicFile] = useState(null); // Stores selected image file when a user chooses to update their profile picture
+    const navigate = useNavigate(); // React function allows me to dynamically navigate to different routes
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -32,8 +32,9 @@ function Profile() {
                     console.log(error);
                 });
         }
-    }, [userId]);
+    }, [userId]); // Fetch data dependent on userId. Component will dynamically update with the correct profile data when the userId changes
 
+    // Function dynamically updates user information on change
     const handleProfileChange = (event) => {
         event.preventDefault();
         const token = localStorage.getItem('token');
@@ -41,8 +42,8 @@ function Profile() {
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('image', profilePicFile);
-            formData.append('firstName', firstName); // Add firstName value
-            formData.append('lastName', lastName); // Add lastName value
+            formData.append('firstName', firstName);
+            formData.append('lastName', lastName);
 
             axios
                 .post(`http://localhost:3001/api/${userId}`, formData, {
@@ -50,7 +51,7 @@ function Profile() {
                 })
                 .then((response) => {
                     setProfilePicUrl(response.data.user.profilePic);
-                    navigate('/feed'); // Redirect to /feed upon successful update
+                    navigate('/feed'); // Redirect to /feed upon successful profile update
                     console.log('Profile updated successfully');
                 })
                 .catch((error) => {
@@ -78,8 +79,8 @@ function Profile() {
     };
 
     const setDisplayedImage = (value) => {
-        setProfilePicUrl(URL.createObjectURL(value));
-        setProfilePicFile(value);
+        setProfilePicUrl(URL.createObjectURL(value)); // Sets the temporary URL of the selected image
+        setProfilePicFile(value); // Sets URL of selected image file
     };
 
     return (

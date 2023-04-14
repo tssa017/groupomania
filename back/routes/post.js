@@ -10,7 +10,7 @@ router.get('/posts/:userId', auth, postCtrl.getAllPosts);
 // router.get('/posts/:id', auth, postCtrl.getSinglePost); // TODO: check endpoint
 router.post('/posts/:userId', auth, multer, postCtrl.createPost);
 // router.put('/:id', auth, multer, postCtrl.modifyPost);
-// router.delete('/:id', auth, postCtrl.deletePost); // TODO: check endpoint
+router.delete('/posts/:id', postCtrl.deletePost);
 // router.post('/:id/like', auth, postCtrl.likePost); // TODO: check endpoint
 
 // Export

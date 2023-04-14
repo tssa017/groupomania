@@ -119,8 +119,8 @@ exports.modifyProfile = (req, res) => {
     const userId = req.params.userId; // Get userId from request parameters
     const url = req.protocol + '://' + req.get('host');
     const profilePic = req.file ? url + '/images/' + req.file.filename : ''; // Use filename or name property if available
-    const firstName = req.body.firstName; // Get firstName from request body
-    const lastName = req.body.lastName; // Get lastName from request body
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
 
     User.findOne({
         where: {

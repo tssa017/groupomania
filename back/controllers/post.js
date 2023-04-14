@@ -18,9 +18,7 @@ exports.getAllPosts = async (req, res) => {
 // POST route that creates a new post and saves to database
 exports.createPost = async (req, res) => {
     const url = req.protocol + '://' + req.get('host');
-    const postPicUrl = req.body.postPicUrl
-        ? url + '/images/' + req.body.postPicUrl
-        : '';
+    const postPicUrl = req.file ? url + '/images/' + req.file.filename : '';
     try {
         const newPost = await Post.create({
             userId: req.body.userId,
@@ -36,7 +34,6 @@ exports.createPost = async (req, res) => {
         });
     }
 };
-
 // GET route for single post based on its id
 // exports.getSinglePost = async (req, res) => {
 //     try {
@@ -106,28 +103,24 @@ exports.createPost = async (req, res) => {
 // };
 
 // DELETE route deletes an exisiting Post object based on its ID
-// exports.deletePost = async (req, res) => {
-//     try {
-//         const post = await Post.findOne({
-//             where: { id: req.params.id },
-//         });
-//         if (!post) {
-//             throw new Error('Post not found');
-//         }
-//         const filename = post.postPicUrl.split('/images/')[1];
-//         fs.unlink('images/' + filename, async () => {
-//             // Deletes file from file system
-//             await post.destroy();
-//             res.status(200).json({
-//                 message: 'Deleted!',
-//             });
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             error: error.message,
-//         });
-//     }
-// };
+exports.deletePost = async (req, res) => {
+    try {
+        const post = await Post.findOne({
+            where: { id: req.params.id },
+        });
+        if (!post) {
+            throw new Error('Post not found');
+        }
+        await post.destroy();
+        res.status(200).json({
+            message: 'Deleted!',
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};
 
 // POST route allows user to like a comment
 // exports.likePost = (req, res) => {

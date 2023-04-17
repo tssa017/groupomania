@@ -57,6 +57,25 @@
                     padding: 0.5rem;
                 }
             }
+
+            &-publisher {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
+                padding: 0.5rem;
+
+                &-img {
+                    width: 5rem;
+                    height: auto;
+                    @include borderStyle;
+                }
+
+                &-name {
+                    font-weight: 700;
+                    font-size: 1.2rem;
+                }
+            }
         }
 
         &--reactions {

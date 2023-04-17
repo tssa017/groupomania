@@ -35,72 +35,70 @@ exports.createPost = async (req, res) => {
     }
 };
 // GET route for single post based on its id
-// exports.getSinglePost = async (req, res) => {
-//     try {
-//         const postId = req.params.id;
-//         const post = await Post.findOne({
-//             where: { id: postId },
-//         });
-//         if (!post) {
-//             throw new Error('Post not found');
-//         }
-//         res.status(200).json(post);
-//     } catch (error) {
-//         res.status(404).json({
-//             error: error.message,
-//         });
-//     }
-// };
+exports.getSinglePost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const post = await Post.findOne({
+            where: { id: postId },
+        });
+        if (!post) {
+            throw new Error('Post not found');
+        }
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(404).json({
+            error: error.message,
+        });
+    }
+};
 
-// PUT route modifies an existing sauce object based on its ID
-// exports.modifyPost = async (req, res) => {
-//     const postId = req.params.id;
-//     const userId = req.auth.userId;
+// POST route modifies an existing post object based on its ID
+exports.modifyPost = (req, res) => {
+    const url = req.protocol + '://' + req.get('host');
+    const postPicUrl = req.file ? url + '/images/' + req.file.filename : ''; // Use filename or name property if available
+    const postText = req.body.content;
 
-//     try {
-//         const post = await Post.findOne({
-//             where: {
-//                 id: postId,
-//                 userId: userId,
-//             },
-//         });
+    Post.findOne({
+        where: {
+            id: req.params.id,
+            userId: req.body.userId,
+        },
+    })
+        .then((post) => {
+            if (!post) {
+                return res.status(404).json({ error: 'Post not found.' });
+            }
 
-//         if (!post) {
-//             return res.status(404).json({ error: 'Post not found.' });
-//         }
+            const updatedFields = {}; // Create an empty object to store the updated fields
+            if (postText) {
+                updatedFields.post = postText; // Update 'post' field with the new post content
+            }
+            if (postPicUrl) {
+                updatedFields.postPicUrl = postPicUrl; // Update 'postPicUrl' field with the new post picture URL
+            }
 
-//         let update = req.body;
-
-//         if (req.file) {
-//             const postPicUrl = `${req.protocol}://${req.get('host')}/images/${
-//                 req.file.filename
-//             }`;
-//             update = { ...JSON.parse(req.body.post), postPicUrl };
-//         }
-
-//         const [rowsUpdated, [updatedPost]] = await Post.update(update, {
-//             // Array of objects that represents the updated instances
-//             where: {
-//                 id: postId,
-//                 userId: userId,
-//             },
-//             returning: true,
-//         });
-
-//         if (rowsUpdated === 0) {
-//             return res.status(404).json({ error: 'Post not found.' });
-//         }
-
-//         res.status(200).json({
-//             message: 'Post updated successfully!',
-//             post: updatedPost,
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             error: error.message || 'Failed to update post.',
-//         });
-//     }
-// };
+            // Use the update method to update the post in the database
+            Post.update(updatedFields, {
+                where: { id: req.params.id, userId: req.body.userId }, // Provide the where clause for the update operation
+            })
+                .then((updatedPost) => {
+                    console.log('Post updated successfully');
+                    return res.status(200).json(updatedPost);
+                })
+                .catch((error) => {
+                    console.error('Failed to update post:', error);
+                    return res
+                        .status(500)
+                        .json({ error: 'Failed to update post.' });
+                });
+        })
+        .catch((error) => {
+            console.error('Error fetching post:', error);
+            console.log('######################');
+            console.log(req.body);
+            return res.status(500).json({ error: 'Failed to fetch post.' });
+        });
+};
 
 // DELETE route deletes an exisiting Post object based on its ID
 exports.deletePost = async (req, res) => {

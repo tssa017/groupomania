@@ -8,7 +8,6 @@ function Edit() {
     const [id, setId] = useState(''); // Add state to keep track of the post being edited
     const [userId, setUserId] = useState('');
     const [postPicUrl, setPostPicUrl] = useState(null); // Store the URL of the post picture displayed in the UI
-    const [postPicFile, setPostPicFile] = useState(null); // Stores selected image file when a user chooses to update their post picture
     const [post, setPost] = useState(null); // Store the text content of the post
     const [isFileSelected, setIsFileSelected] = useState(false); // Set to false initially to keep track of whether or not a file has been uploaded
     const navigate = useNavigate(); // React function allows me to dynamically navigate to different routes
@@ -34,6 +33,16 @@ function Edit() {
     };
     getPostById();
 
+    const handleFileInputChange = (event) => {
+        const file = event.target.files[0]; // Retrieves uploaded image file
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            setPostPicUrl(event.target.result); // Set the postPicUrl hook to the base64-encoded data URL of selected image file, re-renders
+        };
+        reader.readAsDataURL(file); // Reads file
+        setIsFileSelected(true); // Resets isFileSelected hook so that the file preview is displayed
+    };
+
     // Function allows user to modifies post
     const modifyPost = (event) => {
         event.preventDefault();
@@ -42,7 +51,7 @@ function Edit() {
             const formData = new FormData();
             formData.append('userId', userId);
             formData.append('id', id);
-            formData.append('image', postPicFile);
+            formData.append('image', postPicUrl);
             formData.append('post', post); // TODO: Might need to change this?
 
             const updatedPostContent = event.target.elements.content.value;
@@ -50,13 +59,18 @@ function Edit() {
             const updatedPostPicUrl = event.target.elements.image.value;
             formData.set('image', updatedPostPicUrl);
 
+            // Check if image file exists before appending to form data
+            if (isFileSelected) {
+                // Use the isFileSelected state to check if an image file has been selected
+                formData.append('image', event.target.image.files[0]); // Append the actual image file to the form data
+            }
+
             axios
                 .post(`http://localhost:3001/api/edit-post/${id}`, formData, {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {
                     setPostPicUrl(response.data.postPicUrl);
-                    setPost(response.data.post); // TODO: May not need this
                     console.log(id);
                     navigate('/feed'); // Redirect to /feed upon successful profile update
                     console.log('Post updated successfully');
@@ -65,11 +79,6 @@ function Edit() {
                     console.error('Failed to update post:', error);
                 });
         }
-    };
-
-    const setDisplayedImage = (value) => {
-        setPostPicUrl(URL.createObjectURL(value)); // Sets the temporary URL of the selected image
-        setPostPicFile(value); // Sets URL of selected image file
     };
 
     return (
@@ -100,12 +109,7 @@ function Edit() {
                                     id="image-input"
                                     name="image"
                                     accept="image/*"
-                                    onChange={
-                                        (event) =>
-                                            setDisplayedImage(
-                                                event.target.files[0]
-                                            ) // Pass the uploaded image file to setDisplayedImage function
-                                    }
+                                    onChange={handleFileInputChange}
                                 />
                             </label>
                             <input

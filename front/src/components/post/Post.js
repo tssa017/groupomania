@@ -24,21 +24,57 @@ function Post() {
                 })
                 .then((response) => {
                     const reversedPosts = response.data.reverse(); // Ensure posts display in reverse order (newest to oldest)
-                    setPosts(reversedPosts); // Update the post state with fetched posts data in reverse order
-                    console.log('Successfully fetched posts!');
+
+                    // Get user information for all posts
+                    const promises = reversedPosts.map((post) => {
+                        return axios.get(
+                            `http://localhost:3001/api/${post.userId}`,
+                            {
+                                headers: { Authorization: `Bearer ${token}` },
+                            }
+                        );
+                    });
+
+                    // Wait for all requests to finish and update the state with modified posts
+                    Promise.all(promises)
+                        .then((responses) => {
+                            const updatedPosts = reversedPosts.map(
+                                (post, i) => {
+                                    const userResponse = responses[i];
+                                    if (
+                                        userResponse.data &&
+                                        userResponse.data.firstName
+                                    ) {
+                                        const firstName =
+                                            userResponse.data.firstName;
+                                        const lastName =
+                                            userResponse.data.lastName;
+                                        const profilePic =
+                                            userResponse.data.profilePic;
+                                        post.firstName = firstName;
+                                        post.lastName = lastName;
+                                        post.profilePicUrl = profilePic;
+                                    }
+                                    return post;
+                                }
+                            );
+                            setPosts(updatedPosts); // Update the post state with fetched posts data in reverse order
+                            console.log('Successfully fetched posts!');
+                        })
+                        .catch((error) => {
+                            console.error(
+                                'Error fetching user information:',
+                                error
+                            );
+                        });
+
+                    setUserId(userId);
                 })
                 .catch((error) => {
                     console.error('Error fetching posts:', error);
                 });
-        }
-    }, []);
 
-    const getUser = () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const decodedToken = jwtDecode(token); // Method from jwt-decode library that parses the payload and headers of the token to JSON
-            const userId = decodedToken.userId;
-
+            // Get user information
             axios
                 .get(`http://localhost:3001/api/${userId}`, {
                     headers: { Authorization: `Bearer ${token}` },
@@ -50,7 +86,6 @@ function Post() {
                         const lastName = response.data.lastName;
                         const profilePic = response.data.profilePic;
                         // Set extracted values
-                        setUserId(userId);
                         setFirstName(firstName);
                         setLastName(lastName);
                         setProfilePicUrl(profilePic);
@@ -60,8 +95,7 @@ function Post() {
                     console.log(error);
                 });
         }
-    };
-    getUser();
+    }, []);
 
     const deletePost = (id) => {
         const token = localStorage.getItem('token');
@@ -81,50 +115,65 @@ function Post() {
         }
     };
 
+    const handleEditClick = (postId) => {
+        localStorage.setItem('postId', postId);
+        window.location.href = '/edit'; // Redirect to the "/edit" page
+    };
+
     // Function maps information from post response into posts so they are dynamically rendered in DOM
     const renderPosts = () => {
-        return posts.map((post) => (
-            <div className="post" key={post.id}>
-                <article className="post__cont">
-                    <section className="post__cont--status">
-                        <div className="post__cont--status-publisher">
-                            <img
-                                className="post__cont--status-publisher-img"
-                                src={profilePicUrl}
-                                alt="User profile picture"
-                            />
-                            <p className="post__cont--status-publisher-name">
-                                {firstName + ' ' + lastName}
-                            </p>
-                        </div>
-                        <p className="post__cont--status-txt" name="content">
-                            {post.post}
-                            {post.postPicUrl !== '' ? (
+        return posts.map((post) => {
+            const isPostAuthor = post.userId === userId;
+            // Render the post with the updated user information
+            return (
+                <div className="post" key={post.id}>
+                    <article className="post__cont">
+                        <section className="post__cont--status">
+                            <div className="post__cont--status-publisher">
                                 <img
-                                    className="post__cont--status-txt-img"
-                                    name="image"
-                                    src={post.postPicUrl}
-                                    alt="Image included in post"
+                                    className="post__cont--status-publisher-img"
+                                    src={post.profilePicUrl}
+                                    alt="User profile picture"
                                 />
-                            ) : null}
-                        </p>
-                        <article className="post__cont--status-edit-cont">
-                            <Link to="/edit">
-                                <button className="post__cont--status-edit-cont--edit">
-                                    Edit
-                                </button>
-                            </Link>
-                            <button
-                                className="post__cont--status-edit-cont--delete"
-                                onClick={() => deletePost(post.id)}
+                                <p className="post__cont--status-publisher-name">
+                                    {post.firstName} {post.lastName}
+                                </p>
+                            </div>
+                            <p
+                                className="post__cont--status-txt"
+                                name="content"
                             >
-                                Delete
-                            </button>
-                        </article>
-                    </section>
-                </article>
-            </div>
-        ));
+                                {post.post}
+                                {post.postPicUrl !== '' ? (
+                                    <img
+                                        className="post__cont--status-txt-img"
+                                        name="image"
+                                        src={post.postPicUrl}
+                                        alt="Image included in post"
+                                    />
+                                ) : null}
+                            </p>
+                            {isPostAuthor && (
+                                <article className="post__cont--status-edit-cont">
+                                    <button
+                                        className="post__cont--status-edit-cont--edit"
+                                        onClick={() => handleEditClick(post.id)}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        className="post__cont--status-edit-cont--delete"
+                                        onClick={() => deletePost(post.id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </article>
+                            )}
+                        </section>
+                    </article>
+                </div>
+            );
+        });
     };
 
     return <div className="wrapper">{renderPosts()}</div>;

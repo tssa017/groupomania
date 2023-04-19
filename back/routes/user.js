@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const auth = require('../middleware/auth.js'); // TODO: Do I need?
 const multer = require('../middleware/multer-config');
 const userCtrl = require('../controllers/user');
 
@@ -9,7 +8,6 @@ router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
 
 // Define general user endpoints
-// router.get('/:userId', userCtrl.getAllUsers); // TODO: Check endpoint
 router.get('/:userId', userCtrl.getSingleUser);
 router.delete('/:userId', userCtrl.deleteUser);
 

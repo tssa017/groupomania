@@ -61,13 +61,15 @@ exports.modifyPost = (req, res) => {
     Post.findOne({
         where: {
             id: req.params.id,
-            userId: req.body.userId,
         },
     })
         .then((post) => {
             if (!post) {
                 return res.status(404).json({ error: 'Post not found.' });
             }
+
+            // Use the userId property of the post object to get the user ID associated with that post
+            const userId = post.userId;
 
             const updatedFields = {}; // Create an empty object to store the updated fields
             if (postText) {
@@ -79,7 +81,7 @@ exports.modifyPost = (req, res) => {
 
             // Use the update method to update the post in the database
             Post.update(updatedFields, {
-                where: { id: req.params.id, userId: req.body.userId }, // Provide the where clause for the update operation
+                where: { id: req.params.id, userId: userId }, // Use the retrieved user ID to update the post
             })
                 .then((updatedPost) => {
                     console.log('Post updated successfully');
@@ -94,8 +96,6 @@ exports.modifyPost = (req, res) => {
         })
         .catch((error) => {
             console.error('Error fetching post:', error);
-            console.log('######################');
-            console.log(req.body);
             return res.status(500).json({ error: 'Failed to fetch post.' });
         });
 };

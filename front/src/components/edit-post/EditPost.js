@@ -11,6 +11,7 @@ function Edit() {
     const [post, setPost] = useState(null); // Store the text content of the post
     const [isFileSelected, setIsFileSelected] = useState(false); // Set to false initially to keep track of whether or not a file has been uploaded
     const navigate = useNavigate(); // React function allows me to dynamically navigate to different routes
+    const postId = localStorage.getItem('postId');
 
     const getPostById = (id) => {
         const token = localStorage.getItem('token');
@@ -20,8 +21,8 @@ function Edit() {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {
-                    setId(response.data[0].id);
-                    setUserId(response.data[0].userId);
+                    setId(id); // Set the id state to the parameter value
+                    setUserId(response.data[0].userId); // Update the userId state with the correct value
                     setPost(response.data[0].post);
                     setPostPicUrl(response.data[0].postPicUrl);
                     console.log('Successfully fetched post for editing!');
@@ -31,7 +32,10 @@ function Edit() {
                 });
         }
     };
-    getPostById();
+
+    useEffect(() => {
+        getPostById(postId); // Call the function with postId as an argument
+    }, [postId]);
 
     const handleFileInputChange = (event) => {
         const file = event.target.files[0]; // Retrieves uploaded image file
@@ -52,7 +56,7 @@ function Edit() {
             formData.append('userId', userId);
             formData.append('id', id);
             formData.append('image', postPicUrl);
-            formData.append('post', post); // TODO: Might need to change this?
+            formData.append('post', post);
 
             const updatedPostContent = event.target.elements.content.value;
             formData.set('content', updatedPostContent);
@@ -76,6 +80,7 @@ function Edit() {
                     console.log('Post updated successfully');
                 })
                 .catch((error) => {
+                    console.log(userId);
                     console.error('Failed to update post:', error);
                 });
         }

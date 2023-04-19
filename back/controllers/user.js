@@ -77,21 +77,6 @@ module.exports.login = async (req, res) => {
 };
 
 // User routes
-// GET route that gets an array of all users from database
-// exports.getAllUsers = (req, res) => {
-//     User.findAll({
-//         attributes: { exclude: ['password', 'email'] }, // Exclude sensitive information
-//     })
-//         .then((users) => {
-//             res.status(200).json(users);
-//         })
-//         .catch((error) => {
-//             res.status(400).json({
-//                 error: error,
-//             });
-//         });
-// };
-
 module.exports.getSingleUser = async (req, res) => {
     try {
         const userId = req.params.userId; // Retrieve the user ID from the URL parameter
@@ -103,7 +88,7 @@ module.exports.getSingleUser = async (req, res) => {
 
         // Check if user exists
         if (!userData) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Useruuu not found' }); // TODO: Change
         }
 
         // Send the user data as response

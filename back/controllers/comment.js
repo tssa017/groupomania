@@ -2,35 +2,29 @@
 const fs = require('fs'); // TODO: Do I need?
 let db = require('../models');
 const Comment = db.Comment;
-const User = db.User;
+// const User = db.User;
 
 // GET route that gets an array of all comments from database
-// exports.getAllComments = async (req, res) => {
-//     try {
-//         const comments = await Comment.findAll();
-//         res.status(200).json(comments);
-//     } catch (error) {
-//         res.status(400).json({
-//             error: error.message,
-//         });
-//     }
-// };
-console.log('yo');
+exports.getAllComments = async (req, res) => {
+    try {
+        const comments = await Comment.findAll();
+        res.status(200).json(comments);
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};
 
 // POST route that creates a new comment and saves to database
 exports.createComment = async (req, res) => {
-    console.log('hello');
     console.log(req.body.content);
     try {
-        console.log('im in s');
-        console.log(req.body.content);
         const newComment = await Comment.create({
             postId: req.body.postId,
             userId: req.body.userId,
             comment: req.body.content,
         });
-        console.log('im in');
-
         res.status(201).json({
             message: 'Comment saved successfully!',
         });
@@ -40,7 +34,6 @@ exports.createComment = async (req, res) => {
         });
     }
 };
-console.log('tippooooo');
 
 // PUT route modifies a Comment object based on its ID
 // exports.modifyComment = (req, res) => {
@@ -86,24 +79,24 @@ console.log('tippooooo');
 // };
 
 // // DELETE route deletes an exisiting Comment object based on its ID
-// exports.deleteComment = async (req, res) => {
-//     try {
-//         const comment = await Comment.findOne({
-//             where: { id: req.params.id },
-//         });
-//         if (!comment) {
-//             throw new Error('Comment not found');
-//         }
-//         await comment.destroy();
-//         res.status(200).json({
-//             message: 'Comment deleted successfully!',
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             error: error.message,
-//         });
-//     }
-// };
+exports.deleteComment = async (req, res) => {
+    try {
+        const comment = await Comment.findOne({
+            where: { id: req.params.id },
+        });
+        if (!comment) {
+            throw new Error('Comment not found');
+        }
+        await comment.destroy();
+        res.status(200).json({
+            message: 'Deleted!',
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};
 
 // // POST route allows user to like a comment
 // exports.likeComment = (req, res) => {

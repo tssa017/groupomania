@@ -6,6 +6,7 @@ import jwtDecode from 'jwt-decode';
 
 function Post() {
     const [posts, setPosts] = useState([]); // Stores posts data as an array
+    const [comments, setComments] = useState([]);
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -71,6 +72,47 @@ function Post() {
                             );
                         });
 
+                    // Fetch comments data for all posts
+                    const commentPromises = reversedPosts.map((post) => {
+                        return axios.get(
+                            `http://localhost:3001/api/comments/${userId}`,
+                            {
+                                headers: { Authorization: `Bearer ${token}` },
+                            }
+                        );
+                    });
+
+                    // Wait for all requests to finish and update the state with comments data for each post
+                    Promise.all(commentPromises)
+                        .then((commentResponses) => {
+                            const updatedPosts = reversedPosts.map(
+                                (post, i) => {
+                                    const commentResponse = commentResponses[i];
+                                    if (commentResponse.data) {
+                                        const comments = commentResponse.data;
+                                        post.comments = comments;
+                                        console.log(commentResponse.data);
+
+                                        //     const firstName =
+                                        //     userResponse.data.firstName;
+                                        // const lastName =
+                                        //     userResponse.data.lastName;
+                                        // const profilePic =
+                                        //     userResponse.data.profilePic;
+                                        // post.firstName = firstName;
+                                        // post.lastName = lastName;
+                                        // post.profilePicUrl = profilePic;
+                                    }
+                                    return post;
+                                }
+                            );
+                            setPosts(updatedPosts); // Update the post state with fetched comments data for each post
+                            console.log('Successfully fetched comments!');
+                        })
+                        .catch((error) => {
+                            console.error('Error fetching comments:', error);
+                        });
+
                     setUserId(userId);
                 })
                 .catch((error) => {
@@ -108,12 +150,31 @@ function Post() {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {
-                    // Update the posts state by removing the deleted post from the array
                     setPosts(posts.filter((post) => post.id !== id));
                     console.log('Successfully deleted post!');
                 })
                 .catch((error) => {
                     console.error('Error deleting post:', error);
+                });
+        }
+    };
+
+    const deleteComment = (id) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios
+                .delete(`http://localhost:3001/api/comments/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                })
+                .then((response) => {
+                    setComments(
+                        comments.filter((comment) => comment.id !== id)
+                    );
+                    console.log('Successfully deleted comment!');
+                    window.location.reload(); // Refresh the page after deletion
+                })
+                .catch((error) => {
+                    console.error('Error deleting comment:', error);
                 });
         }
     };
@@ -242,18 +303,50 @@ function Post() {
                             >
                                 <input
                                     type="submit" // Submit form
-                                    className="post__cont--comment-cont-edit-cont--post"
+                                    className="create-post__cont--btns-postBtn"
                                     id="button"
                                     value="POST"
                                 />
-                                <button className="post__cont--comment-cont-edit-cont--delete">
-                                    Delete
-                                </button>
-                                {/* // TODO: Hide this */}
-                                <button className="post__cont--comment-cont-edit-cont--edit">
-                                    Edit
-                                </button>
                             </form>
+                        </section>
+                        {/* Render the comments */}
+                        <section className="post__cont--comment-cont">
+                            {post.comments &&
+                                post.comments.map((comment) => (
+                                    <div
+                                        className="post__comment"
+                                        key={comment.id}
+                                    >
+                                        <p className="post__cont--status-publisher-name">
+                                            {comment.firstName}
+                                        </p>
+                                        <p className="post__cont--comment-cont-post">
+                                            {comment.comment}
+                                        </p>
+                                        {isPostAuthor && (
+                                            <article className="post__cont--status-edit-cont">
+                                                <button
+                                                    className="post__cont--status-edit-cont--edit"
+                                                    onClick={() =>
+                                                        handleEditClick(post.id)
+                                                    }
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    className="post__cont--status-edit-cont--delete"
+                                                    onClick={() =>
+                                                        deleteComment(
+                                                            comment.id
+                                                        )
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </article>
+                                        )}
+                                    </div>
+                                ))}
                         </section>
                     </div>
                 </div>

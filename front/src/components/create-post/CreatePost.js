@@ -52,8 +52,8 @@ function CreatePost() {
         event.preventDefault(); // Prevent default form refresh and submit
 
         const formData = new FormData(); // FormData object used to construct and
-        formData.append('content', event.target.content.value); // Appends value of the 'form' (the post) with text input by user
-        formData.append('userId', userId); // TODO: Appends value of the 'form' with userId (will need for name, profilePic later)
+        formData.append('content', event.target.content.value);
+        formData.append('userId', userId);
 
         // Check if image file exists before appending to form data
         if (isFileSelected) {

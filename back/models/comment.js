@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
-            comment: DataTypes.STRING,
+            comment: { type: DataTypes.STRING(4000) },
             likes: DataTypes.INTEGER,
             usersLiked: DataTypes.STRING,
         },

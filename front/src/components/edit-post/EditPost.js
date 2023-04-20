@@ -99,13 +99,6 @@ function Edit() {
                             placeholder="Edit post..."
                             maxLength={500}
                         ></textarea>
-                        {isFileSelected && ( // Only renders if file is currently selected
-                            <img
-                                src={postPicUrl}
-                                className="create-post__cont--post-img"
-                                alt="User post img"
-                            />
-                        )}
                         <div className="create-post__cont--post-error"></div>
                         <section className="create-post__cont--btns">
                             <label htmlFor="image">

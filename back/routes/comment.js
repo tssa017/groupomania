@@ -6,8 +6,8 @@ const commentCtrl = require('../controllers/comment');
 
 // Define Comment endpoints
 // router.get('/comments', auth, commentCtrl.getAllComments);
-// router.post('/comments/:postId', auth, commentCtrl.createComment);
-// router.put('/comments/:id', auth, commentCtrl.modifyComment);
+router.post('/comments/:postId', auth, commentCtrl.createComment);
+// router.post('/comments/:id', auth, commentCtrl.modifyComment); // TODO: check endpoint
 // router.delete('/comments/:id', auth, commentCtrl.deleteComment);
 // router.post('/:id/like', auth, commentCtrl.likeComment); // TODO: check endpoint
 

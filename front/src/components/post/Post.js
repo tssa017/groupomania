@@ -10,6 +10,9 @@ function Post() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState('');
+    const [postId, setPostId] = useState(''); // TODO: Figure this out
+    const [commentContent, setCommentContent] = useState('');
+    console.log(commentContent);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -120,6 +123,38 @@ function Post() {
         window.location.href = '/edit'; // Redirect to the "/edit" page
     };
 
+    const createComment = (event, postId) => {
+        event.preventDefault(); // TODO: nav
+
+        console.log(postId);
+
+        const content = commentContent;
+
+        const commentData = {
+            postId,
+            userId,
+            content,
+        };
+
+        axios
+            .post(`http://localhost:3001/api/comments/${postId}`, commentData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            })
+            .then((response) => {
+                console.log('Comment created successfully:');
+
+                // Reset the form
+                event.target.reset(); // Reset the post after submission
+                window.location.reload(); // Refresh the page after submission
+            })
+            .catch((error) => {
+                console.error('Failed to add comment:', error);
+                console.log(commentData);
+            });
+    };
+
     // Function maps information from post response into posts so they are dynamically rendered in DOM
     const renderPosts = () => {
         return posts.map((post) => {
@@ -171,6 +206,56 @@ function Post() {
                             )}
                         </section>
                     </article>
+                    <section className="post__cont--reactions">
+                        {/* <div className="post__cont--reactions--comments">
+                            1 Comment
+                        </div> */}
+                        <div className="post__cont--reactions-likes">
+                            {/* // TODO: Change */}
+                            {`${userId} likes`}
+                        </div>
+                        <i className="post__cont--reactions--like fa-solid fa-heart"></i>
+                    </section>
+                    <div className="create-comment">
+                        <section className="post__cont--comment-cont">
+                            <img
+                                className="post__cont--comment-cont-img"
+                                src={profilePicUrl}
+                                alt="User profile picture"
+                            />
+                            <textarea
+                                type="text"
+                                name="content"
+                                id="content"
+                                className="post__cont--comment-cont-post"
+                                placeholder={`Have something to say about this, ${firstName}?`}
+                                maxLength={500}
+                                onChange={(event) =>
+                                    setCommentContent(event.target.value)
+                                }
+                            ></textarea>
+                            <form
+                                className="post__cont--comment-cont-edit-cont"
+                                onSubmit={(event) =>
+                                    createComment(event, post.id)
+                                }
+                            >
+                                <input
+                                    type="submit" // Submit form
+                                    className="post__cont--comment-cont-edit-cont--post"
+                                    id="button"
+                                    value="POST"
+                                />
+                                <button className="post__cont--comment-cont-edit-cont--delete">
+                                    Delete
+                                </button>
+                                {/* // TODO: Hide this */}
+                                <button className="post__cont--comment-cont-edit-cont--edit">
+                                    Edit
+                                </button>
+                            </form>
+                        </section>
+                    </div>
                 </div>
             );
         });

@@ -34,6 +34,7 @@ exports.createPost = async (req, res) => {
         });
     }
 };
+
 // GET route for single post based on its id
 exports.getSinglePost = async (req, res) => {
     try {

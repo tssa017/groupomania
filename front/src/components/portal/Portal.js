@@ -8,6 +8,7 @@ function Portal() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [signedUp, setSignedUp] = useState(false); // Keep track of sign in state
 
     // JS function to reset input fields to an empty string
     const resetFields = () => {
@@ -83,7 +84,10 @@ function Portal() {
             });
 
             if (res.status >= 200 && res.status < 300) {
-                window.location.href = '/feed';
+                setSignedUp(true);
+                alert(
+                    'User saved! To complete the verification process, please log in to your account'
+                );
             }
         } catch (err) {
             console.log(err);
@@ -103,8 +107,7 @@ function Portal() {
             if (res.status >= 200 && res.status < 300) {
                 // Store the token in local storage
                 localStorage.setItem('token', res.data.token);
-
-                window.location.href = '/feed';
+                window.location.href = '/feed'; // TODO: replace with nav
             }
         } catch (err) {
             alert('Login failed. Please use a valid email and password.');
@@ -153,73 +156,76 @@ function Portal() {
                 </div>
 
                 {/* Conditional Signup and Login form rendering */}
-                {(buttonState.signupClicked || // If signup has been clicked or if neither button has been clicked (default setting), the Signup form will render
-                    (!buttonState.signupClicked &&
-                        !buttonState.loginClicked)) && (
-                    <form className="portal__form" onSubmit={handleSignup}>
-                        <div className="portal__form-group">
-                            <label htmlFor="firstName">First name</label>
+                {!signedUp &&
+                    (buttonState.signupClicked || // If signup has been clicked or if neither button has been clicked (default setting), the Signup form will render
+                        (!buttonState.signupClicked &&
+                            !buttonState.loginClicked)) && (
+                        <form className="portal__form" onSubmit={handleSignup}>
+                            <div className="portal__form-group">
+                                <label htmlFor="firstName">First name</label>
+                                <input
+                                    className="input"
+                                    id="firstName"
+                                    name="firstName"
+                                    type="text"
+                                    onChange={({ target }) =>
+                                        setFirstName(target.value)
+                                    }
+                                />
+                                <p id="firstNameErrorMsg" className="alert"></p>
+                            </div>
+                            <div className="portal__form-group">
+                                <label htmlFor="lastName">Last name</label>
+                                <input
+                                    className="input"
+                                    id="lastName"
+                                    name="lastName"
+                                    type="text"
+                                    onChange={({ target }) =>
+                                        setLastName(target.value)
+                                    }
+                                />
+                                <p id="lastNameErrorMsg" className="alert"></p>
+                            </div>
+                            <div className="portal__form-group">
+                                <label htmlFor="emailAddress">
+                                    Email address
+                                </label>
+                                <input
+                                    className="input"
+                                    id="emailAddress"
+                                    name="emailAddress"
+                                    type="text"
+                                    onChange={({ target }) =>
+                                        setEmail(target.value)
+                                    }
+                                    value={email}
+                                />
+                                <p id="emailErrorMsg" className="alert"></p>
+                            </div>
+                            <div className="portal__form-group">
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    className="input"
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    onChange={({ target }) =>
+                                        setPassword(target.value)
+                                    }
+                                    value={password}
+                                />
+                                <p id="passwordErrorMsg" className="alert"></p>
+                            </div>
                             <input
-                                className="input"
-                                id="firstName"
-                                name="firstName"
-                                type="text"
-                                onChange={({ target }) =>
-                                    setFirstName(target.value)
-                                }
+                                className="portal__enter-btn"
+                                type="submit"
+                                value="Create account" // Runs handleLogin() on submit (click event)
                             />
-                            <p id="firstNameErrorMsg" className="alert"></p>
-                        </div>
-                        <div className="portal__form-group">
-                            <label htmlFor="lastName">Last name</label>
-                            <input
-                                className="input"
-                                id="lastName"
-                                name="lastName"
-                                type="text"
-                                onChange={({ target }) =>
-                                    setLastName(target.value)
-                                }
-                            />
-                            <p id="lastNameErrorMsg" className="alert"></p>
-                        </div>
-                        <div className="portal__form-group">
-                            <label htmlFor="emailAddress">Email address</label>
-                            <input
-                                className="input"
-                                id="emailAddress"
-                                name="emailAddress"
-                                type="text"
-                                onChange={({ target }) =>
-                                    setEmail(target.value)
-                                }
-                                value={email}
-                            />
-                            <p id="emailErrorMsg" className="alert"></p>
-                        </div>
-                        <div className="portal__form-group">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                className="input"
-                                id="password"
-                                name="password"
-                                type="password"
-                                onChange={({ target }) =>
-                                    setPassword(target.value)
-                                }
-                                value={password}
-                            />
-                            <p id="passwordErrorMsg" className="alert"></p>
-                        </div>
-                        <input
-                            className="portal__enter-btn"
-                            type="submit"
-                            value="Create account" // Runs handleLogin() on submit (click event)
-                        />
-                    </form>
-                )}
+                        </form>
+                    )}
 
-                {buttonState.loginClicked && (
+                {(buttonState.loginClicked || signedUp) && (
                     <form className="portal__form" onSubmit={handleLogin}>
                         <div className="portal__form-group">
                             <label htmlFor="emailAddress">Email address</label>

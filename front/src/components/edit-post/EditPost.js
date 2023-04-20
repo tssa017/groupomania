@@ -47,7 +47,7 @@ function Edit() {
         setIsFileSelected(true); // Resets isFileSelected hook so that the file preview is displayed
     };
 
-    // Function allows user to modifies post
+    // Function allows user to modify a post
     const modifyPost = (event) => {
         event.preventDefault();
         const token = localStorage.getItem('token');
@@ -75,12 +75,10 @@ function Edit() {
                 })
                 .then((response) => {
                     setPostPicUrl(response.data.postPicUrl);
-                    console.log(id);
                     navigate('/feed'); // Redirect to /feed upon successful profile update
                     console.log('Post updated successfully');
                 })
                 .catch((error) => {
-                    console.log(userId);
                     console.error('Failed to update post:', error);
                 });
         }

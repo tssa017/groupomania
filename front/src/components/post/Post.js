@@ -1,19 +1,22 @@
 import '../../index.scss';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
 function Post() {
     const [posts, setPosts] = useState([]); // Stores posts data as an array
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState([]); // Stores posts data as an array
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState('');
-    const [postId, setPostId] = useState(''); // TODO: Figure this out
+    const [postId, setPostId] = useState(''); // TODO: Do I need this?
     const [commentContent, setCommentContent] = useState('');
-    console.log(commentContent);
+    const [commentId, setCommentId] = useState('');
+    const [comment, setComment] = useState(null); // Store the text content of the comment
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -39,16 +42,12 @@ function Post() {
                         );
                     });
 
-                    // Wait for all requests to finish and update the state with modified posts
                     Promise.all(promises)
                         .then((responses) => {
                             const updatedPosts = reversedPosts.map(
                                 (post, i) => {
                                     const userResponse = responses[i];
-                                    if (
-                                        userResponse.data &&
-                                        userResponse.data.firstName
-                                    ) {
+                                    if (userResponse.data) {
                                         const firstName =
                                             userResponse.data.firstName;
                                         const lastName =
@@ -62,7 +61,7 @@ function Post() {
                                     return post;
                                 }
                             );
-                            setPosts(updatedPosts); // Update the post state with fetched posts data in reverse order
+                            setPosts(updatedPosts); // Update post state with posts data
                             console.log('Successfully fetched posts!');
                         })
                         .catch((error) => {
@@ -82,31 +81,68 @@ function Post() {
                         );
                     });
 
-                    // Wait for all requests to finish and update the state with comments data for each post
+                    // Update state with comments data for each post
                     Promise.all(commentPromises)
                         .then((commentResponses) => {
-                            const updatedPosts = reversedPosts.map(
+                            const updatedComments = reversedPosts.map(
                                 (post, i) => {
                                     const commentResponse = commentResponses[i];
                                     if (commentResponse.data) {
                                         const comments = commentResponse.data;
-                                        post.comments = comments;
-                                        console.log(commentResponse.data);
-
-                                        //     const firstName =
-                                        //     userResponse.data.firstName;
-                                        // const lastName =
-                                        //     userResponse.data.lastName;
-                                        // const profilePic =
-                                        //     userResponse.data.profilePic;
-                                        // post.firstName = firstName;
-                                        // post.lastName = lastName;
-                                        // post.profilePicUrl = profilePic;
+                                        post.comments = comments.map(
+                                            (comment) => {
+                                                axios
+                                                    .get(
+                                                        `http://localhost:3001/api/${comment.userId}`,
+                                                        {
+                                                            headers: {
+                                                                Authorization: `Bearer ${token}`,
+                                                            },
+                                                        }
+                                                    )
+                                                    .then((userResponse) => {
+                                                        console.log(
+                                                            userResponse
+                                                        );
+                                                        if (userResponse.data) {
+                                                            // TODO: May need to update
+                                                            const firstName =
+                                                                userResponse
+                                                                    .data
+                                                                    .firstName;
+                                                            const lastName =
+                                                                userResponse
+                                                                    .data
+                                                                    .lastName;
+                                                            const profilePic =
+                                                                userResponse
+                                                                    .data
+                                                                    .profilePic;
+                                                            comment.firstName =
+                                                                firstName;
+                                                            comment.lastName =
+                                                                lastName;
+                                                            comment.profilePicUrl =
+                                                                profilePic;
+                                                        }
+                                                        console.log(
+                                                            comment.firstName
+                                                        );
+                                                    })
+                                                    .catch((error) => {
+                                                        console.error(
+                                                            'Error fetching user information:',
+                                                            error
+                                                        );
+                                                    });
+                                                return comment;
+                                            }
+                                        );
                                     }
                                     return post;
                                 }
                             );
-                            setPosts(updatedPosts); // Update the post state with fetched comments data for each post
+                            setPosts(updatedComments); // Update the post state with fetched comments data for each post
                             console.log('Successfully fetched comments!');
                         })
                         .catch((error) => {
@@ -126,11 +162,9 @@ function Post() {
                 })
                 .then((response) => {
                     if (response.data && response.data.firstName) {
-                        // Check if firstName included in response
                         const firstName = response.data.firstName;
                         const lastName = response.data.lastName;
                         const profilePic = response.data.profilePic;
-                        // Set extracted values
                         setFirstName(firstName);
                         setLastName(lastName);
                         setProfilePicUrl(profilePic);
@@ -171,7 +205,7 @@ function Post() {
                         comments.filter((comment) => comment.id !== id)
                     );
                     console.log('Successfully deleted comment!');
-                    window.location.reload(); // Refresh the page after deletion
+                    // window.location.reload();
                 })
                 .catch((error) => {
                     console.error('Error deleting comment:', error);
@@ -179,13 +213,18 @@ function Post() {
         }
     };
 
-    const handleEditClick = (postId) => {
+    const handlePostEditClick = (postId) => {
         localStorage.setItem('postId', postId);
-        window.location.href = '/edit'; // Redirect to the "/edit" page
+        navigate('/edit');
+    };
+
+    const handleCommentEditClick = (commentId) => {
+        localStorage.setItem('commentId', commentId);
+        // navigate('/edit');
     };
 
     const createComment = (event, postId) => {
-        event.preventDefault(); // TODO: nav
+        event.preventDefault();
 
         console.log(postId);
 
@@ -207,20 +246,61 @@ function Post() {
                 console.log('Comment created successfully:');
 
                 // Reset the form
-                event.target.reset(); // Reset the post after submission
-                window.location.reload(); // Refresh the page after submission
+                // event.target.reset();
+                // window.location.reload();
             })
             .catch((error) => {
                 console.error('Failed to add comment:', error);
-                console.log(commentData);
             });
     };
 
-    // Function maps information from post response into posts so they are dynamically rendered in DOM
+    const getCommentById = (event) => {
+        event.preventDefault();
+        const commentId = localStorage.getItem('commentId');
+
+        axios
+            .get(`http://localhost:3001/api/comments/${commentId}`)
+            .then((response) => {
+                setComment(response.data[0].comment);
+                setCommentId(commentId); // Set the id state to the parameter value
+                console.log(commentId);
+                console.log(response.data[0].comment);
+                console.log('Successfully fetched comment for editing!');
+            })
+            .catch((error) => {
+                console.error('Error fetching comment for editing:', error);
+            });
+    };
+
+    // Function allows user to modify a comment
+    const modifyComment = (event, commentId) => {
+        event.preventDefault();
+
+        console.log('hi');
+
+        const updatedCommentContent = event.target.elements.content.value;
+
+        const data = {
+            content: updatedCommentContent,
+        };
+
+        axios
+            .post(`http://localhost:3001/api/edit-comment/${commentId}`, data)
+            .then((response) => {
+                navigate('/feed'); // Redirect to /feed upon successful profile update
+                console.log('Comment updated successfully');
+            })
+            .catch((error) => {
+                console.log(comment);
+                console.log(commentId);
+                console.error('Failed to update comment:', error);
+            });
+    };
+
+    // Function dynamically maps information from post and comments response
     const renderPosts = () => {
         return posts.map((post) => {
             const isPostAuthor = post.userId === userId;
-            // Render the post with the updated user information
             return (
                 <div className="post" key={post.id}>
                     <article className="post__cont">
@@ -253,7 +333,9 @@ function Post() {
                                 <article className="post__cont--status-edit-cont">
                                     <button
                                         className="post__cont--status-edit-cont--edit"
-                                        onClick={() => handleEditClick(post.id)}
+                                        onClick={() =>
+                                            handlePostEditClick(post.id)
+                                        }
                                     >
                                         Edit
                                     </button>
@@ -268,9 +350,6 @@ function Post() {
                         </section>
                     </article>
                     <section className="post__cont--reactions">
-                        {/* <div className="post__cont--reactions--comments">
-                            1 Comment
-                        </div> */}
                         <div className="post__cont--reactions-likes">
                             {/* // TODO: Change */}
                             {`${userId} likes`}
@@ -312,42 +391,78 @@ function Post() {
                         {/* Render the comments */}
                         <section className="post__cont--comment-cont">
                             {post.comments &&
-                                post.comments.map((comment) => (
-                                    <div
-                                        className="post__comment"
-                                        key={comment.id}
-                                    >
-                                        <p className="post__cont--status-publisher-name">
-                                            {comment.firstName}
-                                        </p>
-                                        <p className="post__cont--comment-cont-post">
-                                            {comment.comment}
-                                        </p>
-                                        {isPostAuthor && (
-                                            <article className="post__cont--status-edit-cont">
-                                                <button
-                                                    className="post__cont--status-edit-cont--edit"
-                                                    onClick={() =>
-                                                        handleEditClick(post.id)
-                                                    }
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    className="post__cont--status-edit-cont--delete"
-                                                    onClick={() =>
-                                                        deleteComment(
-                                                            comment.id
-                                                        )
-                                                    }
-                                                >
-                                                    Delete
-                                                </button>
-                                            </article>
-                                        )}
-                                    </div>
-                                ))}
+                                post.comments.map((comment) => {
+                                    const isCommentAuthor =
+                                        comment.userId === userId;
+                                    return (
+                                        <div
+                                            className="post__comment"
+                                            key={comment.id}
+                                        >
+                                            <p className="post__cont--status-publisher-name">
+                                                {comment.firstName}{' '}
+                                                {comment.lastName}
+                                            </p>
+                                            <img
+                                                className="post__cont--comment-cont-img"
+                                                src={comment.profilePicUrl}
+                                                alt="User profile picture"
+                                            />
+                                            <p className="post__cont--comment-cont-post">
+                                                {comment.comment}
+                                            </p>
+                                            {isCommentAuthor && (
+                                                <article className="post__cont--status-edit-cont">
+                                                    <button
+                                                        className="post__cont--status-edit-cont--edit"
+                                                        onClick={(event) =>
+                                                            getCommentById(
+                                                                event,
+                                                                commentId
+                                                            )
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        className="post__cont--status-edit-cont--delete"
+                                                        onClick={() =>
+                                                            deleteComment(
+                                                                comment.id
+                                                            )
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </article>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                         </section>
+                        <form
+                            onSubmit={(event) =>
+                                modifyComment(event, commentId)
+                            }
+                        >
+                            <textarea
+                                type="text"
+                                name="content"
+                                id="content"
+                                className="create-post__cont--post"
+                                placeholder="Edit comment..."
+                                maxLength={500}
+                            ></textarea>
+                            <div className="create-post__cont--post-error"></div>
+                            <section className="create-post__cont--btns">
+                                <input
+                                    type="submit" // Submit form
+                                    className="create-post__cont--btns-postBtn"
+                                    id="button"
+                                    value="POST"
+                                />
+                            </section>
+                        </form>
                     </div>
                 </div>
             );

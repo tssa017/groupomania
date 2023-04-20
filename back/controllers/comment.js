@@ -2,7 +2,7 @@
 const fs = require('fs'); // TODO: Do I need?
 let db = require('../models');
 const Comment = db.Comment;
-// const User = db.User;
+const User = db.User;
 
 // GET route that gets an array of all comments from database
 exports.getAllComments = async (req, res) => {
@@ -35,48 +35,72 @@ exports.createComment = async (req, res) => {
     }
 };
 
-// PUT route modifies a Comment object based on its ID
-// exports.modifyComment = (req, res) => {
-//     const commentText = req.body.content;
+console.log('before');
 
-//     Post.findOne({
-//         where: {
-//             id: req.body.id,
-//         },
-//     })
-//         .then((comment) => {
-//             if (!comment) {
-//                 return res.status(404).json({ error: 'Comment not found.' });
-//             }
+// GET route for single post based on its id
+exports.getSingleComment = async (req, res) => {
+    console.log('hi');
+    try {
+        console.log('trying');
+        const commentId = req.params.id;
+        const comment = await Comment.findOne({
+            where: { id: commentId },
+        });
+        if (!comment) {
+            throw new Error('Comment not found');
+        }
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(404).json({
+            error: error.message,
+        });
+    }
+};
+console.log('after');
 
-//             // Use the userId property of the comment object to get the user ID associated with that post
-//             const userId = comment.userId;
+// POST route modifies a Comment object based on its ID
+exports.modifyComment = (req, res) => {
+    const commentText = req.body.content;
 
-//             const updatedFields = {}; // Create an empty object to store the updated fields
-//             if (commentText) {
-//                 updatedFields.comment = commentText; // Update 'post' field with the new post content
-//             }
+    Comment.findOne({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then((comment) => {
+            if (!comment) {
+                return res.status(404).json({ error: 'Comment not found.' });
+            }
 
-//             // Use the update method to update the post in the database
-//             Post.update(updatedFields, {
-//                 where: { id: req.params.id, userId: userId }, // Use the retrieved user ID to update the post
-//             })
-//                 .then((updatedComment) => {
-//                     console.log('Comment updated successfully');
-//                     return res.status(200).json(updatedComment);
-//                 })
-//                 .catch((error) => {
-//                     console.error('Failed to update comment:', error);
-//                     return res
-//                         .status(500)
-//                         .json({ error: 'Failed to update comment.' });
-//                 });
-//         })
-//         .catch((error) => {
-//             console.error('Error fetching comment:', error);
-//             return res.status(500).json({ error: 'Failed to fetch comment.' });
-//         });
-// };
+            const updatedFields = {}; // Create an empty object to store the updated fields
+            if (commentText) {
+                updatedFields.comment = commentText; // Update 'comment' field with the new comment content
+            }
+
+            // Use the update method to update the post in the database
+            Comment.update(updatedFields, {
+                where: { id: req.params.id }, // Use the retrieved user ID to update the post
+            })
+                .then((updatedComment) => {
+                    console.log('Comment updated successfully');
+                    console.log(req.params.id);
+                    console.log('Im here!!!!!!!!!!!!!!!!!!!!!!!!!');
+                    console.log(req.body);
+
+                    return res.status(200).json(updatedComment);
+                })
+                .catch((error) => {
+                    console.error('Failed to update comment:', error);
+                    return res
+                        .status(500)
+                        .json({ error: 'Failed to update comment.' });
+                });
+        })
+        .catch((error) => {
+            console.error('Error fetching comment:', error);
+            return res.status(500).json({ error: 'Failed to fetch comment.' });
+        });
+};
 
 // // DELETE route deletes an exisiting Comment object based on its ID
 exports.deleteComment = async (req, res) => {

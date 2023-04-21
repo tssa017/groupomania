@@ -36,8 +36,8 @@ const commentRoutes = require('./routes/comment'); // Imports comment route
 
 // Register routes
 app.use('/api', userRoutes);
-app.use('/api', postRoutes);
-app.use('/api', commentRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/comments', commentRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Sets images folder where the file will be uploaded as static
 
 module.exports = app;

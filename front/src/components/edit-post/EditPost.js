@@ -70,7 +70,7 @@ function Edit() {
             }
 
             axios
-                .post(`http://localhost:3001/api/edit-post/${id}`, formData, {
+                .put(`http://localhost:3001/api/posts/${id}`, formData, {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {

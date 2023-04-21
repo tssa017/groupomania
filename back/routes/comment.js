@@ -5,13 +5,11 @@ const auth = require('../middleware/auth.js'); // Allows authentication of appli
 const commentCtrl = require('../controllers/comment');
 
 // Define Comment endpoints
-router.get('/comments/:userId', auth, commentCtrl.getAllComments);
-router.get('/comments/:id', auth, commentCtrl.getSingleComment);
-router.post('/comments/:postId', auth, commentCtrl.createComment);
-router.post('/edit-comment/:id', commentCtrl.modifyComment); // TODO: check endpoint, add /comments?
-router.delete('/comments/:id', auth, commentCtrl.deleteComment);
-router.post('/:id/like', auth, commentCtrl.likeComment); // TODO: check endpoint
-// TODO: add `/comments` to app
+router.get('/:userId', auth, commentCtrl.getAllComments);
+router.get('/:id', auth, commentCtrl.getSingleComment);
+router.post('/:postId', auth, commentCtrl.createComment);
+router.put('/:id', commentCtrl.modifyComment);
+router.delete('/:id', auth, commentCtrl.deleteComment);
 
 // Export
 module.exports = router;

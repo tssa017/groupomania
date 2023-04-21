@@ -219,10 +219,10 @@ function Post() {
         navigate('/edit');
     };
 
-    // const handleCommentEditClick = (commentId) => {
-    //     localStorage.setItem('commentId', commentId);
-    //     // navigate('/edit');
-    // };
+    const handleCommentEditClick = (commentId) => {
+        localStorage.setItem('commentId', commentId);
+        // navigate('/edit');
+    };
 
     const createComment = (event, postId) => {
         event.preventDefault();
@@ -263,8 +263,8 @@ function Post() {
             .get(`http://localhost:3001/api/comments/${commentId}`)
             .then((response) => {
                 setComment(response.data[0].comment);
-                setCommentId(commentId); // Set the id state to the parameter value
-                console.log(commentId);
+                setCommentId(response.data[0].id); // Set the id state to the parameter value
+                console.log(response.data[0].id);
                 console.log(response.data[0].comment);
                 console.log('Successfully fetched comment for editing!');
             })
@@ -284,7 +284,7 @@ function Post() {
         };
 
         axios
-            .post(`http://localhost:3001/api/edit-comment/${commentId}`, data)
+            .put(`http://localhost:3001/api/comments/${commentId}`, data)
             .then((response) => {
                 // navigate('/feed'); // Redirect to /feed upon successful profile update
                 console.log('Comment updated successfully');
@@ -294,23 +294,23 @@ function Post() {
             });
     };
 
-    function handleLikes(event) {
-        event.preventDefault();
-        const commentId = localStorage.getItem('commentId');
-        setLikes(likes + 1);
-        console.log(likes);
-        console.log('%%%%%%%%%%%%%%%%%');
-        axios
-            .post('http://localhost:3001/api/${commentId}/like', {
-                likes: likes + 1,
-            })
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
+    // function handleLikes(event) {
+    //     event.preventDefault();
+    //     const commentId = localStorage.getItem('commentId');
+    //     setLikes(likes + 1);
+    //     console.log(likes);
+    //     console.log('%%%%%%%%%%%%%%%%%');
+    //     axios
+    //         .post('http://localhost:3001/api/${commentId}/like', {
+    //             likes: likes + 1,
+    //         })
+    //         .then((response) => {
+    //             console.log(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // }
 
     // Function dynamically maps information from post and comments response
     const renderPosts = () => {
@@ -371,7 +371,7 @@ function Post() {
                         </div>
                         <i
                             className="post__cont--reactions--like fa-solid fa-heart"
-                            onClick={handleLikes}
+                            // onClick={handleLikes}
                         ></i>
                     </section>
                     <div className="create-comment">

@@ -122,6 +122,23 @@ exports.deletePost = async (req, res) => {
 };
 
 // POST route allows user to like a comment
+
+// exports.likeComment = (req, res) => {
+//     try {
+//         comment = Comment.findOne({
+//             where: {
+//                 id: req.params.id,
+//             },
+//         });
+//         if (!comment) {
+//             return res.sendStatus(404);
+//         }
+//         const updatedComment = Comment.update({ likes: req.body.likes });
+//         res.status(200).json(updatedComment);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500);
+//     }
 // exports.likePost = (req, res) => {
 //     if (req.body.like === 1) {
 //         Post.findByPk(req.params.id)

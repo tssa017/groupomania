@@ -6,12 +6,12 @@ const multer = require('../middleware/multer-config'); // Defines name and desti
 const postCtrl = require('../controllers/post');
 
 // Define Post routes
-router.get('/posts/:userId', auth, postCtrl.getAllPosts); // TODO: check endpoint
-router.get('/posts/:id', auth, postCtrl.getSinglePost);
-router.post('/posts/:userId', auth, multer, postCtrl.createPost); // TODO: check endpoint
-router.post('/edit-post/:id', multer, postCtrl.modifyPost); // TODO: check endpoint
-router.delete('/posts/:id', postCtrl.deletePost);
-// router.post('/:id/like', auth, postCtrl.likePost); // TODO: check endpoint
+router.get('/:userId', auth, postCtrl.getAllPosts);
+router.get('/:id', auth, postCtrl.getSinglePost);
+router.post('/:userId', auth, multer, postCtrl.createPost);
+router.put('/:id', multer, postCtrl.modifyPost);
+router.delete('/:id', postCtrl.deletePost);
+// router.post('/:id/like', auth, commentCtrl.likeComment);
 
 // Export
 module.exports = router;

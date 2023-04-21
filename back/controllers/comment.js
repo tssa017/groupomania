@@ -18,10 +18,13 @@ exports.getAllComments = async (req, res) => {
 
 // POST route that creates a new comment and saves to database
 exports.createComment = async (req, res) => {
-    console.log(req.body.content);
+    const postId = req.params.postId;
+    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&');
+    console.log(req.params.postId);
+
     try {
         const newComment = await Comment.create({
-            postId: req.body.postId,
+            postId: postId,
             userId: req.body.userId,
             comment: req.body.content,
         });

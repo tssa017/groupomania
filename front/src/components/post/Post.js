@@ -16,6 +16,7 @@ function Post() {
     const [commentId, setCommentId] = useState('');
     const [comment, setComment] = useState(null); // Keep track of comment state // TODO: Do I need this?
     const [likes, setLikes] = useState(null); // Keep track of likes (default 0)
+    const [selectedPostId, setSelectedPostId] = useState(null); // Keep track of selected post
 
     const navigate = useNavigate();
 
@@ -220,6 +221,7 @@ function Post() {
     };
 
     const handleCommentEditClick = (commentId) => {
+        // TODO: Implement
         localStorage.setItem('commentId', commentId);
         // navigate('/edit');
     };
@@ -227,12 +229,10 @@ function Post() {
     const createComment = (event, postId) => {
         event.preventDefault();
 
-        console.log(postId);
-
         const content = commentContent;
 
         const commentData = {
-            postId,
+            postId: selectedPostId,
             userId,
             content,
         };
@@ -401,6 +401,7 @@ function Post() {
                                 <input
                                     type="submit" // Submit form
                                     className="create-post__cont--btns-postBtn"
+                                    onClick={() => setSelectedPostId(post.id)}
                                     id="button"
                                     value="POST"
                                 />
@@ -410,6 +411,9 @@ function Post() {
                         <section className="post__cont--comment-cont">
                             {post.comments &&
                                 post.comments.map((comment) => {
+                                    if (comment.postId !== post.id) {
+                                        return null;
+                                    }
                                     const isCommentAuthor =
                                         comment.userId === userId;
                                     return (

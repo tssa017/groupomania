@@ -14,7 +14,8 @@ function Post() {
     const [postId, setPostId] = useState(''); // TODO: Do I need this?
     const [commentContent, setCommentContent] = useState('');
     const [commentId, setCommentId] = useState('');
-    const [comment, setComment] = useState(null); // Store the text content of the comment
+    const [comment, setComment] = useState(null); // Keep track of comment state // TODO: Do I need this?
+    const [likes, setLikes] = useState(null); // Keep track of likes (default 0)
 
     const navigate = useNavigate();
 
@@ -218,10 +219,10 @@ function Post() {
         navigate('/edit');
     };
 
-    const handleCommentEditClick = (commentId) => {
-        localStorage.setItem('commentId', commentId);
-        // navigate('/edit');
-    };
+    // const handleCommentEditClick = (commentId) => {
+    //     localStorage.setItem('commentId', commentId);
+    //     // navigate('/edit');
+    // };
 
     const createComment = (event, postId) => {
         event.preventDefault();
@@ -276,8 +277,6 @@ function Post() {
     const modifyComment = (event, commentId) => {
         event.preventDefault();
 
-        console.log('hi');
-
         const updatedCommentContent = event.target.elements.content.value;
 
         const data = {
@@ -287,15 +286,31 @@ function Post() {
         axios
             .post(`http://localhost:3001/api/edit-comment/${commentId}`, data)
             .then((response) => {
-                navigate('/feed'); // Redirect to /feed upon successful profile update
+                // navigate('/feed'); // Redirect to /feed upon successful profile update
                 console.log('Comment updated successfully');
             })
             .catch((error) => {
-                console.log(comment);
-                console.log(commentId);
                 console.error('Failed to update comment:', error);
             });
     };
+
+    function handleLikes(event) {
+        event.preventDefault();
+        const commentId = localStorage.getItem('commentId');
+        setLikes(likes + 1);
+        console.log(likes);
+        console.log('%%%%%%%%%%%%%%%%%');
+        axios
+            .post('http://localhost:3001/api/${commentId}/like', {
+                likes: likes + 1,
+            })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
 
     // Function dynamically maps information from post and comments response
     const renderPosts = () => {
@@ -354,7 +369,10 @@ function Post() {
                             {/* // TODO: Change */}
                             {`${userId} likes`}
                         </div>
-                        <i className="post__cont--reactions--like fa-solid fa-heart"></i>
+                        <i
+                            className="post__cont--reactions--like fa-solid fa-heart"
+                            onClick={handleLikes}
+                        ></i>
                     </section>
                     <div className="create-comment">
                         <section className="post__cont--comment-cont">

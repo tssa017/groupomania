@@ -120,11 +120,30 @@ exports.deletePost = async (req, res) => {
         });
     }
 };
+// GET route displays like count
+exports.getLikes = async (req, res, next) => {
+    try {
+        const postId = req.params.id;
+
+        const post = await Post.findOne({ where: { id: postId } });
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        const likes = post.likes;
+
+        return res.status(200).json({ likes: likes });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server Error' });
+    }
+};
 
 // POST route allows user to like a post
 exports.likePost = (req, res) => {
     const postId = req.params.id;
-    const likedPost = req.body.likes;
+    const likedPostCount = req.body.likes;
 
     Post.findOne({
         where: {
@@ -137,12 +156,14 @@ exports.likePost = (req, res) => {
             }
 
             // Update the like count in the post object
-            post.likes = likedPost;
+            post.likes = likedPostCount;
 
             // Save the updated post to the database
             return post.save({ fields: ['likes'] });
         })
         .then((updatedPost) => {
+            console.log('%%%%%%%%%');
+            console.log(req.body.likes);
             console.log('Post successfully liked!');
             return res.status(200).json(updatedPost);
         })

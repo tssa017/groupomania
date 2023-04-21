@@ -15,7 +15,8 @@ function Post() {
     const [commentContent, setCommentContent] = useState('');
     const [commentId, setCommentId] = useState('');
     const [comment, setComment] = useState(null); // Keep track of comment state // TODO: Do I need this?
-    const [likes, setLikes] = useState(null); // Keep track of likes (default 0)
+    const [likes, setLikes] = useState(0); // Keep track of likes
+    const [liked, setLiked] = useState(false);
     const [selectedPostId, setSelectedPostId] = useState(null); // Keep track of selected post
 
     const navigate = useNavigate();
@@ -287,17 +288,30 @@ function Post() {
             });
     };
 
+    useEffect(() => {
+        // Fetch the initial likes count from the server and set it in the state
+        axios
+            .get(`http://localhost:3001/api/posts/${postId}/get-likes`)
+            .then((response) => {
+                setLikes(response.data[0].likes);
+                console.log(response.data[0].likes);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
     function handleLikes(event, postId) {
         event.preventDefault();
 
         setLikes(likes + 1);
 
         const likesData = {
-            likes: likes,
+            likes: likes + 1,
         };
 
         axios
-            .put(`http://localhost:3001/api/posts/${postId}/like`, likesData, {
+            .put(`http://localhost:3001/api/posts/${postId}/likes`, likesData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -365,7 +379,7 @@ function Post() {
                     <section className="post__cont--reactions">
                         <div className="post__cont--reactions-likes">
                             {/* // TODO: Change */}
-                            {`${userId} likes`}
+                            {`${post.likes} likes`}
                         </div>
                         <i
                             className="post__cont--reactions--like fa-solid fa-heart"

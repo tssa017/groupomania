@@ -2,7 +2,7 @@
 // const fs = require('fs'); // Allow file system modification
 let db = require('../models');
 const Post = db.Post;
-// const User = db.User;
+const User = db.User;
 
 // GET route that gets an array of all posts from database
 exports.getAllPosts = async (req, res) => {
@@ -121,68 +121,34 @@ exports.deletePost = async (req, res) => {
     }
 };
 
-// POST route allows user to like a comment
+// POST route allows user to like a post
+exports.likePost = (req, res) => {
+    const postId = req.params.id;
+    const likedPost = req.body.likes;
 
-// exports.likeComment = (req, res) => {
-//     try {
-//         comment = Comment.findOne({
-//             where: {
-//                 id: req.params.id,
-//             },
-//         });
-//         if (!comment) {
-//             return res.sendStatus(404);
-//         }
-//         const updatedComment = Comment.update({ likes: req.body.likes });
-//         res.status(200).json(updatedComment);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500);
-//     }
-// exports.likePost = (req, res) => {
-//     if (req.body.like === 1) {
-//         Post.findByPk(req.params.id)
-//             .then((post) => {
-//                 if (!post) {
-//                     return res.status(404).json({ error: 'Post not found!' });
-//                 }
-//                 User.findByPk(req.body.userId)
-//                     .then((user) => {
-//                         if (!user) {
-//                             return res
-//                                 .status(404)
-//                                 .json({ error: 'User not found!' });
-//                         }
-//                         post.addUser(user, { through: { liked: true } }) // Add user to post's usersLiked array
-//                             .then(() => {
-//                                 post.increment('likes', { by: 1 }) // Increment likes by 1
-//                                     .then(() => {
-//                                         res.status(201).json({
-//                                             message: 'You liked this comment!',
-//                                         });
-//                                     })
-//                                     .catch((error) => {
-//                                         res.status(400).json({
-//                                             error: error,
-//                                         });
-//                                     });
-//                             })
-//                             .catch((error) => {
-//                                 res.status(400).json({
-//                                     error: error,
-//                                 });
-//                             });
-//                     })
-//                     .catch((error) => {
-//                         res.status(400).json({
-//                             error: error,
-//                         });
-//                     });
-//             })
-//             .catch((error) => {
-//                 res.status(400).json({
-//                     error: error,
-//                 });
-//             });
-//     }
-// };
+    Post.findOne({
+        where: {
+            id: postId,
+        },
+    })
+        .then((post) => {
+            if (!post) {
+                return res.status(404).json({ error: 'Post not found.' });
+            }
+
+            // Update the like count in the post object
+            post.likes = likedPost;
+
+            // Save the updated post to the database
+            return post.save({ fields: ['likes'] });
+        })
+        .then((updatedPost) => {
+            console.log('Post successfully liked!');
+            return res.status(200).json(updatedPost);
+        })
+        .catch((error) => {
+            console.error('Failed to like post:', error);
+            return res.status(500).json({ error: 'Failed to like post.' });
+        });
+};
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~');

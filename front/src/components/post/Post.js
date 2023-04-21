@@ -103,11 +103,7 @@ function Post() {
                                                         }
                                                     )
                                                     .then((userResponse) => {
-                                                        console.log(
-                                                            userResponse
-                                                        );
                                                         if (userResponse.data) {
-                                                            // TODO: May need to update
                                                             const firstName =
                                                                 userResponse
                                                                     .data
@@ -127,9 +123,6 @@ function Post() {
                                                             comment.profilePicUrl =
                                                                 profilePic;
                                                         }
-                                                        console.log(
-                                                            comment.firstName
-                                                        );
                                                     })
                                                     .catch((error) => {
                                                         console.error(
@@ -294,23 +287,28 @@ function Post() {
             });
     };
 
-    // function handleLikes(event) {
-    //     event.preventDefault();
-    //     const commentId = localStorage.getItem('commentId');
-    //     setLikes(likes + 1);
-    //     console.log(likes);
-    //     console.log('%%%%%%%%%%%%%%%%%');
-    //     axios
-    //         .post('http://localhost:3001/api/${commentId}/like', {
-    //             likes: likes + 1,
-    //         })
-    //         .then((response) => {
-    //             console.log(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    // }
+    function handleLikes(event, postId) {
+        event.preventDefault();
+
+        setLikes(likes + 1);
+
+        const likesData = {
+            likes: likes,
+        };
+
+        axios
+            .put(`http://localhost:3001/api/posts/${postId}/like`, likesData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            })
+            .then((response) => {
+                console.log(likesData);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
 
     // Function dynamically maps information from post and comments response
     const renderPosts = () => {
@@ -371,7 +369,7 @@ function Post() {
                         </div>
                         <i
                             className="post__cont--reactions--like fa-solid fa-heart"
-                            // onClick={handleLikes}
+                            onClick={(event) => handleLikes(event, post.id)}
                         ></i>
                     </section>
                     <div className="create-comment">
@@ -413,7 +411,7 @@ function Post() {
                                 post.comments.map((comment) => {
                                     if (comment.postId !== post.id) {
                                         return null;
-                                    }
+                                    } // Ensure comments display under corresponding postId
                                     const isCommentAuthor =
                                         comment.userId === userId;
                                     return (
@@ -433,6 +431,7 @@ function Post() {
                                             <p className="post__cont--comment-cont-post">
                                                 {comment.comment}
                                             </p>
+                                            {/* Render edit and delete buttons for comment authors only */}
                                             {isCommentAuthor && (
                                                 <article className="post__cont--status-edit-cont">
                                                     <button

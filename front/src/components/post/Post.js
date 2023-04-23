@@ -19,6 +19,9 @@ function Post() {
     const [liked, setLiked] = useState(false); // TODO: Do I need this?
     const [selectedPostId, setSelectedPostId] = useState(null); // Keep track of selected post
     const [isAdmin, setisAdmin] = useState();
+    // Toggle comments display
+    const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+    const [isIconUp, setIsIconUp] = useState(false);
 
     const navigate = useNavigate();
 
@@ -328,6 +331,20 @@ function Post() {
             });
     }
 
+    // Functions toggle section to reveal or collapse on click
+    function toggleComments() {
+        setIsCommentsOpen(!isCommentsOpen);
+    }
+
+    function toggleIcon() {
+        setIsIconUp(!isIconUp);
+        setIsCommentsOpen(false);
+    }
+
+    const commentsButtonText = isCommentsOpen
+        ? 'Hide comments'
+        : 'View comments';
+
     // Function dynamically maps information from post and comments response
     const renderPosts = () => {
         return posts.map((post) => {
@@ -393,7 +410,16 @@ function Post() {
                             onClick={(event) => handleLikes(event, post.id)}
                         ></i>
                     </section>
-                    <div className="create-comment">
+                    {/* <div className="create-comment"> */}
+                    {/* // TODO: Update # of comments, hide comments */}
+                    <div className="create-comment" onClick={toggleComments}>
+                        {commentsButtonText}
+                        <i
+                            className={`settings__nav--icon fa-solid fa-angle-${
+                                isIconUp ? 'up' : 'down'
+                            }`}
+                            onClick={toggleIcon}
+                        ></i>
                         <section className="post__cont--comment-cont">
                             <img
                                 className="post__cont--comment-cont-img"
@@ -427,7 +453,12 @@ function Post() {
                             </form>
                         </section>
                         {/* Render the comments */}
-                        <section className="post__cont--comment-cont">
+                        <section
+                            className="post__cont--comment-cont"
+                            style={{
+                                display: isCommentsOpen ? 'block' : 'none',
+                            }}
+                        >
                             {post.comments &&
                                 post.comments.map((comment) => {
                                     if (comment.postId !== post.id) {

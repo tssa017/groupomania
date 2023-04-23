@@ -20,20 +20,20 @@ module.exports = (sequelize, DataTypes) => {
             post: { type: DataTypes.STRING(4000) },
             postPicUrl: { type: DataTypes.STRING(512) },
             likes: { type: DataTypes.INTEGER, defaultValue: 0 },
-            read: { type: DataTypes.BOOLEAN, defaultValue: false }, // Add read field
-            usersLiked: { type: DataTypes.STRING, defaultValue: '' },
+            read: { type: DataTypes.BOOLEAN, defaultValue: false },
         },
         {
             sequelize,
             modelName: 'Post',
         }
     );
+    // FindAll query to prioritise unread posts and organise order (newest to oldest)
     Post.getAllPosts = async function () {
         const posts = await Post.findAll({
             order: [
-                // Prioritize posts that haven't been read yet
+                // Prioritise posts that haven't been read yet
                 ['read', 'ASC'],
-                // Then sort by creation date in descending order
+                // Sort by creation date so they display in descending order
                 ['createdAt', 'DESC'],
             ],
         });

@@ -7,8 +7,8 @@ const User = db.User;
 // GET route that gets an array of all posts from database
 exports.getAllPosts = async (req, res) => {
     try {
-        const posts = await Post.findAll(); // Fetch all posts from the Post model using Sequelize's findAll() method
-        res.status(200).json(posts); // Send the fetched posts as JSON response
+        const posts = await Post.getAllPosts(); // Use getAllPosts() function I defined in the Posts model
+        res.status(200).json(posts);
     } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).json({ error: 'Failed to fetch posts' }); // Send an error response if fetching posts fails
@@ -162,8 +162,6 @@ exports.likePost = (req, res) => {
             return post.save({ fields: ['likes'] });
         })
         .then((updatedPost) => {
-            console.log('%%%%%%%%%');
-            console.log(req.body.likes);
             console.log('Post successfully liked!');
             return res.status(200).json(updatedPost);
         })
@@ -172,4 +170,21 @@ exports.likePost = (req, res) => {
             return res.status(500).json({ error: 'Failed to like post.' });
         });
 };
-console.log('~~~~~~~~~~~~~~~~~~~~~~~~');
+
+// PUT route updates 'read' field of a post
+exports.updateReadStatus = async (req, res) => {
+    const { id } = req.params;
+    console.log(req.params);
+    try {
+        const post = await Post.findByPk(id);
+        if (!post) {
+            return res.status(404).send('Post not found');
+        }
+        post.read = true;
+        await post.save();
+        return res.status(200).send('Post read status updated');
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send('Internal server error');
+    }
+};

@@ -9,14 +9,14 @@ function Post() {
     const [comments, setComments] = useState([]); // Stores posts data as an array
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [lastName, setLastName] = useState(''); // TODO: Check this out?
     const [profilePicUrl, setProfilePicUrl] = useState('');
     const [postId, setPostId] = useState(''); // TODO: Do I need this?
     const [commentContent, setCommentContent] = useState('');
     const [commentId, setCommentId] = useState('');
-    const [comment, setComment] = useState(null); // Keep track of comment state // TODO: Do I need this?
+    const [comment, setComment] = useState(null); // Keep track of comment state
     const [likes, setLikes] = useState(0); // Keep track of likes
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState(false); // TODO: Do I need this?
     const [selectedPostId, setSelectedPostId] = useState(null); // Keep track of selected post
 
     const navigate = useNavigate();
@@ -33,10 +33,10 @@ function Post() {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {
-                    const reversedPosts = response.data.reverse(); // Ensure posts display in reverse order (newest to oldest)
+                    const posts = response.data;
 
                     // Get user information for all posts
-                    const promises = reversedPosts.map((post) => {
+                    const promises = posts.map((post) => {
                         return axios.get(
                             `http://localhost:3001/api/${post.userId}`,
                             {
@@ -47,23 +47,20 @@ function Post() {
 
                     Promise.all(promises)
                         .then((responses) => {
-                            const updatedPosts = reversedPosts.map(
-                                (post, i) => {
-                                    const userResponse = responses[i];
-                                    if (userResponse.data) {
-                                        const firstName =
-                                            userResponse.data.firstName;
-                                        const lastName =
-                                            userResponse.data.lastName;
-                                        const profilePic =
-                                            userResponse.data.profilePic;
-                                        post.firstName = firstName;
-                                        post.lastName = lastName;
-                                        post.profilePicUrl = profilePic;
-                                    }
-                                    return post;
+                            const updatedPosts = posts.map((post, i) => {
+                                const userResponse = responses[i];
+                                if (userResponse.data) {
+                                    const firstName =
+                                        userResponse.data.firstName;
+                                    const lastName = userResponse.data.lastName;
+                                    const profilePic =
+                                        userResponse.data.profilePic;
+                                    post.firstName = firstName;
+                                    post.lastName = lastName;
+                                    post.profilePicUrl = profilePic;
                                 }
-                            );
+                                return post;
+                            });
                             setPosts(updatedPosts); // Update post state with posts data
                             console.log('Successfully fetched posts!');
                         })
@@ -75,7 +72,7 @@ function Post() {
                         });
 
                     // Fetch comments data for all posts
-                    const commentPromises = reversedPosts.map((post) => {
+                    const commentPromises = posts.map((post) => {
                         return axios.get(
                             `http://localhost:3001/api/comments/${userId}`,
                             {
@@ -87,57 +84,49 @@ function Post() {
                     // Update state with comments data for each post
                     Promise.all(commentPromises)
                         .then((commentResponses) => {
-                            const updatedComments = reversedPosts.map(
-                                (post, i) => {
-                                    const commentResponse = commentResponses[i];
-                                    if (commentResponse.data) {
-                                        const comments = commentResponse.data;
-                                        post.comments = comments.map(
-                                            (comment) => {
-                                                axios
-                                                    .get(
-                                                        `http://localhost:3001/api/${comment.userId}`,
-                                                        {
-                                                            headers: {
-                                                                Authorization: `Bearer ${token}`,
-                                                            },
-                                                        }
-                                                    )
-                                                    .then((userResponse) => {
-                                                        if (userResponse.data) {
-                                                            const firstName =
-                                                                userResponse
-                                                                    .data
-                                                                    .firstName;
-                                                            const lastName =
-                                                                userResponse
-                                                                    .data
-                                                                    .lastName;
-                                                            const profilePic =
-                                                                userResponse
-                                                                    .data
-                                                                    .profilePic;
-                                                            comment.firstName =
-                                                                firstName;
-                                                            comment.lastName =
-                                                                lastName;
-                                                            comment.profilePicUrl =
-                                                                profilePic;
-                                                        }
-                                                    })
-                                                    .catch((error) => {
-                                                        console.error(
-                                                            'Error fetching user information:',
-                                                            error
-                                                        );
-                                                    });
-                                                return comment;
-                                            }
-                                        );
-                                    }
-                                    return post;
+                            const updatedComments = posts.map((post, i) => {
+                                const commentResponse = commentResponses[i];
+                                if (commentResponse.data) {
+                                    const comments = commentResponse.data;
+                                    post.comments = comments.map((comment) => {
+                                        axios
+                                            .get(
+                                                `http://localhost:3001/api/${comment.userId}`,
+                                                {
+                                                    headers: {
+                                                        Authorization: `Bearer ${token}`,
+                                                    },
+                                                }
+                                            )
+                                            .then((userResponse) => {
+                                                if (userResponse.data) {
+                                                    const firstName =
+                                                        userResponse.data
+                                                            .firstName;
+                                                    const lastName =
+                                                        userResponse.data
+                                                            .lastName;
+                                                    const profilePic =
+                                                        userResponse.data
+                                                            .profilePic;
+                                                    comment.firstName =
+                                                        firstName;
+                                                    comment.lastName = lastName;
+                                                    comment.profilePicUrl =
+                                                        profilePic;
+                                                }
+                                            })
+                                            .catch((error) => {
+                                                console.error(
+                                                    'Error fetching user information:',
+                                                    error
+                                                );
+                                            });
+                                        return comment;
+                                    });
                                 }
-                            );
+                                return post;
+                            });
                             setPosts(updatedComments); // Update the post state with fetched comments data for each post
                             console.log('Successfully fetched comments!');
                         })
@@ -171,6 +160,19 @@ function Post() {
                 });
         }
     }, []);
+
+    // Get read status of posts
+    async function updateReadStatus(postId) {
+        try {
+            const response = await axios.put(
+                `http://localhost:3001/api/posts/${postId}/read`,
+                { read: true }
+            );
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const deletePost = (id) => {
         const token = localStorage.getItem('token');
@@ -215,7 +217,7 @@ function Post() {
     };
 
     const handleCommentEditClick = (commentId) => {
-        // TODO: Implement
+        // TODO: Implement or delete. Do I need this?
         localStorage.setItem('commentId', commentId);
         // navigate('/edit');
     };
@@ -294,7 +296,6 @@ function Post() {
             .get(`http://localhost:3001/api/posts/${postId}/get-likes`)
             .then((response) => {
                 setLikes(response.data[0].likes);
-                console.log(response.data[0].likes);
             })
             .catch((error) => {
                 console.error(error);
@@ -329,7 +330,11 @@ function Post() {
         return posts.map((post) => {
             const isPostAuthor = post.userId === userId;
             return (
-                <div className="post" key={post.id}>
+                <div
+                    className="post"
+                    key={post.id}
+                    onClick={() => updateReadStatus(post.id)} // Sets post read status to true if a user clicks on a post or interacts with it
+                >
                     <article className="post__cont">
                         <section className="post__cont--status">
                             <div className="post__cont--status-publisher">
@@ -378,7 +383,6 @@ function Post() {
                     </article>
                     <section className="post__cont--reactions">
                         <div className="post__cont--reactions-likes">
-                            {/* // TODO: Change */}
                             {`${post.likes} likes`}
                         </div>
                         <i
@@ -425,7 +429,10 @@ function Post() {
                                 post.comments.map((comment) => {
                                     if (comment.postId !== post.id) {
                                         return null;
-                                    } // Ensure comments display under corresponding postId
+                                    }
+                                    {
+                                        /* Ensure comments display under corresponding postId */
+                                    }
                                     const isCommentAuthor =
                                         comment.userId === userId;
                                     return (
@@ -491,7 +498,7 @@ function Post() {
                             <div className="create-post__cont--post-error"></div>
                             <section className="create-post__cont--btns">
                                 <input
-                                    type="submit" // Submit form
+                                    type="submit"
                                     className="create-post__cont--btns-postBtn"
                                     id="button"
                                     value="POST"

@@ -9,7 +9,7 @@ function Post() {
     const [comments, setComments] = useState([]); // Stores posts data as an array
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState(''); // TODO: Check this out?
+    const [lastName, setLastName] = useState(''); // TODO: Check this
     const [profilePicUrl, setProfilePicUrl] = useState('');
     const [postId, setPostId] = useState(''); // TODO: Do I need this?
     const [commentContent, setCommentContent] = useState('');
@@ -18,6 +18,7 @@ function Post() {
     const [likes, setLikes] = useState(0); // Keep track of likes
     const [liked, setLiked] = useState(false); // TODO: Do I need this?
     const [selectedPostId, setSelectedPostId] = useState(null); // Keep track of selected post
+    const [isAdmin, setisAdmin] = useState();
 
     const navigate = useNavigate();
 
@@ -150,9 +151,11 @@ function Post() {
                         const firstName = response.data.firstName;
                         const lastName = response.data.lastName;
                         const profilePic = response.data.profilePic;
+                        const isAdmin = response.data.isAdmin;
                         setFirstName(firstName);
                         setLastName(lastName);
                         setProfilePicUrl(profilePic);
+                        setisAdmin(isAdmin);
                     }
                 })
                 .catch((error) => {
@@ -361,7 +364,7 @@ function Post() {
                                     />
                                 ) : null}
                             </p>
-                            {isPostAuthor && (
+                            {(isPostAuthor || isAdmin) && (
                                 <article className="post__cont--status-edit-cont">
                                     <button
                                         className="post__cont--status-edit-cont--edit"
@@ -453,7 +456,7 @@ function Post() {
                                                 {comment.comment}
                                             </p>
                                             {/* Render edit and delete buttons for comment authors only */}
-                                            {isCommentAuthor && (
+                                            {(isCommentAuthor || isAdmin) && (
                                                 <article className="post__cont--status-edit-cont">
                                                     <button
                                                         className="post__cont--status-edit-cont--edit"

@@ -206,7 +206,7 @@ a {
 .profile__update-btn {
   background-color: #ca7ffe;
   padding: 0.5rem 1rem;
-  margin-right: 0.25rem;
+  margin: 1rem 0.25rem 0 0;
   font-family: "Nunito", sans-serif;
   font-weight: 600;
   font-size: 1rem;
@@ -221,7 +221,7 @@ a {
 }
 .profile__deactivate-btn {
   padding: 0.5rem 1rem;
-  margin-left: 0.25rem;
+  margin: 1rem 0 0 0.25rem;
   border: 3px solid #3d3c3c;
   border-radius: 10px;
   font-family: "Nunito", sans-serif;

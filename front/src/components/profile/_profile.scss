@@ -41,7 +41,7 @@
     &__update-btn {
         background-color: $colorSecondary;
         padding: 0.5rem 1rem;
-        margin-right: 0.25rem;
+        margin: 1rem 0.25rem 0 0;
         @include btnTxtStyle;
         @include borderStyle;
         scale: 1;
@@ -54,7 +54,7 @@
 
     &__deactivate-btn {
         padding: 0.5rem 1rem;
-        margin-left: 0.25rem;
+        margin: 1rem 0 0 0.25rem;
         @include borderStyle;
         @include btnTxtStyle;
         scale: 1;

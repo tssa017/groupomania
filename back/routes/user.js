@@ -14,7 +14,5 @@ router.delete('/:userId', userCtrl.deleteUser);
 // Define profile pic upload endpoint
 router.post('/:userId', multer, userCtrl.modifyProfile);
 
-// TODO: Define admin endpoint
-
 // Export
 module.exports = router;

@@ -8,8 +8,11 @@ function Profile() {
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState(null); // Store the URL of the profile picture displayed in the UI
     const [profilePicFile, setProfilePicFile] = useState(null); // Stores selected image file when a user chooses to update their profile picture
+    const [isAdmin, setisAdmin] = useState(); // Keep track of whether or not user is admin
+
     const navigate = useNavigate(); // React function allows me to dynamically navigate to different routes
 
     useEffect(() => {
@@ -27,6 +30,8 @@ function Profile() {
                     setProfilePicUrl(response.data.profilePic);
                     setFirstName(response.data.firstName);
                     setLastName(response.data.lastName);
+                    setEmail(response.data.email);
+                    setisAdmin(response.data.isAdmin);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -129,6 +134,35 @@ function Profile() {
                             }
                         />
                     </div>
+                    {/* Only admin can modify email address */}
+                    {isAdmin ? (
+                        <div className="profile__form-group">
+                            <label htmlFor="email">Email address</label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="text"
+                                value={email}
+                                onChange={(event) =>
+                                    setEmail(event.target.value)
+                                }
+                            />
+                        </div>
+                    ) : (
+                        <div className="profile__form-group">
+                            <label htmlFor="email">Email address</label>
+                            <input
+                                id="email"
+                                name="email"
+                                disabled
+                                type="text"
+                                value={email}
+                                onChange={(event) =>
+                                    setEmail(event.target.value)
+                                }
+                            />
+                        </div>
+                    )}
                     <button className="profile__update-btn" type="submit">
                         Update account
                     </button>

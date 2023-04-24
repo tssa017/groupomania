@@ -9,14 +9,13 @@ function Post() {
     const [comments, setComments] = useState([]); // Stores posts data as an array
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState(''); // TODO: Check this
+    const [lastName, setLastName] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState('');
     const [postId, setPostId] = useState(''); // TODO: Do I need this?
     const [commentContent, setCommentContent] = useState('');
     const [commentId, setCommentId] = useState('');
     const [comment, setComment] = useState(null); // Keep track of comment state
     const [likes, setLikes] = useState(0); // Keep track of likes
-    const [liked, setLiked] = useState(false); // TODO: Do I need this?
     const [selectedPostId, setSelectedPostId] = useState(null); // Keep track of selected post
     const [isAdmin, setisAdmin] = useState();
     // Toggle comments display
@@ -257,43 +256,59 @@ function Post() {
             });
     };
 
-    const getCommentById = (event) => {
-        event.preventDefault();
-        const commentId = localStorage.getItem('commentId');
+    console.log(commentId);
 
-        axios
-            .get(`http://localhost:3001/api/comments/${commentId}`)
-            .then((response) => {
-                setComment(response.data[0].comment);
-                setCommentId(response.data[0].id); // Set the id state to the parameter value
-                console.log(response.data[0].id);
-                console.log(response.data[0].comment);
-                console.log('Successfully fetched comment for editing!');
-            })
-            .catch((error) => {
-                console.error('Error fetching comment for editing:', error);
-            });
+    const getCommentById = () => {
+        const token = localStorage.getItem('token');
+        const commentId = localStorage.getItem('commentId');
+        if (token && commentId) {
+            axios
+                .get(`http://localhost:3001/api/comments/${commentId}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                })
+                .then((response) => {
+                    setCommentId(response.data[0].id); // Set the id state to the parameter value
+                    console.log(response.data[0]);
+                    setUserId(response.data[0].userId);
+                    setComment(response.data[0].comment);
+                    console.log('Successfully fetched comment for editing!');
+                })
+                .catch((error) => {
+                    console.error('Error fetching comment for editing:', error);
+                });
+        }
     };
 
+    useEffect(() => {
+        getCommentById();
+    }, []);
+
+    console.log('here:' + commentId);
+
     // Function allows user to modify a comment
-    const modifyComment = (event, commentId) => {
+    const modifyComment = (event) => {
         event.preventDefault();
+        const token = localStorage.getItem('token');
+        if (token) {
+            const updatedCommentContent = event.target.elements.content.value;
 
-        const updatedCommentContent = event.target.elements.content.value;
-
-        const data = {
-            content: updatedCommentContent,
-        };
-
-        axios
-            .put(`http://localhost:3001/api/comments/${commentId}`, data)
-            .then((response) => {
-                // navigate('/feed'); // Redirect to /feed upon successful profile update
-                console.log('Comment updated successfully');
-            })
-            .catch((error) => {
-                console.error('Failed to update comment:', error);
-            });
+            axios
+                .put(
+                    `http://localhost:3001/api/comments/${localStorage.getItem(
+                        'commentId'
+                    )}`, // Retrieve commentId from localStorage object
+                    { content: updatedCommentContent },
+                    {
+                        headers: { Authorization: `Bearer ${token}` },
+                    }
+                )
+                .then((response) => {
+                    console.log('Comment updated successfully');
+                })
+                .catch((error) => {
+                    console.error('Failed to update comment:', error);
+                });
+        }
     };
 
     useEffect(() => {
@@ -491,10 +506,9 @@ function Post() {
                                                 <article className="post__cont--status-edit-cont">
                                                     <button
                                                         className="post__cont--status-edit-cont--edit"
-                                                        onClick={(event) =>
-                                                            getCommentById(
-                                                                event,
-                                                                commentId
+                                                        onClick={() =>
+                                                            handleCommentEditClick(
+                                                                comment.id
                                                             )
                                                         }
                                                     >
@@ -516,11 +530,7 @@ function Post() {
                                     );
                                 })}
                         </section>
-                        <form
-                            onSubmit={(event) =>
-                                modifyComment(event, commentId)
-                            }
-                        >
+                        <form onSubmit={modifyComment}>
                             <textarea
                                 type="text"
                                 name="content"

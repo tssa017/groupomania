@@ -1,5 +1,4 @@
 // This file contains all comment related business logic
-const fs = require('fs'); // TODO: Do I need?
 let db = require('../models');
 const Comment = db.Comment;
 const User = db.User;
@@ -7,7 +6,7 @@ const User = db.User;
 // GET route that gets an array of all comments from database
 exports.getAllComments = async (req, res) => {
     try {
-        const comments = await Comment.findAll();
+        const comments = await Comment.getAllComments(); // Use getAllComments() function I defined in the Comment model
         res.status(200).json(comments);
     } catch (error) {
         res.status(400).json({
@@ -19,9 +18,6 @@ exports.getAllComments = async (req, res) => {
 // POST route that creates a new comment and saves to database
 exports.createComment = async (req, res) => {
     const postId = req.params.postId;
-    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&');
-    console.log(req.params.postId);
-
     try {
         const newComment = await Comment.create({
             postId: postId,
@@ -37,8 +33,6 @@ exports.createComment = async (req, res) => {
         });
     }
 };
-
-console.log('before');
 
 // GET route for single post based on its id
 exports.getSingleComment = async (req, res) => {
@@ -59,7 +53,6 @@ exports.getSingleComment = async (req, res) => {
         });
     }
 };
-console.log('after');
 
 // POST route modifies a Comment object based on its ID
 exports.modifyComment = (req, res) => {
@@ -75,6 +68,9 @@ exports.modifyComment = (req, res) => {
                 return res.status(404).json({ error: 'Comment not found.' });
             }
 
+            // Use the userId property of the comment object to get the user ID associated with that post
+            const userId = comment.userId;
+
             const updatedFields = {}; // Create an empty object to store the updated fields
             if (commentText) {
                 updatedFields.comment = commentText; // Update 'comment' field with the new comment content
@@ -82,14 +78,10 @@ exports.modifyComment = (req, res) => {
 
             // Use the update method to update the post in the database
             Comment.update(updatedFields, {
-                where: { id: req.params.id }, // Use the retrieved user ID to update the post
+                where: { id: req.params.id, userId: userId }, // Use the retrieved user ID to update the post
             })
                 .then((updatedComment) => {
                     console.log('Comment updated successfully');
-                    console.log(req.params.id);
-                    console.log('Im here!!!!!!!!!!!!!!!!!!!!!!!!!');
-                    console.log(req.body);
-
                     return res.status(200).json(updatedComment);
                 })
                 .catch((error) => {

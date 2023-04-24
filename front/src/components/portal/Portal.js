@@ -107,7 +107,7 @@ function Portal() {
             if (res.status >= 200 && res.status < 300) {
                 // Store the token in local storage
                 localStorage.setItem('token', res.data.token);
-                window.location.href = '/feed'; // TODO: replace with nav
+                window.location.href = '/feed';
             }
         } catch (err) {
             alert('Login failed. Please use a valid email and password.');

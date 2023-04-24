@@ -22,13 +22,21 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
             },
             comment: { type: DataTypes.STRING(4000) },
-            likes: DataTypes.INTEGER,
-            usersLiked: DataTypes.STRING,
         },
         {
             sequelize,
             modelName: 'Comment',
         }
     );
+    // FindAll query to organise comment order (newest to oldest)
+    Comment.getAllComments = async function () {
+        const comments = await Comment.findAll({
+            order: [
+                // Sort by creation date so they display in descending order
+                ['createdAt', 'DESC'],
+            ],
+        });
+        return comments;
+    };
     return Comment;
 };

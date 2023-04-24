@@ -88,7 +88,7 @@ module.exports.getSingleUser = async (req, res) => {
 
         // Check if user exists
         if (!userData) {
-            return res.status(404).json({ message: 'Useruuu not found' }); // TODO: Change
+            return res.status(404).json({ message: 'User not found' });
         }
 
         // Send the user data as response

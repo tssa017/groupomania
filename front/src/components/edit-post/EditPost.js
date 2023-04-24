@@ -34,7 +34,7 @@ function Edit() {
     };
 
     useEffect(() => {
-        getPostById(postId); // Call the function with postId as an argument
+        getPostById(postId);
     }, [postId]);
 
     const handleFileInputChange = (event) => {

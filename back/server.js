@@ -21,8 +21,8 @@ db.sequelize
     .then(() => {
         console.log('Synced db.');
     })
-    .catch((err) => {
-        console.log('Failed to sync db: ' + err.message); //TODO: ?
+    .catch((error) => {
+        console.log('Failed to sync db: ' + error.message);
     });
 
 const normalizePort = (val) => {

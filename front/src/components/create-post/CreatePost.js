@@ -8,13 +8,12 @@ function CreatePost() {
     const [firstName, setFirstName] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState('');
     const [postPicUrl, setPostPicUrl] = useState('');
-    const [isFileSelected, setIsFileSelected] = useState(false); // Set to false initially to keep track of whether or not a file has been uploaded
+    const [isFileSelected, setIsFileSelected] = useState(false);
 
     useEffect(() => {
-        // Perform side 'effects' within a React component
         const token = localStorage.getItem('token');
         if (token) {
-            const decodedToken = jwtDecode(token); // Method from jwt-decode library that parses the payload and headers of the token to JSON
+            const decodedToken = jwtDecode(token);
             const userId = decodedToken.userId;
 
             axios
@@ -23,10 +22,9 @@ function CreatePost() {
                 })
                 .then((response) => {
                     if (response.data && response.data.firstName) {
-                        // Check if firstName included in response
                         const firstName = response.data.firstName;
                         const profilePic = response.data.profilePic;
-                        // Set extracted values
+
                         setUserId(userId);
                         setFirstName(firstName);
                         setProfilePicUrl(profilePic);
@@ -39,41 +37,43 @@ function CreatePost() {
     }, []);
 
     const handleFileInputChange = (event) => {
-        const file = event.target.files[0]; // Retrieves uploaded image file
+        const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = (event) => {
-            setPostPicUrl(event.target.result); // Set the postPicUrl hook to the base64-encoded data URL of selected image file, re-renders
+            setPostPicUrl(event.target.result);
         };
-        reader.readAsDataURL(file); // Reads file
-        setIsFileSelected(true); // Resets isFileSelected hook so that the file preview is displayed
+        reader.readAsDataURL(file);
+        setIsFileSelected(true);
+    };
+
+    const handleRemoveImage = () => {
+        setPostPicUrl('');
+        setIsFileSelected(false);
     };
 
     const handlePostSubmit = (event) => {
-        event.preventDefault(); // Prevent default form refresh and submit
+        event.preventDefault();
 
-        const formData = new FormData(); // FormData object used to construct and
+        const formData = new FormData();
         formData.append('content', event.target.content.value);
         formData.append('userId', userId);
 
-        // Check if image file exists before appending to form data
         if (isFileSelected) {
-            // Use the isFileSelected state to check if an image file has been selected
-            formData.append('image', event.target.image.files[0]); // Append the actual image file to the form data
+            formData.append('image', event.target.image.files[0]);
         }
 
         axios
             .post(`http://localhost:3001/api/posts/${userId}`, formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'multipart/form-data', // Inidicates the request contains files in payload
+                    'Content-Type': 'multipart/form-data',
                 },
             })
             .then((response) => {
                 console.log('Post created successfully:');
 
-                // Reset the form
-                event.target.reset(); // Reset the post after submission
-                window.location.reload(); // Refresh the page after submission
+                event.target.reset();
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Failed to create post:', error);
@@ -99,11 +99,20 @@ function CreatePost() {
                             maxLength={500}
                         ></textarea>
                         {isFileSelected && ( // Only renders if file is currently selected
-                            <img
-                                src={postPicUrl}
-                                className="create-post__cont--post-img"
-                                alt="User post img"
-                            />
+                            <div>
+                                <img
+                                    src={postPicUrl}
+                                    className="create-post__cont--post-img"
+                                    alt="User post img"
+                                />
+                                <button
+                                    type="button"
+                                    className="create-post__cont--post-remove"
+                                    onClick={handleRemoveImage}
+                                >
+                                    Remove Image
+                                </button>
+                            </div>
                         )}
                         <div className="create-post__cont--post-error"></div>
                         <section className="create-post__cont--btns">

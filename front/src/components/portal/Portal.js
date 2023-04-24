@@ -109,10 +109,9 @@ function Portal() {
                 localStorage.setItem('token', res.data.token);
                 window.location.href = '/feed';
             }
-        } catch (err) {
-            // TODO: ?
+        } catch (error) {
             alert('Login failed. Please use a valid email and password.');
-            console.log(err);
+            console.log(error);
         }
     };
 

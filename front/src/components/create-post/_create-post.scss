@@ -25,6 +25,7 @@
 
         &--post {
             position: absolute;
+            width: 100%;
             left: 0;
             right: 0;
             padding: 8rem 3rem 5rem 3rem;
@@ -32,15 +33,27 @@
             border-bottom: 3px solid $colorFont;
             font-size: 1.2rem;
             line-height: 2.2rem;
-        }
 
-        &--post-img {
-            position: absolute;
-            margin-top: 1rem;
-            width: 90px;
-            height: auto;
-            border: 0.25rem solid $colorFont;
-            border-radius: 100%;
+            &-cont {
+                position: relative;
+                top: 20rem;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 0.8rem;
+
+                .create-post__cont--post-img {
+                    @include borderStyle;
+                    width: 18rem;
+                    height: auto;
+                }
+
+                .create-post__cont--post-remove {
+                    width: 4rem;
+                    height: 4rem;
+                    cursor: pointer;
+                }
+            }
         }
 
         &--btns {
@@ -48,8 +61,7 @@
 
             input[type='file']::file-selector-button {
                 position: relative;
-                align-self: center;
-                margin-top: 20rem;
+                margin-top: 21.5rem;
                 padding: 1rem;
                 background-color: $colorBox;
                 @include borderStyle;
@@ -63,7 +75,7 @@
             &-postBtn {
                 position: relative;
                 padding: 1rem;
-                margin: 1.5rem 0 0 1.5rem;
+                margin-top: 1.5rem;
                 background-color: $colorSecondary;
                 width: 5rem;
                 @include borderStyle;
@@ -83,39 +95,40 @@
 @media screen and (min-width: 768px) {
     .create-post {
         &__cont {
-            display: flex;
             background-color: $colorBackgroundLight;
             border-right: 0.2rem solid $colorFont;
             border-bottom: 0.2rem solid $colorFont;
             border-left: 0.2rem solid $colorFont;
             width: 800px;
 
-            &--post-img {
-                width: 120px;
-                margin-top: 3rem;
-                right: 5rem;
-            }
-
-            &--btns {
-                text-align: center;
-
-                input[type='file']::file-selector-button {
-                    background-color: $colorBackground;
-                    margin-top: 3rem;
-                }
-
-                &-postBtn {
-                    background-color: $colorSecondary;
-                    width: 5rem;
-                }
-            }
-
             &--post {
-                position: relative;
-                padding: 4rem 3rem 5rem 3rem;
                 border-right: 0.2rem solid $colorFont;
                 border-left: 0.2rem solid $colorFont;
+                right: revert;
+                left: revert;
+                width: fit-content;
+            }
+
+            &__cont {
+                display: flex;
+                background-color: $colorBackgroundLight;
+                border-right: 0.2rem solid $colorFont;
+                border-bottom: 0.2rem solid $colorFont;
+                border-left: 0.2rem solid $colorFont;
                 width: 800px;
+
+                .create-post__cont--post-cont {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 1rem;
+
+                    .create-post__cont--post-img {
+                        width: 25rem;
+                    }
+                }
             }
         }
     }

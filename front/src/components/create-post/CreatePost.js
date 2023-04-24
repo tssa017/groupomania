@@ -99,19 +99,16 @@ function CreatePost() {
                             maxLength={500}
                         ></textarea>
                         {isFileSelected && ( // Only renders if file is currently selected
-                            <div>
+                            <div className="create-post__cont--post-cont">
                                 <img
                                     src={postPicUrl}
                                     className="create-post__cont--post-img"
                                     alt="User post img"
                                 />
-                                <button
-                                    type="button"
-                                    className="create-post__cont--post-remove"
+                                <i
+                                    className="fa-solid fa-x create-post__cont--post-remove"
                                     onClick={handleRemoveImage}
-                                >
-                                    Remove Image
-                                </button>
+                                ></i>
                             </div>
                         )}
                         <div className="create-post__cont--post-error"></div>

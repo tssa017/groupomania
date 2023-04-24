@@ -278,6 +278,7 @@ a {
 }
 .create-post__cont--post {
   position: absolute;
+  width: 100%;
   left: 0;
   right: 0;
   padding: 8rem 3rem 5rem 3rem;
@@ -286,21 +287,31 @@ a {
   font-size: 1.2rem;
   line-height: 2.2rem;
 }
-.create-post__cont--post-img {
-  position: absolute;
-  margin-top: 1rem;
-  width: 90px;
+.create-post__cont--post-cont {
+  position: relative;
+  top: 20rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.8rem;
+}
+.create-post__cont--post-cont .create-post__cont--post-img {
+  border: 3px solid #3d3c3c;
+  border-radius: 10px;
+  width: 18rem;
   height: auto;
-  border: 0.25rem solid #3d3c3c;
-  border-radius: 100%;
+}
+.create-post__cont--post-cont .create-post__cont--post-remove {
+  width: 4rem;
+  height: 4rem;
+  cursor: pointer;
 }
 .create-post__cont--btns {
   gap: 1rem;
 }
 .create-post__cont--btns input[type=file]::file-selector-button {
   position: relative;
-  align-self: center;
-  margin-top: 20rem;
+  margin-top: 21.5rem;
   padding: 1rem;
   background-color: #d9d9d9;
   border: 3px solid #3d3c3c;
@@ -316,7 +327,7 @@ a {
 .create-post__cont--btns-postBtn {
   position: relative;
   padding: 1rem;
-  margin: 1.5rem 0 0 1.5rem;
+  margin-top: 1.5rem;
   background-color: #ca7ffe;
   width: 5rem;
   border: 3px solid #3d3c3c;
@@ -334,6 +345,20 @@ a {
 
 @media screen and (min-width: 768px) {
   .create-post__cont {
+    background-color: #e3e4fd;
+    border-right: 0.2rem solid #3d3c3c;
+    border-bottom: 0.2rem solid #3d3c3c;
+    border-left: 0.2rem solid #3d3c3c;
+    width: 800px;
+  }
+  .create-post__cont--post {
+    border-right: 0.2rem solid #3d3c3c;
+    border-left: 0.2rem solid #3d3c3c;
+    right: revert;
+    left: revert;
+    width: fit-content;
+  }
+  .create-post__cont__cont {
     display: flex;
     background-color: #e3e4fd;
     border-right: 0.2rem solid #3d3c3c;
@@ -341,28 +366,16 @@ a {
     border-left: 0.2rem solid #3d3c3c;
     width: 800px;
   }
-  .create-post__cont--post-img {
-    width: 120px;
-    margin-top: 3rem;
-    right: 5rem;
-  }
-  .create-post__cont--btns {
-    text-align: center;
-  }
-  .create-post__cont--btns input[type=file]::file-selector-button {
-    background-color: #aeb1fa;
-    margin-top: 3rem;
-  }
-  .create-post__cont--btns-postBtn {
-    background-color: #ca7ffe;
-    width: 5rem;
-  }
-  .create-post__cont--post {
+  .create-post__cont__cont .create-post__cont--post-cont {
     position: relative;
-    padding: 4rem 3rem 5rem 3rem;
-    border-right: 0.2rem solid #3d3c3c;
-    border-left: 0.2rem solid #3d3c3c;
-    width: 800px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  .create-post__cont__cont .create-post__cont--post-cont .create-post__cont--post-img {
+    width: 25rem;
   }
 }
 .settings__nav {

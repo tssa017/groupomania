@@ -11,7 +11,7 @@ function Post() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState('');
-    const [postId, setPostId] = useState(''); // TODO: Do I need this?
+    const [postId, setPostId] = useState('');
     const [commentContent, setCommentContent] = useState('');
     const [commentId, setCommentId] = useState('');
     const [comment, setComment] = useState(null); // Keep track of comment state
@@ -222,9 +222,7 @@ function Post() {
     };
 
     const handleCommentEditClick = (commentId) => {
-        // TODO: Implement or delete. Do I need this?
         localStorage.setItem('commentId', commentId);
-        // navigate('/edit');
     };
 
     const createComment = (event, postId) => {
@@ -256,8 +254,6 @@ function Post() {
             });
     };
 
-    console.log(commentId);
-
     const getCommentById = () => {
         const token = localStorage.getItem('token');
         const commentId = localStorage.getItem('commentId');
@@ -268,7 +264,6 @@ function Post() {
                 })
                 .then((response) => {
                     setCommentId(response.data[0].id); // Set the id state to the parameter value
-                    console.log(response.data[0]);
                     setUserId(response.data[0].userId);
                     setComment(response.data[0].comment);
                     console.log('Successfully fetched comment for editing!');
@@ -282,8 +277,6 @@ function Post() {
     useEffect(() => {
         getCommentById();
     }, []);
-
-    console.log('here:' + commentId);
 
     // Function allows user to modify a comment
     const modifyComment = (event) => {
@@ -312,38 +305,53 @@ function Post() {
     };
 
     useEffect(() => {
-        // Fetch the initial likes count from the server and set it in the state
+        // Fetch the initial likes count for all posts from the server and set them in the state
         axios
             .get(`http://localhost:3001/api/posts/${postId}/get-likes`)
             .then((response) => {
-                setLikes(response.data[0].likes);
+                setPosts(response.data); // set the posts data in the state
             })
             .catch((error) => {
                 console.error(error);
             });
     }, []);
 
-    function handleLikes(event, postId) {
+    async function handleLikes(event, postId) {
         event.preventDefault();
 
-        setLikes(likes + 1);
+        // Find the post in the state and update its likes count
+        const updatedPosts = posts.map((post) => {
+            if (post.id === postId) {
+                return { ...post, likes: post.likes + 1 };
+            }
+            return post;
+        });
+
+        const updatedPost = updatedPosts.find((post) => post.id === postId);
 
         const likesData = {
-            likes: likes + 1,
+            postId: postId,
+            likes: updatedPost.likes,
         };
 
-        axios
-            .put(`http://localhost:3001/api/posts/${postId}/likes`, likesData, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-            })
-            .then((response) => {
-                console.log(likesData);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        try {
+            const response = await axios.put(
+                `http://localhost:3001/api/posts/${postId}/likes`,
+                likesData,
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            'token'
+                        )}`,
+                    },
+                }
+            );
+            console.log(likesData);
+            setPosts(updatedPosts); // Update the state with the new post data
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     // Functions toggle section to reveal or collapse on click
@@ -425,8 +433,6 @@ function Post() {
                             onClick={(event) => handleLikes(event, post.id)}
                         ></i>
                     </section>
-                    {/* <div className="create-comment"> */}
-                    {/* // TODO: Update # of comments, hide comments */}
                     <div className="create-comment" onClick={toggleComments}>
                         {commentsButtonText}
                         <i

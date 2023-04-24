@@ -36,9 +36,7 @@ exports.createComment = async (req, res) => {
 
 // GET route for single post based on its id
 exports.getSingleComment = async (req, res) => {
-    console.log('hi');
     try {
-        console.log('trying');
         const commentId = req.params.id;
         const comment = await Comment.findOne({
             where: { id: commentId },

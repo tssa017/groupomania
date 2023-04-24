@@ -120,6 +120,7 @@ exports.deletePost = async (req, res) => {
         });
     }
 };
+
 // GET route displays like count
 exports.getLikes = async (req, res, next) => {
     try {
@@ -174,7 +175,6 @@ exports.likePost = (req, res) => {
 // PUT route updates 'read' field of a post
 exports.updateReadStatus = async (req, res) => {
     const { id } = req.params;
-    console.log(req.params);
     try {
         const post = await Post.findByPk(id);
         if (!post) {

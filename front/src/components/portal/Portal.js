@@ -110,6 +110,7 @@ function Portal() {
                 window.location.href = '/feed';
             }
         } catch (err) {
+            // TODO: ?
             alert('Login failed. Please use a valid email and password.');
             console.log(err);
         }

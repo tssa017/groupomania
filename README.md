@@ -4,15 +4,21 @@ I built and designed this full-stack website using React, Express, MySQL, Sequel
 
 ## Installation
 
-Clone the project
+1. Clone the project using the following command:
 
 ```bash
 git clone git@github.com:tssa017/groupomania.git
 ```
 
+2. Redirect to the project folder using the following command:
+
+```bash
+cd groupomania
+```
+
 ### Back-end
 
-1. Download the backend dependencies with this command:
+1. Download the backend dependencies with the following command:
 
 ```bash
 npm ci back/package-lock.json
@@ -42,39 +48,66 @@ npm run start
 
 1. Download [MySql](https://dev.mysql.com/downloads/mysql/) by following the instructions from their community downloads page
 
-2. Build a **Users** table with the following fields:
+2. Download [MySql Workbench](https://dev.mysql.com/downloads/workbench/) by following the instructions from their community downloads page
 
--   userId (primary key) **_type: TINYINT_**
--   firstName **_type: VARCHAR(20)_**
--   lastName **_type: VARCHAR(20)_**
--   email **_type: VARCHAR(320)_**
--   password **_type: VARCHAR(100)_**
--   profilePic **_type: VARCHAR(512)_**
--   isAdmin **_type: TINYINT_**
--   createdAt **_type: DATETIME_**
--   updatedAt **_type: DATETIME_**
+3. Create a new MySql connection using Workbench, following [these instructions](https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-create-connection.html)
 
-3. Build a **Posts** table with the following fields:
+4. Create a new MySql database from Workbench or with the following command:
 
--   id (primary key) **_type: TINYINT_**
--   post type: VARCHAR(4000)
--   likes **_type: TINYINT_**
--   read **_type: TINYINT_**
--   userId (foreign key associated with **Users** model) **_type: TINYINT_**
--   postPicUrl **_type: VARCHAR(512)_**
--   createdAt **_type: DATETIME_**
--   updatedAt **_type: DATETIME_**
+```bash
+CREATE DATABASE databasename;
+```
 
-4. Build a **Comments** table with the following fields:
+2. Build a **Users** table with the following command:
 
--   id (primary key)
--   comment type: **_VARCHAR(4000)_**
--   postId (foreign key associated with **Posts** model) **_type: TINYINT_**
--   userId (foreign key associated with **Users** model) **_type: TINYINT_**
--   createdAt **_type: DATETIME_**
--   updatedAt **_type: DATETIME_**
+```bash
+CREATE TABLE Users (
+    userId TINYINT,
+    firstName VARCHAR(20),
+    lastName VARCHAR(20),
+    email VARCHAR(320),
+    password VARCHAR(100),
+    profilePic VARCHAR(512),
+    isAdmin TINYINT,
+    createdAt DATETIME,
+    updatedAt DATETIME,
+    PRIMARY KEY (userId)
+);
+```
 
-5. Connect to your database with the following command, you will be prompted for your password
+3. Build a **Posts** table with the following command:
+
+```bash
+CREATE TABLE Posts (
+    id TINYINT,
+    post VARCHAR(4000),
+    likes TINYINT,
+    read TINYINT,
+    userId TINYINT,
+    postPicUrl VARCHAR(512),
+    createdAt DATETIME,
+    updatedAt DATETIME,
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId) REFERENCES Users(userId)
+);
+```
+
+4. Build a **Comments** table with the following command:
+
+```bash
+CREATE TABLE Comments (
+    id TINYINT,
+    comment VARCHAR(4000),
+    postId TINYINT,
+    userId TINYINT,
+    createdAt DATETIME,
+    updatedAt DATETIME,
+    PRIMARY KEY (id),
+    FOREIGN KEY (postId) REFERENCES Posts(id)
+);
+```
+
+5. Connect to your MySql database from the project terminal with the following command:
 
 ```bash
 mysql -u <username> -h <hostname> -P <port> <database> -p

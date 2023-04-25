@@ -433,6 +433,36 @@ function Post() {
                             onClick={(event) => handleLikes(event, post.id)}
                         ></i>
                     </section>
+                    <section className="post__cont--comment-cont">
+                        <img
+                            className="post__cont--comment-cont-img"
+                            src={profilePicUrl}
+                            alt="User profile picture"
+                        />
+                        <textarea
+                            type="text"
+                            name="content"
+                            id="content"
+                            className="post__cont--comment-cont-post"
+                            placeholder={`Have something to say about this, ${firstName}?`}
+                            maxLength={500}
+                            onChange={(event) =>
+                                setCommentContent(event.target.value)
+                            }
+                        ></textarea>
+                        <form
+                            className="post__cont--comment-cont-edit-cont"
+                            onSubmit={(event) => createComment(event, post.id)}
+                        >
+                            <input
+                                type="submit" // Submit form
+                                className="create-post__cont--btns-postBtn"
+                                onClick={() => setSelectedPostId(post.id)}
+                                id="button"
+                                value="POST"
+                            />
+                        </form>
+                    </section>
                     <div className="create-comment" onClick={toggleComments}>
                         {commentsButtonText}
                         <i
@@ -441,38 +471,7 @@ function Post() {
                             }`}
                             onClick={toggleIcon}
                         ></i>
-                        <section className="post__cont--comment-cont">
-                            <img
-                                className="post__cont--comment-cont-img"
-                                src={profilePicUrl}
-                                alt="User profile picture"
-                            />
-                            <textarea
-                                type="text"
-                                name="content"
-                                id="content"
-                                className="post__cont--comment-cont-post"
-                                placeholder={`Have something to say about this, ${firstName}?`}
-                                maxLength={500}
-                                onChange={(event) =>
-                                    setCommentContent(event.target.value)
-                                }
-                            ></textarea>
-                            <form
-                                className="post__cont--comment-cont-edit-cont"
-                                onSubmit={(event) =>
-                                    createComment(event, post.id)
-                                }
-                            >
-                                <input
-                                    type="submit" // Submit form
-                                    className="create-post__cont--btns-postBtn"
-                                    onClick={() => setSelectedPostId(post.id)}
-                                    id="button"
-                                    value="POST"
-                                />
-                            </form>
-                        </section>
+
                         {/* Render the comments */}
                         <section
                             className="post__cont--comment-cont"
@@ -495,23 +494,25 @@ function Post() {
                                             className="post__comment"
                                             key={comment.id}
                                         >
-                                            <p className="post__cont--status-publisher-name">
-                                                {comment.firstName}{' '}
-                                                {comment.lastName}
-                                            </p>
-                                            <img
-                                                className="post__cont--comment-cont-img"
-                                                src={comment.profilePicUrl}
-                                                alt="User profile picture"
-                                            />
-                                            <p className="post__cont--comment-cont-post">
+                                            <div className="comment__cont--publisher">
+                                                <img
+                                                    className="comment__cont--publisher-img"
+                                                    src={comment.profilePicUrl}
+                                                    alt="User profile picture"
+                                                />
+                                                <p className="comment__cont--publisher-name">
+                                                    {comment.firstName}{' '}
+                                                    {comment.lastName}
+                                                </p>
+                                            </div>
+                                            <p className="comment__cont--comment-cont-comment">
                                                 {comment.comment}
                                             </p>
                                             {/* Render edit and delete buttons for comment authors only */}
                                             {(isCommentAuthor || isAdmin) && (
-                                                <article className="post__cont--status-edit-cont">
+                                                <div className="comment__cont--modify-comment">
                                                     <button
-                                                        className="post__cont--status-edit-cont--edit"
+                                                        className="comment__cont--modify-comment--edit"
                                                         onClick={() =>
                                                             handleCommentEditClick(
                                                                 comment.id
@@ -521,7 +522,7 @@ function Post() {
                                                         Edit
                                                     </button>
                                                     <button
-                                                        className="post__cont--status-edit-cont--delete"
+                                                        className="comment__cont--modify-comment--delete"
                                                         onClick={() =>
                                                             deleteComment(
                                                                 comment.id
@@ -530,7 +531,7 @@ function Post() {
                                                     >
                                                         Delete
                                                     </button>
-                                                </article>
+                                                </div>
                                             )}
                                         </div>
                                     );
@@ -541,7 +542,7 @@ function Post() {
                                 type="text"
                                 name="content"
                                 id="content"
-                                className="create-post__cont--post"
+                                className="create-post__cont--post edit-comment-textarea"
                                 placeholder="Edit comment..."
                                 maxLength={500}
                             ></textarea>

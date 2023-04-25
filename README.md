@@ -66,7 +66,7 @@ mysql -u <username> -p
 
 ```bash
 CREATE DATABASE <databasename>;
-USE <databasename>
+USE <databasename>;
 ```
 
 6. Build a **Users** table with the following command:

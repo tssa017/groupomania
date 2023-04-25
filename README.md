@@ -21,7 +21,8 @@ cd groupomania
 1. Download the backend dependencies with the following command:
 
 ```bash
-npm ci back/package-lock.json
+cd back
+npm ci
 ```
 
 2. Launch the server with the following command:
@@ -32,10 +33,13 @@ nodemon server
 
 ### Front-end
 
+In another terminal,
+
 1. Download the frontend dependencies with this command:
 
 ```bash
-npm ci front/package-lock.json
+cd front
+npm ci
 ```
 
 2. Launch React with the following command:
@@ -52,13 +56,20 @@ npm run start
 
 3. Create a new MySql connection using Workbench, following [these instructions](https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-create-connection.html)
 
-4. Create a new MySql database from Workbench or with the following command:
+4. In a new terminal, connect to your MySql database from the project terminal with the following command:
 
 ```bash
-CREATE DATABASE databasename;
+mysql -u <username> -p
 ```
 
-2. Build a **Users** table with the following command:
+5. Create a new database with the following command:
+
+```bash
+CREATE DATABASE <databasename>;
+USE <databasename>
+```
+
+6. Build a **Users** table with the following command:
 
 ```bash
 CREATE TABLE Users (
@@ -75,7 +86,7 @@ CREATE TABLE Users (
 );
 ```
 
-3. Build a **Posts** table with the following command:
+7. Build a **Posts** table with the following command:
 
 ```bash
 CREATE TABLE Posts (
@@ -92,7 +103,7 @@ CREATE TABLE Posts (
 );
 ```
 
-4. Build a **Comments** table with the following command:
+8. Build a **Comments** table with the following command:
 
 ```bash
 CREATE TABLE Comments (
@@ -107,13 +118,7 @@ CREATE TABLE Comments (
 );
 ```
 
-5. Connect to your MySql database from the project terminal with the following command:
-
-```bash
-mysql -u <username> -h <hostname> -P <port> <database> -p
-```
-
-6. Sign in to the website! (You can create an admin account by setting `isAdmin` to `1` in the database)
+9. Sign in to the website! (You can create an admin account by setting `isAdmin` to `1` in the database)
 
 ### For developers
 

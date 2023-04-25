@@ -97,7 +97,6 @@ function Edit() {
                             placeholder="Edit post..."
                             maxLength={500}
                         ></textarea>
-                        <div className="create-post__cont--post-error"></div>
                         <section className="create-post__cont--btns">
                             <label htmlFor="image">
                                 <input
@@ -110,7 +109,7 @@ function Edit() {
                             </label>
                             <input
                                 type="submit" // Submit form
-                                className="create-post__cont--btns-postBtn"
+                                className="create-post__cont--btns-post-btn"
                                 id="button"
                                 value="POST"
                             />

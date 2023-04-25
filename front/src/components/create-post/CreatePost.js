@@ -124,7 +124,7 @@ function CreatePost() {
                             </label>
                             <input
                                 type="submit" // Submit form
-                                className="create-post__cont--btns-postBtn"
+                                className="create-post__cont--btns-post-btn"
                                 id="button"
                                 value="POST"
                             />

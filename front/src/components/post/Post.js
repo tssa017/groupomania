@@ -21,6 +21,8 @@ function Post() {
     // Toggle comments display
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const [isIconUp, setIsIconUp] = useState(false);
+    // Edit post
+    const [isEditingComment, setIsEditingComment] = useState(false);
 
     const navigate = useNavigate();
 
@@ -223,6 +225,7 @@ function Post() {
 
     const handleCommentEditClick = (commentId) => {
         localStorage.setItem('commentId', commentId);
+        setIsEditingComment(true);
     };
 
     const createComment = (event, postId) => {
@@ -246,8 +249,7 @@ function Post() {
                 console.log('Comment created successfully:');
 
                 // Reset the form
-                // event.target.reset();
-                // window.location.reload();
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Failed to add comment:', error);
@@ -281,6 +283,7 @@ function Post() {
     // Function allows user to modify a comment
     const modifyComment = (event) => {
         event.preventDefault();
+        if (!isEditingComment) return;
         const token = localStorage.getItem('token');
         if (token) {
             const updatedCommentContent = event.target.elements.content.value;
@@ -302,6 +305,8 @@ function Post() {
                     console.error('Failed to update comment:', error);
                 });
         }
+        setIsEditingComment(false);
+        window.location.reload();
     };
 
     useEffect(() => {
@@ -404,66 +409,73 @@ function Post() {
                                     />
                                 ) : null}
                             </p>
-                            {(isPostAuthor || isAdmin) && (
-                                <article className="post__cont--status-edit-cont">
-                                    <button
-                                        className="post__cont--status-edit-cont--edit"
-                                        onClick={() =>
-                                            handlePostEditClick(post.id)
+                            <article className="post__cont--status-edit-cont">
+                                <section className="post__cont--reactions">
+                                    <div className="post__cont--reactions-likes">
+                                        {`Likes: ${post.likes}`}
+                                    </div>
+                                    <i
+                                        className="post__cont--reactions--like fa-solid fa-heart"
+                                        onClick={(event) =>
+                                            handleLikes(event, post.id)
                                         }
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className="post__cont--status-edit-cont--delete"
-                                        onClick={() => deletePost(post.id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </article>
-                            )}
+                                    ></i>
+                                </section>
+                                {(isPostAuthor || isAdmin) && (
+                                    <div className="post__cont--status-edit-cont-mods">
+                                        <button
+                                            className="post__cont--status-edit-cont-mods--edit"
+                                            onClick={() =>
+                                                handlePostEditClick(post.id)
+                                            }
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            className="post__cont--status-edit-cont-mods--delete"
+                                            onClick={() => deletePost(post.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                )}
+                            </article>
                         </section>
                     </article>
-                    <section className="post__cont--reactions">
-                        <div className="post__cont--reactions-likes">
-                            {`${post.likes} likes`}
-                        </div>
-                        <i
-                            className="post__cont--reactions--like fa-solid fa-heart"
-                            onClick={(event) => handleLikes(event, post.id)}
-                        ></i>
-                    </section>
-                    <section className="post__cont--comment-cont">
-                        <img
-                            className="post__cont--comment-cont-img"
-                            src={profilePicUrl}
-                            alt="User profile picture"
-                        />
-                        <textarea
-                            type="text"
-                            name="content"
-                            id="content"
-                            className="post__cont--comment-cont-post"
-                            placeholder={`Have something to say about this, ${firstName}?`}
-                            maxLength={500}
-                            onChange={(event) =>
-                                setCommentContent(event.target.value)
-                            }
-                        ></textarea>
-                        <form
-                            className="post__cont--comment-cont-edit-cont"
-                            onSubmit={(event) => createComment(event, post.id)}
-                        >
-                            <input
-                                type="submit" // Submit form
-                                className="create-post__cont--btns-postBtn"
-                                onClick={() => setSelectedPostId(post.id)}
-                                id="button"
-                                value="POST"
+                    {isEditingComment ? null : ( // If editing a comment, do not render the create comment section
+                        <section className="create-comment__cont">
+                            <img
+                                className="create-comment__cont--img"
+                                src={profilePicUrl}
+                                alt="User profile picture"
                             />
-                        </form>
-                    </section>
-                    <div className="create-comment" onClick={toggleComments}>
+                            <textarea
+                                type="text"
+                                name="content"
+                                id="content"
+                                className="create-comment__cont--comment"
+                                placeholder={`Have something to say about this, ${firstName}?`}
+                                maxLength={500}
+                                onChange={(event) =>
+                                    setCommentContent(event.target.value)
+                                }
+                            ></textarea>
+                            <form
+                                onSubmit={(event) =>
+                                    createComment(event, post.id)
+                                }
+                            >
+                                <input
+                                    type="submit"
+                                    className="create-comment__cont--post-btn"
+                                    onClick={() => setSelectedPostId(post.id)}
+                                    id="button"
+                                    value="POST"
+                                />
+                            </form>
+                        </section>
+                    )}
+                    <div id="toggle-comments" onClick={toggleComments}>
                         {commentsButtonText}
                         <i
                             className={`settings__nav--icon fa-solid fa-angle-${
@@ -474,7 +486,7 @@ function Post() {
 
                         {/* Render the comments */}
                         <section
-                            className="post__cont--comment-cont"
+                            className="comment__cont"
                             style={{
                                 display: isCommentsOpen ? 'block' : 'none',
                             }}
@@ -491,28 +503,28 @@ function Post() {
                                         comment.userId === userId;
                                     return (
                                         <div
-                                            className="post__comment"
+                                            className="comment__cont--comment-card"
                                             key={comment.id}
                                         >
-                                            <div className="comment__cont--publisher">
+                                            <div className="comment__cont--comment-card-publisher">
                                                 <img
-                                                    className="comment__cont--publisher-img"
+                                                    className="comment__cont--comment-card-publisher-img"
                                                     src={comment.profilePicUrl}
                                                     alt="User profile picture"
                                                 />
-                                                <p className="comment__cont--publisher-name">
+                                                <p className="comment__cont--comment-card-publisher-name">
                                                     {comment.firstName}{' '}
                                                     {comment.lastName}
                                                 </p>
                                             </div>
-                                            <p className="comment__cont--comment-cont-comment">
+                                            <p className="comment__cont--comment-card-comment">
                                                 {comment.comment}
                                             </p>
                                             {/* Render edit and delete buttons for comment authors only */}
                                             {(isCommentAuthor || isAdmin) && (
-                                                <div className="comment__cont--modify-comment">
+                                                <div className="comment__cont--comment-card--edit">
                                                     <button
-                                                        className="comment__cont--modify-comment--edit"
+                                                        className="comment__cont--comment-card--edit-edit-btn"
                                                         onClick={() =>
                                                             handleCommentEditClick(
                                                                 comment.id
@@ -522,7 +534,7 @@ function Post() {
                                                         Edit
                                                     </button>
                                                     <button
-                                                        className="comment__cont--modify-comment--delete"
+                                                        className="comment__cont--comment-card--edit-delete"
                                                         onClick={() =>
                                                             deleteComment(
                                                                 comment.id
@@ -537,25 +549,27 @@ function Post() {
                                     );
                                 })}
                         </section>
-                        <form onSubmit={modifyComment}>
-                            <textarea
-                                type="text"
-                                name="content"
-                                id="content"
-                                className="create-post__cont--post edit-comment-textarea"
-                                placeholder="Edit comment..."
-                                maxLength={500}
-                            ></textarea>
-                            <div className="create-post__cont--post-error"></div>
-                            <section className="create-post__cont--btns">
+                        {isEditingComment && (
+                            <form
+                                onSubmit={modifyComment}
+                                className="edit-comment__cont"
+                            >
+                                <textarea
+                                    type="text"
+                                    name="content"
+                                    id="content"
+                                    className="edit-comment__cont--comment"
+                                    placeholder="Edit comment..."
+                                    maxLength={500}
+                                ></textarea>
                                 <input
                                     type="submit"
-                                    className="create-post__cont--btns-postBtn"
+                                    className="edit-comment__cont--post-btn"
                                     id="button"
                                     value="POST"
                                 />
-                            </section>
-                        </form>
+                            </form>
+                        )}
                     </div>
                 </div>
             );

@@ -111,7 +111,7 @@ CREATE TABLE Comments (
     createdAt DATETIME,
     updatedAt DATETIME,
     PRIMARY KEY (id),
-    FOREIGN KEY (postId) REFERENCES Posts(id)
+    FOREIGN KEY (postId) REFERENCES Posts(id),
     FOREIGN KEY (userId) REFERENCES Users(userId)
 );
 ```

@@ -1,3 +1,4 @@
+// Imports
 import '../../index.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,10 +12,11 @@ function Profile() {
     const [email, setEmail] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState(null); // Store the URL of the profile picture displayed in the UI
     const [profilePicFile, setProfilePicFile] = useState(null); // Stores selected image file when a user chooses to update their profile picture
-    const [isAdmin, setisAdmin] = useState(); // Keep track of whether or not user is admin
+    const [isAdmin, setisAdmin] = useState(null); // Keep track of whether or not user is admin
 
-    const navigate = useNavigate(); // React function allows me to dynamically navigate to different routes
+    const navigate = useNavigate();
 
+    // Function gets user data to display on profile page
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -37,7 +39,7 @@ function Profile() {
                     console.log(error);
                 });
         }
-    }, [userId]); // Fetch data dependent on userId. Component will dynamically update with the correct profile data when the userId changes
+    }, [userId]); // Component will dynamically update with the correct profile data whenever the userId changes
 
     // Function dynamically updates user information on change
     const handleProfileChange = (event) => {
@@ -65,6 +67,7 @@ function Profile() {
         }
     };
 
+    // Function handles account deletion by clearing localStorage and removing the entry from the database
     const handleAccountDeactivation = () => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -74,7 +77,7 @@ function Profile() {
                 })
                 .then(() => {
                     localStorage.clear();
-                    navigate('/portal'); // Redirect to /feed upon successful account deletion
+                    navigate('/portal'); // Redirect to signup portal upon successful account deletion
                     console.log('Account successfully deactivated!');
                 })
                 .catch((error) => {
@@ -83,6 +86,7 @@ function Profile() {
         }
     };
 
+    // Function allows user to preview their new selected profile picture before updating profile
     const setDisplayedImage = (value) => {
         setProfilePicUrl(URL.createObjectURL(value)); // Sets the temporary URL of the selected image
         setProfilePicFile(value); // Sets URL of selected image file

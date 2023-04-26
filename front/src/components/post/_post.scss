@@ -1,7 +1,7 @@
 // This page contains Sass `post` and `comment` styles
 
 // Post styles
-// Mobile styling
+// Mobile styles
 .post {
     &__cont {
         padding: 3rem;
@@ -108,7 +108,7 @@
     }
 }
 
-// Tablet and PC styling
+// Tablet and PC styles
 @media screen and (min-width: 768px) {
     .post {
         &__cont {
@@ -119,10 +119,9 @@
         }
     }
 }
-// End post styles
 
 // Comment styles
-// Mobile styling
+// Mobile styles
 .create-comment__cont {
     display: flex;
     flex-direction: column;
@@ -263,7 +262,7 @@
     }
 }
 
-// Tablet and PC styling
+// Tablet and PC styles
 @media screen and (min-width: 768px) {
     .create-comment__cont {
         padding-top: 2rem;
@@ -300,4 +299,3 @@
         }
     }
 }
-// End comment styles

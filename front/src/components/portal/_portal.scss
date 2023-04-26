@@ -1,4 +1,6 @@
 // This page contains Sass Portal styles
+
+// Mobile styles
 .portal {
     margin: 3rem;
     padding-bottom: 2rem;
@@ -111,7 +113,7 @@
     }
 }
 
-// Error message styling
+// Error message styles
 .alert {
     align-self: flex-start;
     margin-top: 0.3rem;
@@ -120,7 +122,7 @@
     font-size: 1.1rem;
 }
 
-// Tablet and PC styling
+// Tablet and PC styles
 @media screen and (min-width: 768px) {
     .portal {
         width: 30rem;

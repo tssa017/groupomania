@@ -1,16 +1,18 @@
+// Imports
 import '../../index.scss';
 import { useState } from 'react';
 import axios from 'axios';
 
 function Portal() {
-    // Store and manages state of user input (use state hooks)
+    // Store and manages state of user input
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const [signedUp, setSignedUp] = useState(false); // Keep track of sign in state
 
-    // JS function to reset input fields to an empty string
+    // JS function to reset input fields to an empty string when toggling between signup and login
     const resetFields = () => {
         setFirstName('');
         setLastName('');
@@ -18,7 +20,7 @@ function Portal() {
         setPassword('');
     };
 
-    // Define regex patterns
+    // Define regex patterns to ensure user input conforms to standard convention
     const namePattern = /^[a-zA-Z]+$/;
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -66,7 +68,7 @@ function Portal() {
         return isValid;
     };
 
-    // Function posts user input `Signup` info to API, granting conditional access to the website
+    // Function posts user input to API, granting conditional access to the website
     const handleSignup = async (event) => {
         event.preventDefault();
 
@@ -87,16 +89,16 @@ function Portal() {
                 setSignedUp(true);
                 alert(
                     'User saved! To complete the verification process, please log in to your account'
-                );
+                ); // Users must login to generate a JWT
             }
         } catch (err) {
             console.log(err);
         }
     };
 
-    // Function posts user `Login` input to API, granting conditional access to the website
+    // Function posts user input to API, granting conditional access to the website
     const handleLogin = async (event) => {
-        event.preventDefault(); // Allow the axios post request to be sent asynchronously without the page refreshing
+        event.preventDefault();
 
         try {
             const res = await axios.post('http://localhost:3001/api/login', {
@@ -105,7 +107,7 @@ function Portal() {
             });
 
             if (res.status >= 200 && res.status < 300) {
-                // Store the token in local storage
+                // Store the token in local storage for future use
                 localStorage.setItem('token', res.data.token);
                 window.location.href = '/feed';
             }
@@ -115,7 +117,7 @@ function Portal() {
         }
     };
 
-    // Hook stores the state of a button so to apply styles
+    // Hook stores the state so users can toggle between signup and login tabs
     const [buttonState, setButtonState] = useState({
         loginClicked: false,
         signupClicked: false,
@@ -133,6 +135,7 @@ function Portal() {
         resetFields();
     };
 
+    // Render signup and login forms on the DOM
     return (
         <div className="portal-profile__wrapper">
             <div className="portal">
@@ -156,6 +159,8 @@ function Portal() {
                 </div>
 
                 {/* Conditional Signup and Login form rendering */}
+                {/* Sign up */}
+
                 {!signedUp &&
                     (buttonState.signupClicked || // If signup has been clicked or if neither button has been clicked (default setting), the Signup form will render
                         (!buttonState.signupClicked &&
@@ -225,6 +230,7 @@ function Portal() {
                         </form>
                     )}
 
+                {/* Login */}
                 {(buttonState.loginClicked || signedUp) && (
                     <form className="portal__form" onSubmit={handleLogin}>
                         <div className="portal__form-group">

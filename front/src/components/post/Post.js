@@ -1,3 +1,4 @@
+// Imports
 import '../../index.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -6,26 +7,32 @@ import jwtDecode from 'jwt-decode';
 
 function Post() {
     const [posts, setPosts] = useState([]); // Stores posts data as an array
-    const [comments, setComments] = useState([]); // Stores posts data as an array
+    const [comments, setComments] = useState([]); // Stores comments data as an array
+
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [profilePicUrl, setProfilePicUrl] = useState('');
     const [postId, setPostId] = useState('');
-    const [commentContent, setCommentContent] = useState('');
     const [commentId, setCommentId] = useState('');
     const [comment, setComment] = useState(null); // Keep track of comment state
     const [likes, setLikes] = useState(0); // Keep track of likes
-    const [selectedPostId, setSelectedPostId] = useState(null); // Keep track of selected post
     const [isAdmin, setisAdmin] = useState();
+
+    const [commentContent, setCommentContent] = useState('');
+
+    const [selectedPostId, setSelectedPostId] = useState(null); // Keep track of selected post
+
     // Toggle comments display
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const [isIconUp, setIsIconUp] = useState(false);
+
     // Edit post
     const [isEditingComment, setIsEditingComment] = useState(false);
 
     const navigate = useNavigate();
 
+    // Function fetches posts, comments, and user data together in order to reduce number of requests and state updates
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -50,7 +57,7 @@ function Post() {
                         );
                     });
 
-                    Promise.all(promises)
+                    Promise.all(promises) // Promise.all() method means we wait for all API calls to complete before updating the state with the fetched data
                         .then((responses) => {
                             const updatedPosts = posts.map((post, i) => {
                                 const userResponse = responses[i];
@@ -181,6 +188,7 @@ function Post() {
         }
     }
 
+    // Function allows post author to delete post from database
     const deletePost = (id) => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -189,7 +197,7 @@ function Post() {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {
-                    setPosts(posts.filter((post) => post.id !== id));
+                    setPosts(posts.filter((post) => post.id !== id)); // Filter out posts with corresponding id
                     console.log('Successfully deleted post!');
                 })
                 .catch((error) => {
@@ -198,6 +206,7 @@ function Post() {
         }
     };
 
+    // Function allows post author to delete comment from database
     const deleteComment = (id) => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -210,7 +219,7 @@ function Post() {
                         comments.filter((comment) => comment.id !== id)
                     );
                     console.log('Successfully deleted comment!');
-                    // window.location.reload();
+                    // TODO: window.location.reload();
                 })
                 .catch((error) => {
                     console.error('Error deleting comment:', error);
@@ -218,22 +227,26 @@ function Post() {
         }
     };
 
+    // Function gets postId from localStorage in order to pass it to the modifyPost function when a user clicks the edit post button
     const handlePostEditClick = (postId) => {
         localStorage.setItem('postId', postId);
-        navigate('/edit');
+        navigate('/edit'); // Also redirects to edit post page
     };
 
+    // Function gets commentId from localStorage in order to pass it to the modifyComment function when a user clicks the edit comment button
     const handleCommentEditClick = (commentId) => {
         localStorage.setItem('commentId', commentId);
-        setIsEditingComment(true);
+        setIsEditingComment(true); // Sets state of isEditingComment to true so that the create comment textbox will disappear on clicking the edit comment button
     };
 
+    // Function posts new comment content to API, allowing users to submit comments
     const createComment = (event, postId) => {
         event.preventDefault();
 
         const content = commentContent;
 
         const commentData = {
+            // Create new instance of a comment
             postId: selectedPostId,
             userId,
             content,
@@ -256,7 +269,8 @@ function Post() {
             });
     };
 
-    const getCommentById = () => {
+    // Function gets a given comment's id
+    useEffect(() => {
         const token = localStorage.getItem('token');
         const commentId = localStorage.getItem('commentId');
         if (token && commentId) {
@@ -274,19 +288,15 @@ function Post() {
                     console.error('Error fetching comment for editing:', error);
                 });
         }
-    };
-
-    useEffect(() => {
-        getCommentById();
     }, []);
 
     // Function allows user to modify a comment
     const modifyComment = (event) => {
         event.preventDefault();
-        if (!isEditingComment) return;
+        if (!isEditingComment) return; // Check if editing is true to update UI (remove create comment textbox)
         const token = localStorage.getItem('token');
         if (token) {
-            const updatedCommentContent = event.target.elements.content.value;
+            const updatedCommentContent = event.target.elements.content.value; // Retrieve new comment content
 
             axios
                 .put(
@@ -306,35 +316,39 @@ function Post() {
                 });
         }
         setIsEditingComment(false);
+        // Refresh the page // TODO: ex
         window.location.reload();
     };
 
+    // Function fetches the initial likes count for all posts from the server and set them in the state
     useEffect(() => {
-        // Fetch the initial likes count for all posts from the server and set them in the state
         axios
             .get(`http://localhost:3001/api/posts/${postId}/get-likes`)
             .then((response) => {
-                setPosts(response.data); // set the posts data in the state
+                setPosts(response.data); // Set the posts data in the state
             })
             .catch((error) => {
                 console.error(error);
             });
     }, []);
 
+    // Function allows user to like a post and saves likes count to database
     async function handleLikes(event, postId) {
         event.preventDefault();
 
         // Find the post in the state and update its likes count
         const updatedPosts = posts.map((post) => {
+            // Use map method to create a new array of updated posts with the new like count for the given post
             if (post.id === postId) {
                 return { ...post, likes: post.likes + 1 };
             }
             return post;
         });
 
-        const updatedPost = updatedPosts.find((post) => post.id === postId);
+        const updatedPost = updatedPosts.find((post) => post.id === postId); // Finds updated post via post id
 
         const likesData = {
+            // Create a new object with updated likes count
             postId: postId,
             likes: updatedPost.likes,
         };
@@ -369,6 +383,7 @@ function Post() {
         setIsCommentsOpen(false);
     }
 
+    // Text will change based on whether or not the comments are visible or hidden
     const commentsButtonText = isCommentsOpen
         ? 'Hide comments'
         : 'View comments';
@@ -380,7 +395,7 @@ function Post() {
             return (
                 <div
                     className="post"
-                    key={post.id}
+                    key={post.id} // Unique identifier for each post to help React track the items in the mapped list and update the Dom when an item is added to said list (e.g. a new post)
                     onClick={() => updateReadStatus(post.id)} // Sets post read status to true if a user clicks on a post or interacts with it
                 >
                     <article className="post__cont">
@@ -400,6 +415,7 @@ function Post() {
                                 name="content"
                             >
                                 {post.post}
+                                {/* If there is an image present, set url, otherwise set "src" attribute in HTML to an empty string */}
                                 {post.postPicUrl !== '' ? (
                                     <img
                                         className="post__cont--status-txt-img"
@@ -421,6 +437,7 @@ function Post() {
                                         }
                                     ></i>
                                 </section>
+                                {/* Only post author or admin accounts can edit or delete a given post  */}
                                 {(isPostAuthor || isAdmin) && (
                                     <div className="post__cont--status-edit-cont-mods">
                                         <button
@@ -475,6 +492,7 @@ function Post() {
                             </form>
                         </section>
                     )}
+                    {/* Apply the toggleComments functions to allow user to display or hide comments. For example, commentsButtonText will say 'Hide comments' if they are currently displayed */}
                     <div id="toggle-comments" onClick={toggleComments}>
                         {commentsButtonText}
                         <i
@@ -520,7 +538,7 @@ function Post() {
                                             <p className="comment__cont--comment-card-comment">
                                                 {comment.comment}
                                             </p>
-                                            {/* Render edit and delete buttons for comment authors only */}
+                                            {/* Render edit and delete buttons for admin account or comment authors only */}
                                             {(isCommentAuthor || isAdmin) && (
                                                 <div className="comment__cont--comment-card--edit">
                                                     <button
@@ -549,6 +567,7 @@ function Post() {
                                     );
                                 })}
                         </section>
+                        {/* Only render this textbox if currently editing a comment */}
                         {isEditingComment && (
                             <form
                                 onSubmit={modifyComment}

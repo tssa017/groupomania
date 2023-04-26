@@ -1,8 +1,8 @@
+// Imports
 import '../../index.scss';
 import { useState } from 'react';
-import axios from 'axios';
+import axios from 'axios'; // TODO: Do I need?
 
-// Function formats Setting component in JSX
 function Settings() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isIconUp, setIsIconUp] = useState(false);
@@ -17,9 +17,10 @@ function Settings() {
         setIsNavOpen(false);
     }
 
+    // Function handles logout by clearing JWT from localStorage
     const handleLogout = () => {
         localStorage.clear();
-        window.location.href = '/portal';
+        window.location.href = '/portal'; // TODO: Use nav?
         alert('You have been logged out');
     };
 

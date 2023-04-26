@@ -1,12 +1,12 @@
 import '../../index.scss';
 
-// // Function formats Header component in JSX
+// Function formats Header component in JSX
 function Header() {
     return (
         <div>
             <header className="header">
                 <img
-                    src="/images/cropped-img.png" // Public
+                    src="/images/cropped-img.png"
                     className="header__img"
                     alt="Groupomania logo"
                 />

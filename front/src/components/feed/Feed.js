@@ -1,3 +1,4 @@
+// Imports
 import '../../index.scss';
 import Settings from '../settings/Settings';
 import CreatePost from '../create-post/CreatePost';

@@ -1,5 +1,6 @@
 // This page contains Sass settings styles
 
+// Mobile styles
 .settings {
     &__nav {
         display: flex;
@@ -40,7 +41,7 @@
     }
 }
 
-// Tablet and PC styling
+// Tablet and PC styles
 @media screen and (min-width: 768px) {
     .settings {
         width: 800px;

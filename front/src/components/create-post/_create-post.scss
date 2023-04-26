@@ -1,5 +1,6 @@
 // This page contains Sass create-post styles
 
+// Mobile styles
 .create-post {
     &__cont {
         display: flex;
@@ -91,7 +92,7 @@
     }
 }
 
-// Tablet and PC styling
+// Tablet and PC styles
 @media screen and (min-width: 768px) {
     .create-post {
         &__cont {

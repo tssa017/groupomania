@@ -1,56 +1,58 @@
+// Imports
 import '../../index.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode'; // TODO: Do I need?
 
 function Edit() {
-    const [id, setId] = useState(''); // Add state to keep track of the post being edited
+    const [id, setId] = useState('');
     const [userId, setUserId] = useState('');
     const [postPicUrl, setPostPicUrl] = useState(null); // Store the URL of the post picture displayed in the UI
     const [post, setPost] = useState(null); // Store the text content of the post
-    const [isFileSelected, setIsFileSelected] = useState(false); // Set to false initially to keep track of whether or not a file has been uploaded
-    const navigate = useNavigate(); // React function allows me to dynamically navigate to different routes
     const postId = localStorage.getItem('postId');
 
-    const getPostById = (id) => {
+    const [isFileSelected, setIsFileSelected] = useState(false);
+
+    const navigate = useNavigate(); // React function allows me to dynamically navigate to different routes
+
+    // Function gets post id to use in editing posts
+    useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             axios
-                .get(`http://localhost:3001/api/posts/${id}`, {
+                .get(`http://localhost:3001/api/posts/${postId}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 .then((response) => {
-                    setId(id); // Set the id state to the parameter value
-                    setUserId(response.data[0].userId); // Update the userId state with the correct value
-                    setPost(response.data[0].post);
-                    setPostPicUrl(response.data[0].postPicUrl);
+                    const data = response.data[0];
+                    setId(postId);
+                    setUserId(data.userId);
+                    setPost(data.post);
+                    setPostPicUrl(data.postPicUrl);
                     console.log('Successfully fetched post for editing!');
                 })
                 .catch((error) => {
                     console.error('Error fetching post for editing:', error);
                 });
         }
-    };
-
-    useEffect(() => {
-        getPostById(postId);
     }, [postId]);
 
+    // Function tracks file uploads for submission (similarly to in CreatePost.js)
     const handleFileInputChange = (event) => {
-        const file = event.target.files[0]; // Retrieves uploaded image file
+        const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = (event) => {
-            setPostPicUrl(event.target.result); // Set the postPicUrl hook to the base64-encoded data URL of selected image file, re-renders
+            setPostPicUrl(event.target.result);
         };
-        reader.readAsDataURL(file); // Reads file
-        setIsFileSelected(true); // Resets isFileSelected hook so that the file preview is displayed
+        reader.readAsDataURL(file);
+        setIsFileSelected(true);
     };
 
-    // Function allows user to modify a post
+    // Function allows user to modify a post and saves to database
     const modifyPost = (event) => {
-        event.preventDefault();
-        const token = localStorage.getItem('token');
+        event.preventDefault(); // Prevent auto-submission of the form
+        const token = localStorage.getItem('token'); // Get JWT from localStorage in order  to retrieve user data
         if (token) {
             const formData = new FormData();
             formData.append('userId', userId);
@@ -75,7 +77,7 @@ function Edit() {
                 })
                 .then((response) => {
                     setPostPicUrl(response.data.postPicUrl);
-                    navigate('/feed'); // Redirect to /feed upon successful profile update
+                    navigate('/feed'); // Redirect to /feed upon successfully updating post
                     console.log('Post updated successfully');
                 })
                 .catch((error) => {
@@ -84,6 +86,7 @@ function Edit() {
         }
     };
 
+    // Render the edit post screen on the DOM
     return (
         <div className="wrapper">
             <div className="edit-post">

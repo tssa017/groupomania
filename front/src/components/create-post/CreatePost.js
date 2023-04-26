@@ -138,7 +138,7 @@ function CreatePost() {
                                 type="submit" // Will run handlePostSubmit() on submission
                                 className="create-post__cont--btns-post-btn"
                                 id="button"
-                                value="POST"
+                                value="Post"
                             />
                         </section>
                     </form>

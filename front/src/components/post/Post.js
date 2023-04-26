@@ -322,7 +322,6 @@ function Post() {
                 });
         }
         setIsEditingComment(false);
-        // Refresh the page // TODO: ex
         window.location.reload();
     };
 
@@ -433,15 +432,15 @@ function Post() {
                             </p>
                             <article className="post__cont--status-edit-cont">
                                 <section className="post__cont--reactions">
-                                    <div className="post__cont--reactions-likes">
-                                        {`Likes: ${post.likes}`}
-                                    </div>
                                     <i
                                         className="post__cont--reactions--like fa-solid fa-heart"
                                         onClick={(event) =>
                                             handleLikes(event, post.id)
                                         }
                                     ></i>
+                                    <div className="post__cont--reactions-likes">
+                                        {post.likes}
+                                    </div>
                                 </section>
                                 {/* Only post author or admin accounts can edit or delete a given post  */}
                                 {(isPostAuthor || isAdmin) && (
@@ -491,7 +490,7 @@ function Post() {
                                     className="create-comment__cont--post-btn"
                                     onClick={() => setSelectedPostId(post.id)}
                                     id="button"
-                                    value="POST"
+                                    value="Post comment"
                                 />
                             </form>
                         </section>
@@ -587,7 +586,7 @@ function Post() {
                                     type="submit"
                                     className="edit-comment__cont--post-btn"
                                     id="button"
-                                    value="POST"
+                                    value="Save comment"
                                 />
                             </form>
                         )}

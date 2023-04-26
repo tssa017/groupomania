@@ -113,7 +113,7 @@ function Edit() {
                                 type="submit" // Submit form
                                 className="create-post__cont--btns-post-btn"
                                 id="button"
-                                value="POST"
+                                value="Save"
                             />
                         </section>
                     </form>

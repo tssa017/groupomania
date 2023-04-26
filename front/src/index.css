@@ -434,6 +434,7 @@ a {
   flex-direction: column;
   align-items: center;
   gap: 0;
+  border-top: 3px solid #3d3c3c;
   background-color: #e3e4fd;
 }
 .post__cont--status-txt {
@@ -441,9 +442,8 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 3rem;
-  border-top: 3px solid #3d3c3c;
   width: 100%;
+  padding: 3rem;
   border-top: 3px solid #3d3c3c;
   border-right: 3px solid #3d3c3c;
   border-left: 3px solid #3d3c3c;
@@ -541,33 +541,30 @@ a {
   flex-direction: column;
   padding: 1rem 1rem 3rem 1rem;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: #e3e4fd;
-  border-bottom: 3px solid #3d3c3c;
 }
 .create-comment__cont--img {
   width: auto;
-  margin-right: 0.5rem;
   height: 50px;
   border: 0.2rem solid #3d3c3c;
   border-radius: 100%;
 }
 .create-comment__cont--comment {
-  padding: 3rem 3rem 5rem 3rem;
+  padding: 2rem;
   font-size: 1rem;
   margin: 1rem 1rem 0 1rem;
   background-color: #fff;
   border: 3px solid #3d3c3c;
   border-radius: 10px;
   line-height: 1.7rem;
-  width: fit-content;
+  width: 90%;
 }
 .create-comment__cont--post-btn {
   padding: 1rem;
   margin: 1.5rem 0 0 0.5rem;
   background-color: #ca7ffe;
-  width: 5rem;
   border: 3px solid #3d3c3c;
   border-radius: 10px;
   font-family: "Nunito", sans-serif;
@@ -587,12 +584,19 @@ a {
   text-align: center;
 }
 
+.comment__cont {
+  padding-bottom: 2rem;
+  border-bottom: 3px solid #3d3c3c;
+}
+.comment__cont--comment-card {
+  margin: 1.5rem;
+}
 .comment__cont--comment-card-publisher {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 1rem;
-  padding: 3rem 3rem 1rem 3rem;
+  padding-bottom: 0.5rem;
 }
 .comment__cont--comment-card-publisher-img {
   width: 50px;
@@ -605,19 +609,20 @@ a {
   font-size: 1.2rem;
 }
 .comment__cont--comment-card-comment {
-  padding: 2rem;
+  padding: 1rem;
   font-size: 1rem;
   background-color: #fff;
   border: 3px solid #3d3c3c;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   line-height: 1.7rem;
+  text-align: left;
 }
 .comment__cont--comment-card--edit {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 1rem;
+  padding: 0.5rem;
   gap: 0.5rem;
   border-right: 3px solid #3d3c3c;
   border-bottom: 3px solid #3d3c3c;
@@ -680,21 +685,17 @@ a {
 
 @media screen and (min-width: 768px) {
   .create-comment__cont {
+    flex-direction: row;
     padding-top: 2rem;
     border-top: 0.2rem solid #3d3c3c;
     border-right: 0.2rem solid #3d3c3c;
     border-left: 0.2rem solid #3d3c3c;
   }
   #toggle-comments {
-    border-right: 0.2rem solid #3d3c3c;
-    border-left: 0.2rem solid #3d3c3c;
-    border-bottom: 0.2rem solid #3d3c3c;
+    border: 0.2rem solid #3d3c3c;
   }
   .comment__cont--comment-card {
-    margin: 0.2rem 2rem 2rem 2rem;
-  }
-  .comment__cont--comment-card-publisher {
-    padding: 3rem;
+    margin: 2.2rem;
   }
   .comment__cont--comment-card-publisher-img {
     width: 70px;

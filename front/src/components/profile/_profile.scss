@@ -57,6 +57,7 @@
         margin: 1rem 0 0 0.25rem;
         @include borderStyle;
         @include btnTxtStyle;
+        background-color: $colorDeactivate;
         scale: 1;
 
         &:hover {

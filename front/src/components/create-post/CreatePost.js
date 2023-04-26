@@ -83,7 +83,14 @@ function CreatePost() {
                 window.location.reload();
             })
             .catch((error) => {
-                console.error('Failed to create post:', error);
+                if (error.response && error.response.status === 400) {
+                    // Text is required to submit a post
+                    alert(
+                        "You submitted an empty post! Tell me what you're thinking about."
+                    );
+                } else {
+                    console.error('Failed to create post:', error);
+                }
             });
     };
 
@@ -119,7 +126,6 @@ function CreatePost() {
                                 ></i>
                             </div>
                         )}
-                        <div className="create-post__cont--post-error"></div>
                         <section className="create-post__cont--btns">
                             <label htmlFor="image">
                                 <input

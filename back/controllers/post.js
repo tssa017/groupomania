@@ -18,9 +18,13 @@ exports.createPost = async (req, res) => {
     const url = req.protocol + '://' + req.get('host'); // Creates URL for image file path
     const postPicUrl = req.file ? url + '/images/' + req.file.filename : ''; // Checks if image file was uploaded with the request. If yes, the imageUrl set to url + location + filename. If no, imageUrl set to an empty string
     try {
-        {
-            /* Create new Post object and save as entry in database */
+        if (!req.body.content) {
+            // Check if the request contains text
+            return res.status(400).json({
+                message: 'Text is required to submit this post!',
+            });
         }
+        // Create new Post object and save as entry in database
         const newPost = await Post.create({
             userId: req.body.userId,
             post: req.body.content,

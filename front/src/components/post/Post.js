@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import Button from '../button/Button.js';
 
 function Post() {
     const [posts, setPosts] = useState([]); // Stores posts data as an array
@@ -316,7 +317,7 @@ function Post() {
                 });
         }
         setIsEditingComment(false);
-        // Refresh the page
+        // Refresh the page // TODO: ex
         window.location.reload();
     };
 
@@ -440,20 +441,18 @@ function Post() {
                                 {/* Only post author or admin accounts can edit or delete a given post  */}
                                 {(isPostAuthor || isAdmin) && (
                                     <div className="post__cont--status-edit-cont-mods">
-                                        <button
+                                        <Button
+                                            buttonText="Edit"
                                             className="post__cont--status-edit-cont-mods--edit"
                                             onClick={() =>
                                                 handlePostEditClick(post.id)
                                             }
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
+                                        />
+                                        <Button
+                                            buttonText="Delete"
                                             className="post__cont--status-edit-cont-mods--delete"
                                             onClick={() => deletePost(post.id)}
-                                        >
-                                            Delete
-                                        </button>
+                                        />
                                     </div>
                                 )}
                             </article>
@@ -541,26 +540,24 @@ function Post() {
                                             {/* Render edit and delete buttons for admin account or comment authors only */}
                                             {(isCommentAuthor || isAdmin) && (
                                                 <div className="comment__cont--comment-card--edit">
-                                                    <button
+                                                    <Button
+                                                        buttonText="Edit"
                                                         className="comment__cont--comment-card--edit-edit-btn"
                                                         onClick={() =>
                                                             handleCommentEditClick(
                                                                 comment.id
                                                             )
                                                         }
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    <button
+                                                    />
+                                                    <Button
+                                                        buttonText="Delete"
                                                         className="comment__cont--comment-card--edit-delete"
                                                         onClick={() =>
                                                             deleteComment(
                                                                 comment.id
                                                             )
                                                         }
-                                                    >
-                                                        Delete
-                                                    </button>
+                                                    />
                                                 </div>
                                             )}
                                         </div>

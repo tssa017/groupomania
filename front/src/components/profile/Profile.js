@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import Button from '../button/Button.js';
 
 function Profile() {
     const [userId, setUserId] = useState('');
@@ -167,15 +168,15 @@ function Profile() {
                             />
                         </div>
                     )}
-                    <button className="profile__update-btn" type="submit">
-                        Update account
-                    </button>
-                    <button
+                    <Button
+                        buttonText="Update account"
+                        className="profile__update-btn"
+                    />
+                    <Button
+                        buttonText="Deactivate account"
                         className="profile__deactivate-btn"
                         onClick={handleAccountDeactivation}
-                    >
-                        Deactivate account
-                    </button>
+                    />
                 </form>
             </div>
         </div>

@@ -228,6 +228,7 @@ a {
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
+  background-color: #ff876d;
   scale: 1;
 }
 .profile__deactivate-btn:hover {

@@ -2,6 +2,7 @@
 import '../../index.scss';
 import { useState } from 'react';
 import axios from 'axios';
+import Button from '../button/Button.js';
 
 function Portal() {
     // Store and manages state of user input
@@ -89,7 +90,7 @@ function Portal() {
                 setSignedUp(true);
                 alert(
                     'User saved! To complete the verification process, please log in to your account'
-                ); // Users must login to generate a JWT
+                ); // Users must login to generate a JWT and be authorised to access site
             }
         } catch (err) {
             console.log(err);
@@ -140,22 +141,20 @@ function Portal() {
         <div className="portal-profile__wrapper">
             <div className="portal">
                 <div className="portal__toggle">
-                    <button
+                    <Button
+                        buttonText="Sign up"
                         className={`portal__toggle--signup ${
                             !buttonState.loginClicked ? 'purple' : ''
                         }`}
                         onClick={() => handleButtonClick(false)} // If this signup button is clicked, isLoginTrue will return false. Both the button's state and classname are updated accordingly
-                    >
-                        Sign up
-                    </button>
-                    <button
+                    />
+                    <Button
+                        buttonText="Login"
                         className={`portal__toggle--login ${
                             buttonState.loginClicked ? 'purple' : ''
                         }`}
                         onClick={() => handleButtonClick(true)}
-                    >
-                        Login
-                    </button>
+                    />
                 </div>
 
                 {/* Conditional Signup and Login form rendering */}

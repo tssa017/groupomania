@@ -1,31 +1,26 @@
 # Groupomania
 
-I built and designed this full-stack website using React, Express, MySQL, Sequelize, JavaScript, Sass, and HTML. This was project 7 for the OpenClassrooms Web Developer path.
+I built and designed this full-stack website using MySQL, Sequelize, Express, React, and Sass. This was project 7 for the OpenClassrooms Web Developer path.
 
 ## Installation
 
-1. Clone the project using the following command:
+1. Clone and access the project using the following commands:
 
 ```bash
 git clone git@github.com:tssa017/groupomania.git
-```
-
-2. Redirect to the project folder using the following command:
-
-```bash
 cd groupomania
 ```
 
 ### Back-end
 
-1. Download the backend dependencies with the following command:
+1. Download the backend dependencies with the following commands:
 
 ```bash
 cd back
 npm ci
 ```
 
-2. Launch the server with the following command:
+2. Launch the server with this command:
 
 ```bash
 nodemon server
@@ -35,7 +30,7 @@ nodemon server
 
 In another terminal,
 
-1. Download the frontend dependencies with this command:
+1. Download the frontend dependencies with these commands:
 
 ```bash
 cd front
@@ -52,17 +47,19 @@ npm run start
 
 1. Download [MySql](https://dev.mysql.com/downloads/mysql/) by following the instructions from their community downloads page
 
-2. Download [MySql Workbench](https://dev.mysql.com/downloads/workbench/) by following the instructions from their community downloads page
+2. Download [MySql Workbench](https://dev.mysql.com/downloads/workbench/) by following the instructions from the MySql community downloads page
 
 3. Create a new MySql connection using Workbench, following [these instructions](https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-create-connection.html)
 
-4. In a new terminal, connect to your MySql database from the project terminal with the following command:
+In a new terminal,
+
+4. Connect to your MySql database with this command:
 
 ```bash
 mysql -u <username> -p
 ```
 
-5. Create a new database with the following command:
+5. Create a new database with the following commands:
 
 ```bash
 CREATE DATABASE <databasename>;
@@ -115,10 +112,11 @@ CREATE TABLE Comments (
     updatedAt DATETIME,
     PRIMARY KEY (id),
     FOREIGN KEY (postId) REFERENCES Posts(id)
+    FOREIGN KEY (userId) REFERENCES Users(userId)
 );
 ```
 
-9. Sign in to the website! (You can create an admin account by setting `isAdmin` to `1` in the database)
+9. Sign in to the website! You can create an admin account by setting `isAdmin` to `1` in a User entry in your database.
 
 ### For developers
 

@@ -3,24 +3,24 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const validator = require('validator');
+const { validationResult } = require('express-validator'); // Extract validationResult() function from express-validator module to use in login controller
 
-// Sign up
+// Handle user sign up
 module.exports.signup = async (req, res) => {
     if (!validator.isEmail(req.body.email)) {
-        return res.status(400).json({ error: 'Invalid email address' }); // If email address is invalid, return error message, otherwise proceed
+        return res.status(400).json({ error: 'Invalid email address' }); // If email address is invalid, return an error message, otherwise proceed
     }
 
     try {
         const hash = await bcrypt.hash(req.body.password, 10); // Call hash function and set salt value to 10
 
-        // Create new user
+        // Create a new user entry
         const user = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             password: hash,
         });
-
         // Save new user to database
         await user.save();
         res.status(201).json({
@@ -33,14 +33,13 @@ module.exports.signup = async (req, res) => {
     }
 };
 
-const { validationResult } = require('express-validator');
-
-// Login
+// Handle user login
 module.exports.login = async (req, res) => {
     // Validate user input
-    const errors = validationResult(req);
+    const errors = validationResult(req); // This function validates user input in the request
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        // Function checks list of errors returned by validationResult(), if any
+        return res.status(400).json({ errors: errors.array() }); // Returns errors in list form, if any
     }
 
     try {
@@ -77,6 +76,7 @@ module.exports.login = async (req, res) => {
 };
 
 // User routes
+// GET route displays individual user information
 module.exports.getSingleUser = async (req, res) => {
     try {
         const userId = req.params.userId; // Retrieve the user ID from the URL parameter
@@ -99,11 +99,11 @@ module.exports.getSingleUser = async (req, res) => {
     }
 };
 
-// POST route allows user to upload a profile picture
+// POST route allows user to upload a profile picture and/or modify names
 exports.modifyProfile = (req, res) => {
     const userId = req.params.userId; // Get userId from request parameters
-    const url = req.protocol + '://' + req.get('host');
-    const profilePic = req.file ? url + '/images/' + req.file.filename : ''; // Use filename or name property if available
+    const url = req.protocol + '://' + req.get('host'); // Creates URL for image file path
+    const profilePic = req.file ? url + '/images/' + req.file.filename : ''; // Checks if image file was uploaded with the request. If yes, the imageUrl set to url + location + filename. If no, imageUrl set to an empty string
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
 
@@ -118,7 +118,7 @@ exports.modifyProfile = (req, res) => {
             }
 
             // Update user model with only the fields that are present in the request body
-            const updatedFields = {}; // Create an empty object to store the updated fields
+            const updatedFields = {};
             if (profilePic) {
                 updatedFields.profilePic = profilePic;
             }
@@ -129,7 +129,7 @@ exports.modifyProfile = (req, res) => {
                 updatedFields.lastName = lastName;
             }
 
-            user.update(updatedFields) // Pass the updatedFields object to the update method
+            user.update(updatedFields)
                 .then(() => {
                     res.status(200).json({
                         message: 'Profile successfully updated!',
@@ -152,13 +152,13 @@ exports.modifyProfile = (req, res) => {
 // DELETE route deletes an exisiting User object based on its ID
 exports.deleteUser = (req, res) => {
     User.findOne({
-        where: { userId: req.params.userId },
+        where: { userId: req.params.userId }, // Find entry on database where userId matches userId in request parameters
     })
         .then((user) => {
             if (!user) {
                 return res.status(404).json({ error: 'User not found' });
             }
-            User.destroy({ where: { userId: req.params.userId } })
+            User.destroy({ where: { userId: req.params.userId } }) // Delete user from database where userId matches userId in request parameters
                 .then(() => {
                     res.status(200).json({
                         message: 'Account deleted!',

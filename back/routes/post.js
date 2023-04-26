@@ -13,7 +13,7 @@ router.put('/:id', multer, postCtrl.modifyPost);
 router.delete('/:id', postCtrl.deletePost);
 router.get('/:id/get-likes', auth, postCtrl.getLikes);
 router.put('/:id/likes', auth, postCtrl.likePost);
-router.put('/:id/read', postCtrl.updateReadStatus); // Updates 'read' field of a post
+router.put('/:id/read', postCtrl.updateReadStatus);
 
 // Export
 module.exports = router;

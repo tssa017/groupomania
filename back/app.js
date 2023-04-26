@@ -10,14 +10,10 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 
-// Parse the request body of incoming HTTP requests
+// Parse request body of incoming HTTP requests
 app.use(bodyParser.json());
-
-// Parse requests of content-type - application/json
 app.use(express.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // TODO: Do I need?
 
 // Sets access control headers to allow cross-origin sharing
 app.use(

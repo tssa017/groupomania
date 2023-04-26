@@ -53,7 +53,7 @@ npm run start
 
 In a new terminal,
 
-4. Connect to your MySql database with this command:
+4. Connect to your MySql connection with this command:
 
 ```bash
 mysql -u <username> -p
@@ -116,12 +116,15 @@ CREATE TABLE Comments (
 );
 ```
 
-9. Sign in to the website! You can create an admin account by setting `isAdmin` to `1` in a User entry in your database.
+9. Sign in to the website via the `/portal` endpoint on your frontend server!
+
+You can create an admin account by setting `isAdmin` to `1` in a User entry in your database.
 
 ### For developers
 
-1. Compile Sass with the following command:
+1. Compile Sass with the following commands:
 
 ```bash
+cd front/src
 sass --watch index.scss index.css
 ```

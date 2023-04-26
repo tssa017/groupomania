@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken'); // Imports jsonwebtoken library into file
 // Checks if a user is authorised to login to Groupomania
 module.exports = (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(' ')[1]; // Retrieves token from the Auhtorization header in request
+        const token = req.headers.authorization.split(' ')[1]; // Retrieves token from the Authorization header in request
         const decodedToken = jwt.verify(token, process.env.RANDOM_TOKEN_SECRET);
         // Compare user ID from token with user ID from request body
         const userId = decodedToken.userId;

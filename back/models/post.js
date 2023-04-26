@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
             modelName: 'Post',
         }
     );
-    // FindAll query to prioritise unread posts and organise order (newest to oldest)
+    // FindAll query to prioritise unread posts and organise their order (newest to oldest)
     Post.getAllPosts = async function () {
         const posts = await Post.findAll({
             order: [

@@ -1,12 +1,12 @@
 // This file contains all comment related business logic
 let db = require('../models');
 const Comment = db.Comment;
-const User = db.User;
+const User = db.User; // TODO: Do I need?
 
-// GET route that gets an array of all comments from database
+// GET route gets an array of all comments from database
 exports.getAllComments = async (req, res) => {
     try {
-        const comments = await Comment.getAllComments(); // Use getAllComments() function I defined in the Comment model
+        const comments = await Comment.getAllComments(); // Use getAllComments() function defined in the Comment model
         res.status(200).json(comments);
     } catch (error) {
         res.status(400).json({
@@ -15,7 +15,7 @@ exports.getAllComments = async (req, res) => {
     }
 };
 
-// POST route that creates a new comment and saves to database
+// POST route creates a new comment and saves to database
 exports.createComment = async (req, res) => {
     const postId = req.params.postId;
     try {
@@ -34,7 +34,7 @@ exports.createComment = async (req, res) => {
     }
 };
 
-// GET route for single post based on its id
+// GET route for single comment based on its id number
 exports.getSingleComment = async (req, res) => {
     try {
         const commentId = req.params.id;
@@ -52,7 +52,7 @@ exports.getSingleComment = async (req, res) => {
     }
 };
 
-// POST route modifies a Comment object based on its ID
+// PUT route modifies a comment and saves to database based on its ID
 exports.modifyComment = (req, res) => {
     const commentText = req.body.content;
 
@@ -66,17 +66,17 @@ exports.modifyComment = (req, res) => {
                 return res.status(404).json({ error: 'Comment not found.' });
             }
 
-            // Use the userId property of the comment object to get the user ID associated with that post
+            // Get user ID associated with comment
             const userId = comment.userId;
 
-            const updatedFields = {}; // Create an empty object to store the updated fields
+            const updatedFields = {}; // Create empty object to store updated fields in Comment object
             if (commentText) {
-                updatedFields.comment = commentText; // Update 'comment' field with the new comment content
+                updatedFields.comment = commentText; // Update 'comment' field with new content
             }
 
-            // Use the update method to update the post in the database
+            // Update and save new comment to database based on comment's id and userId
             Comment.update(updatedFields, {
-                where: { id: req.params.id, userId: userId }, // Use the retrieved user ID to update the post
+                where: { id: req.params.id, userId: userId },
             })
                 .then((updatedComment) => {
                     console.log('Comment updated successfully');
@@ -95,7 +95,7 @@ exports.modifyComment = (req, res) => {
         });
 };
 
-// // DELETE route deletes an exisiting Comment object based on its ID
+// DELETE route to delete a comment based on its id
 exports.deleteComment = async (req, res) => {
     try {
         const comment = await Comment.findOne({

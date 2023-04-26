@@ -1,9 +1,12 @@
+// Imports
 const http = require('http');
 const app = require('./app');
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
+// Establish connection to MySql database by creating a new instance of Sequelize class with connection details
 const sequelize = new Sequelize(
+    // Secure connection details in an .env file
     (database = process.env.DB_NAME),
     (username = process.env.DB_USER),
     (password = process.env.DB_PASS),
@@ -14,7 +17,7 @@ const sequelize = new Sequelize(
     })
 );
 
-// Syncing to MySQL Database
+// Sync to MySQL Database // TODO: ex
 const db = require('./models');
 db.sequelize
     .sync()
@@ -25,6 +28,7 @@ db.sequelize
         console.log('Failed to sync db: ' + error.message);
     });
 
+// Handle provided port number
 const normalizePort = (val) => {
     const port = parseInt(val, 10);
 
@@ -40,6 +44,7 @@ const normalizePort = (val) => {
 const port = normalizePort(process.env.BACKEND_PORT) || 3001;
 app.set('port', port);
 
+// Handle server errors
 const errorHandler = (error) => {
     if (error.syscall !== 'listen') {
         throw error;
@@ -61,6 +66,7 @@ const errorHandler = (error) => {
     }
 };
 
+// Test database connection, and if successful, create a server
 sequelize
     .authenticate()
     .then(() => {

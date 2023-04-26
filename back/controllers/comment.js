@@ -18,6 +18,12 @@ exports.getAllComments = async (req, res) => {
 exports.createComment = async (req, res) => {
     const postId = req.params.postId;
     try {
+        if (!req.body.content) {
+            // Check if the request contains text
+            return res.status(400).json({
+                message: 'Text is required to submit this comment!',
+            });
+        }
         const newComment = await Comment.create({
             postId: postId,
             userId: req.body.userId,

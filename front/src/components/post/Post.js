@@ -266,7 +266,12 @@ function Post() {
                 window.location.reload();
             })
             .catch((error) => {
-                console.error('Failed to add comment:', error);
+                if (error.response && error.response.status === 400) {
+                    // Text is required to submit a comment
+                    alert('Please enter text to submit this comment.');
+                } else {
+                    console.error('Failed to add comment:', error);
+                }
             });
     };
 

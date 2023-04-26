@@ -85,9 +85,7 @@ function CreatePost() {
             .catch((error) => {
                 if (error.response && error.response.status === 400) {
                     // Text is required to submit a post
-                    alert(
-                        "You submitted an empty post! Tell me what you're thinking about."
-                    );
+                    alert('Please enter text to submit this post.');
                 } else {
                     console.error('Failed to create post:', error);
                 }

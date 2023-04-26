@@ -17,7 +17,7 @@ const sequelize = new Sequelize(
     })
 );
 
-// Sync to MySQL Database // TODO: ex
+// Synchronise the database schema with actual MySql database tables
 const db = require('./models');
 db.sequelize
     .sync()

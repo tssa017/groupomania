@@ -1,7 +1,6 @@
 // This file contains all comment related business logic
 let db = require('../models');
 const Comment = db.Comment;
-const User = db.User; // TODO: Do I need?
 
 // GET route gets an array of all comments from database
 exports.getAllComments = async (req, res) => {

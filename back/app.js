@@ -10,10 +10,8 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 
-// Parse request body of incoming HTTP requests
-app.use(bodyParser.json());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // TODO: Do I need?
+// Configure middleware to parse request body of incoming HTTP requests
+app.use(bodyParser.json()); // Allows me to access request body in req.body
 
 // Sets access control headers to allow cross-origin sharing
 app.use(

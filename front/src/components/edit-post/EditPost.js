@@ -3,7 +3,6 @@ import '../../index.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode'; // TODO: Do I need?
 
 function Edit() {
     const [id, setId] = useState('');

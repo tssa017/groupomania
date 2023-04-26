@@ -219,7 +219,7 @@ function Post() {
                         comments.filter((comment) => comment.id !== id)
                     );
                     console.log('Successfully deleted comment!');
-                    // TODO: window.location.reload();
+                    window.location.reload();
                 })
                 .catch((error) => {
                     console.error('Error deleting comment:', error);
@@ -316,7 +316,7 @@ function Post() {
                 });
         }
         setIsEditingComment(false);
-        // Refresh the page // TODO: ex
+        // Refresh the page
         window.location.reload();
     };
 

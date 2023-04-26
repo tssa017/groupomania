@@ -1,7 +1,6 @@
 // This file contains all post related business logic
 let db = require('../models');
 const Post = db.Post;
-const User = db.User; // TODO: Do I need?
 
 // GET route gets an array of all posts from database
 exports.getAllPosts = async (req, res) => {
@@ -164,7 +163,7 @@ exports.likePost = (req, res) => {
         })
         .then((updatedPost) => {
             console.log('Post successfully liked!');
-            return res.status(200).json(updatedPost); // Return new object // TODO: check
+            return res.status(200).json(updatedPost); // Return new object
         })
         .catch((error) => {
             console.error('Failed to like post:', error);

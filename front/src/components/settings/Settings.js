@@ -1,11 +1,13 @@
 // Imports
 import '../../index.scss';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios'; // TODO: Do I need?
 
 function Settings() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isIconUp, setIsIconUp] = useState(false);
+
+    const navigate = useNavigate();
 
     // Functions toggle nav to reveal or collapse on click
     function toggleNav() {
@@ -20,7 +22,7 @@ function Settings() {
     // Function handles logout by clearing JWT from localStorage
     const handleLogout = () => {
         localStorage.clear();
-        window.location.href = '/portal'; // TODO: Use nav?
+        navigate('/portal');
         alert('You have been logged out');
     };
 

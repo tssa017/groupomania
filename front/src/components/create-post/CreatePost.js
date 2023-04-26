@@ -37,7 +37,7 @@ function CreatePost() {
                     console.log(error);
                 });
         }
-    }, []); // Function runs once when the component mounts // TODO: ex
+    }, []); // Function runs once when the component mounts
 
     // Function tracks file uploads and allows for a preview of image in UI before a user submits the post
     const handleFileInputChange = (event) => {

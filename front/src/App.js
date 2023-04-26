@@ -1,6 +1,5 @@
 // Imports
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom'; // TODO: Do I need?
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 

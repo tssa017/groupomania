@@ -2,4 +2,4 @@
 node_modules/
 .env
 images/
-config/
+config.json

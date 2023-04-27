@@ -58,8 +58,6 @@
         }
 
         &--btns {
-            gap: 1rem;
-
             input[type='file']::file-selector-button {
                 position: relative;
                 margin-top: 21.5rem;
@@ -76,9 +74,8 @@
             &-post-btn {
                 position: relative;
                 padding: 1rem;
-                margin: 1.5rem 0 0 0.5rem;
+                margin-top: 1.5rem;
                 background-color: $colorSecondary;
-                width: 5rem;
                 @include borderStyle;
                 @include btnTxtStyle;
                 scale: 1;

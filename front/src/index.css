@@ -247,7 +247,7 @@ a {
   font-size: 1.3rem;
 }
 .profile__form-group input {
-  padding: 0.7rem;
+  padding: 1rem 1rem 1rem 0.5rem;
   border: 3px solid #3d3c3c;
   border-radius: 10px;
   margin-top: 0.1rem;
@@ -307,9 +307,6 @@ a {
   height: 4rem;
   cursor: pointer;
 }
-.create-post__cont--btns {
-  gap: 1rem;
-}
 .create-post__cont--btns input[type=file]::file-selector-button {
   position: relative;
   margin-top: 21.5rem;
@@ -328,9 +325,8 @@ a {
 .create-post__cont--btns-post-btn {
   position: relative;
   padding: 1rem;
-  margin: 1.5rem 0 0 0.5rem;
+  margin-top: 1.5rem;
   background-color: #ca7ffe;
-  width: 5rem;
   border: 3px solid #3d3c3c;
   border-radius: 10px;
   font-family: "Nunito", sans-serif;
@@ -535,6 +531,30 @@ a {
     border-left: 0.2rem solid #3d3c3c;
     background-color: #aeb1fa;
   }
+  .post__cont--status {
+    width: 80%;
+  }
+  .post__cont--status-txt-img {
+    margin: 2rem 1rem 0 1rem;
+    width: 280px;
+  }
+  .post__cont--status-publisher {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  .post__cont--status-publisher-img {
+    width: 5rem;
+    height: auto;
+    border: 3px solid #3d3c3c;
+    border-radius: 10px;
+  }
+  .post__cont--status-publisher-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
 }
 .create-comment__cont {
   display: flex;
@@ -582,11 +602,12 @@ a {
   background-color: #e3e4fd;
   padding: 2rem 0 2rem 0;
   text-align: center;
+  border-top: 3px solid #3d3c3c;
+  border-bottom: 3px solid #3d3c3c;
 }
 
 .comment__cont {
   padding-bottom: 2rem;
-  border-bottom: 3px solid #3d3c3c;
 }
 .comment__cont--comment-card {
   margin: 1.5rem;
@@ -697,14 +718,12 @@ a {
   .comment__cont--comment-card {
     margin: 2.2rem;
   }
-  .comment__cont--comment-card-publisher-img {
-    width: 70px;
-  }
-  .comment__cont--comment-card-publisher-name {
-    font-size: 1.3rem;
+  .comment__cont--comment-card-publisher {
+    margin-bottom: 0.5rem;
   }
   .comment__cont--comment-card-comment {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    padding: 1.2rem;
   }
 }
 

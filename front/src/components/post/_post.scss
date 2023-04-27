@@ -167,11 +167,12 @@
     background-color: $colorBackgroundLight;
     padding: 2rem 0 2rem 0;
     text-align: center;
+    border-top: 3px solid $colorFont;
+    border-bottom: 3px solid $colorFont;
 }
 
 .comment__cont {
     padding-bottom: 2rem;
-    border-bottom: 3px solid $colorFont;
 
     &--comment-card {
         margin: 1.5rem;
@@ -284,17 +285,12 @@
             margin: 2.2rem;
 
             &-publisher {
-                &-img {
-                    width: 70px;
-                }
-
-                &-name {
-                    font-size: 1.3rem;
-                }
+                margin-bottom: 0.5rem;
             }
 
             &-comment {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
+                padding: 1.2rem;
             }
         }
     }

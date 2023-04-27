@@ -28,12 +28,12 @@ module.exports = (sequelize, DataTypes) => {
             modelName: 'Comment',
         }
     );
-    // FindAll query to organise comment order (newest to oldest)
+    // FindAll query to organise comment order
     Comment.getAllComments = async function () {
         const comments = await Comment.findAll({
             order: [
-                // Sort by creation date so they display in descending order
-                ['createdAt', 'DESC'],
+                // Sort by creation date so they display oldest to newest
+                ['createdAt', 'ASC'],
             ],
         });
         return comments;

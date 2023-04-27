@@ -715,6 +715,9 @@ a {
   #toggle-comments {
     border: 0.2rem solid #3d3c3c;
   }
+  .comment__cont {
+    width: 49rem;
+  }
   .comment__cont--comment-card {
     margin: 2.2rem;
   }

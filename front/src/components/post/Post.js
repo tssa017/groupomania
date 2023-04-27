@@ -325,7 +325,7 @@ function Post() {
         window.location.reload();
     };
 
-    // Function fetches the initial likes count for all posts from the server and set them in the state
+    // Function gets the initial likes count for all posts from the server and set them in the state
     useEffect(() => {
         axios
             .get(`http://localhost:3001/api/posts/${postId}/get-likes`)

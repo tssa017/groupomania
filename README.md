@@ -1,6 +1,12 @@
 # Groupomania
 
-I built and designed this full-stack website using MySQL, Sequelize, Express, React, and Sass. This was project 7 for the OpenClassrooms Web Developer path.
+I designed and built this full-stack website as project 7 for the OpenClassrooms Web Developer path. On the back-end I used Node.js, Express, and MySql with Sequelize. On the front-end I used React and Sass.
+
+Groupomania is a fun new social media platform that allows users to publish and interact with multimedia content on a live feed. The platform was built for Connect-E, a company seeking to boost employee morale and improve working relationships between staff.
+
+Users can create and update their own Groupomania profiles, write text and image posts, and comment on each other's posts. Each post is likeable.
+
+The website is accessible, responsive, and mobile friendly.
 
 ## Installation
 

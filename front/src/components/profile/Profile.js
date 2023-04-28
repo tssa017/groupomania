@@ -168,15 +168,15 @@ function Profile() {
                             />
                         </div>
                     )}
+                    <Button className="profile__update-btn">
+                        Update account
+                    </Button>
                     <Button
-                        buttonText="Update account"
-                        className="profile__update-btn"
-                    />
-                    <Button
-                        buttonText="Deactivate account"
                         className="profile__deactivate-btn"
                         onClick={handleAccountDeactivation}
-                    />
+                    >
+                        Deactivate account
+                    </Button>
                 </form>
             </div>
         </div>

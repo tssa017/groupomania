@@ -142,19 +142,21 @@ function Portal() {
             <div className="portal">
                 <div className="portal__toggle">
                     <Button
-                        buttonText="Sign up"
                         className={`portal__toggle--signup ${
                             !buttonState.loginClicked ? 'purple' : ''
                         }`}
                         onClick={() => handleButtonClick(false)} // If this signup button is clicked, isLoginTrue will return false. Both the button's state and classname are updated accordingly
-                    />
+                    >
+                        Sign up
+                    </Button>
                     <Button
-                        buttonText="Login"
                         className={`portal__toggle--login ${
                             buttonState.loginClicked ? 'purple' : ''
                         }`}
                         onClick={() => handleButtonClick(true)}
-                    />
+                    >
+                        Login
+                    </Button>
                 </div>
 
                 {/* Conditional Signup and Login form rendering */}

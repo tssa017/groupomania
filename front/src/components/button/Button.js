@@ -1,8 +1,8 @@
 // This will be a default import
-function Button({ buttonText, className, onClick }) {
+function Button({ children, className, onClick }) {
     return (
         <button className={className} onClick={onClick}>
-            {buttonText}
+            {children}
         </button>
     );
 }

@@ -446,17 +446,19 @@ function Post() {
                                 {(isPostAuthor || isAdmin) && (
                                     <div className="post__cont--status-edit-cont-mods">
                                         <Button
-                                            buttonText="Edit"
                                             className="post__cont--status-edit-cont-mods--edit"
                                             onClick={() =>
                                                 handlePostEditClick(post.id)
                                             }
-                                        />
+                                        >
+                                            Edit
+                                        </Button>
                                         <Button
-                                            buttonText="Delete"
                                             className="post__cont--status-edit-cont-mods--delete"
                                             onClick={() => deletePost(post.id)}
-                                        />
+                                        >
+                                            Delete
+                                        </Button>
                                     </div>
                                 )}
                             </article>
@@ -545,23 +547,25 @@ function Post() {
                                             {(isCommentAuthor || isAdmin) && (
                                                 <div className="comment__cont--comment-card--edit">
                                                     <Button
-                                                        buttonText="Edit"
                                                         className="comment__cont--comment-card--edit-edit-btn"
                                                         onClick={() =>
                                                             handleCommentEditClick(
                                                                 comment.id
                                                             )
                                                         }
-                                                    />
+                                                    >
+                                                        Edit
+                                                    </Button>
                                                     <Button
-                                                        buttonText="Delete"
                                                         className="comment__cont--comment-card--edit-delete"
                                                         onClick={() =>
                                                             deleteComment(
                                                                 comment.id
                                                             )
                                                         }
-                                                    />
+                                                    >
+                                                        Delete
+                                                    </Button>
                                                 </div>
                                             )}
                                         </div>

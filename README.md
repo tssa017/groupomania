@@ -2,11 +2,7 @@
 
 I designed and built this full-stack website as project 7 for the OpenClassrooms Web Developer path. On the back-end I used Node.js, Express, and MySql with Sequelize. On the front-end I used React and Sass.
 
-Groupomania is a fun new social media platform that allows users to publish and interact with multimedia content on a live feed. The platform was built for Connect-E, a company seeking to boost employee morale and improve working relationships between staff.
-
-Users can create and update their own Groupomania profiles, write text and image posts, and comment on each other's posts. Each post is likeable.
-
-The website is accessible, responsive, and mobile friendly.
+Groupomania is a social media platform that allows users to publish and interact with multimedia content on a feed.
 
 ## Installation
 
@@ -62,7 +58,7 @@ In a new terminal,
 4. Connect to your MySql connection with this command:
 
 ```bash
-mysql -u <username> -p
+mysql -u root -p
 ```
 
 5. Create a new database with the following commands:
@@ -71,6 +67,8 @@ mysql -u <username> -p
 CREATE DATABASE <databasename>;
 USE <databasename>;
 ```
+
+Store the database name in your .env file.
 
 6. Build a **Users** table with the following command:
 
@@ -122,9 +120,7 @@ CREATE TABLE Comments (
 );
 ```
 
-9. Sign in to the website via the `/portal` endpoint on your frontend server!
-
-You can create an admin account by setting `isAdmin` to `1` in a User entry in your database.
+9. Head to the sign in portal (http://localhost:3000/portal) on your browser, click the sign up tab, and follow the instructions! 🚀
 
 ### For developers
 

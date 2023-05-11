@@ -120,7 +120,7 @@ CREATE TABLE Comments (
 );
 ```
 
-9. Head to the sign in portal (http://localhost:3000/portal) on your browser, click the sign up tab, and follow the instructions! 🚀
+9. Head to the sign in portal (it should look something like: http://localhost:XXXX/portal) on your browser, click the sign up tab, and follow the instructions! 🚀
 
 ### For developers
 
